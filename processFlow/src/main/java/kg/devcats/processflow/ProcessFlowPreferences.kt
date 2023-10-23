@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-class CreditPreferences(context: Context) {
+class ProcessFlowPreferences(context: Context) {
 
     private val pref: SharedPreferences
 
@@ -14,21 +14,21 @@ class CreditPreferences(context: Context) {
 
     var processId: String?
         get() {
-            return pref.getString(CREDIT_FLOW_PROCESS_ID, "")
+            return pref.getString(FLOW_PROCESS_ID, "")
         }
         set(value) {
             pref.edit {
-                putString(CREDIT_FLOW_PROCESS_ID, value)
+                putString(FLOW_PROCESS_ID, value)
             }
         }
 
     var flowStatus: String?
         get() {
-            return pref.getString(CREDIT_FLOW_STATUS, "")
+            return pref.getString(FLOW_STATUS, "")
         }
         set(value) {
             pref.edit {
-                putString(CREDIT_FLOW_STATUS, value)
+                putString(FLOW_STATUS, value)
             }
         }
 
@@ -38,10 +38,10 @@ class CreditPreferences(context: Context) {
     }
 
     companion object {
-        const val SETTINGS_STORAGE_NAME = "kg.o.nurtelecom.credit_prefs"
+        const val SETTINGS_STORAGE_NAME = "kg.o.nurtelecom.process_flow_prefs"
 
-        private const val CREDIT_FLOW_PROCESS_ID = "CREDIT_FLOW_PROCESS_ID"
-        private const val CREDIT_FLOW_STATUS = "CREDIT_FLOW_STATUS"
-        private const val LOCATION = "LOCATION"
+        private const val FLOW_PROCESS_ID = "PROCESS_FLOW_FLOW_PROCESS_ID"
+        private const val FLOW_STATUS = "PROCESS_FLOW_FLOW_STATUS"
+        private const val LOCATION = "PROCESS_FLOW_LOCATION"
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="process_flow_unexpected_error">Күтүүсүз жаңылыштык</string>
+    <string name="process_flow_next">Андан ары</string>
+    <string name="process_flow_invalid_input">Туура эмес киргизилген маалыматтар</string>
+    <string name="process_flow_share_with">Жардамы менен бөлүшүү</string>
+    <string name="process_flow_error_pdf_loading">PDF файлды жүктөө мүмкүн болгон жок</string>
+    <string name="process_flow_permission_denied">Бул функцияны колдонуу үчүн тиешелүү уруксат керек.\nТиркеменин ырастоолоруна өтүү керекпи?</string>
+    <string name="process_flow_permission_request_title">Бул функцияны колдонуу үчүн тиешелүү уруксат керек.</string>
+    <string name="process_flow_no_available_free_space">Телефондо сүрөттөрдү сактоо жана иштеп чыгуу үчүн бош орун жетишсиз. Телефондон бираз орун бошотуңуз жана аракетиңизди кайталаңыз.</string>
+    <string name="process_flow_confirm">Ырастоо</string>
+    <string name="process_flow_repeat_after">%s аркылуу кайталоо</string>
+    <string name="process_flow_resend">Кайрадан жөнөтүү</string>
+    <string name="process_flow_warning_exit">Процессти токтотууну чындап каалайсызбы?</string>
+    <string name="process_flow_no">ЖОК</string>
+    <string name="process_flow_yes">ООБА</string>
+    <string name="process_flow_clearly">Макул</string>
+
+    <!--    Flow Photo confirmation-->
+    <string name="process_flow_photo_confirmation_retake">Жок, кайра тартуу керек</string>
+    <string name="process_flow_photo_confirmation_title">Маалыматтар так көрүнүп жатабы?</string>
+    <string name="process_flow_photo_confirmation_yes_visible">Ооба, көрүндү</string>
+    <string name="process_flow_photo_recognizer_timeout_description">Паспорт кадрда толук көрүнүп тураарына ынаныңыз.</string>
+    <!--    Flow Photo Capture-->
+    <string name="process_flow_photo_capture_passport_front_title">Паспорттун бет жагынын\nсүрөтү</string>
+    <string name="process_flow_photo_capture_passport_back_title">Паспорттун арткы бетинин\nсүрөтү</string>
+    <string name="process_flow_photo_capture_passport_front_description">Паспортту алкактын ичине келтирип,\n«Сүрөткө тартуу» баскычын басыңыз</string>
+    <string name="process_flow_photo_capture_passport_back_description">Сураныч, паспортту алкактын ичине келтирип, \nсүрөткө тартуу баскычы пайда болгонго \nчейин күтө туруңуз.</string>
+    <!--    Flow Photo Instruction -->
+    <string name="process_flow_photo_instruction_passport_front">Паспорттун алдыңкы бетин сүрөткө тартыңыз</string>
+    <string name="process_flow_photo_instruction_passport_back">Паспорттун арткы бетин сүрөткө тартыңыз</string>
+    <string name="process_flow_photo_instruction_selfie">Паспортту алдыңызга кармап туруп селфи-сүрөт тартыңыз</string>
+
+    <string name="process_flow_exit_video_call">Чалууну бүтүрөрүңүз аныкпы?</string>
+</resources>

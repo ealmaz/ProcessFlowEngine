@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.getColor
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.SearchSelectorBottomSheet
-import kg.devcats.processflow.databinding.ViewFormItemDropDownBinding
+import kg.devcats.processflow.databinding.ProcessFlowViewFormItemDropDownBinding
 import kg.devcats.processflow.extension.getThemeColor
 import kg.devcats.processflow.item_creator.DropDownFieldCreator
 import kg.devcats.processflow.model.input_form.ChooseType
@@ -15,8 +15,8 @@ import kg.devcats.processflow.model.input_form.DropDownFieldInfo
 
 class DropDownInputField @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null) : LinearLayout(context, attributeSet) {
 
-    private val views: ViewFormItemDropDownBinding by lazy {
-        ViewFormItemDropDownBinding.inflate(LayoutInflater.from(context), this, true)
+    private val views: ProcessFlowViewFormItemDropDownBinding by lazy {
+        ProcessFlowViewFormItemDropDownBinding.inflate(LayoutInflater.from(context), this, true)
     }
 
     var options: List<Option> = listOf()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="InputFormInputFieldView">
+    <declare-styleable name="process_flow_InputFormInputFieldView">
         <attr name="android:text"/>
         <attr name="android:hint"/>
         <attr name="android:inputType"/>
@@ -9,13 +9,13 @@
         <attr name="android:enabled"/>
     </declare-styleable>
 
-    <declare-styleable name="InputFormGroupButtons">
-        <attr name="choosingType" format="enum">
+    <declare-styleable name="process_flow_InputFormGroupButtons">
+        <attr name="process_flow_choosingType" format="enum">
             <enum name="MULTIPLE" value="0"/>
             <enum name="SINGLE" value="1"/>
         </attr>
 
-        <attr name="btnType" format="enum">
+        <attr name="process_flow_btnType" format="enum">
             <enum name="CHECK_BOX" value="0"/>
             <enum name="TOGGLE" value="1"/>
             <enum name="RADIO_BUTTON" value="2"/>

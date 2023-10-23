@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Switch
 import kg.devcats.processflow.R
-import kg.devcats.processflow.databinding.ViewFormItemGroupButtonsBinding
+import kg.devcats.processflow.databinding.ProcessFlowViewFormItemGroupButtonsBinding
 import kg.devcats.processflow.model.input_form.ButtonType
 import kg.devcats.processflow.model.input_form.ChooseType
 import kg.devcats.processflow.model.input_form.Option
@@ -43,8 +43,8 @@ class InputFormGroupButtons @JvmOverloads constructor(
 
     val buttons = mutableListOf<Option>()
 
-    private val vb: ViewFormItemGroupButtonsBinding by lazy {
-        ViewFormItemGroupButtonsBinding.inflate(LayoutInflater.from(context), this, true)
+    private val vb: ProcessFlowViewFormItemGroupButtonsBinding by lazy {
+        ProcessFlowViewFormItemGroupButtonsBinding.inflate(LayoutInflater.from(context), this, true)
     }
 
     init {
@@ -52,9 +52,9 @@ class InputFormGroupButtons @JvmOverloads constructor(
     }
 
     private fun obtainAttributes(context: Context, attributeSet: AttributeSet?) {
-        context.obtainStyledAttributes(attributeSet, R.styleable.InputFormGroupButtons).run {
-            setButtonTypeInt(getInt(R.styleable.InputFormGroupButtons_btnType, ButtonType.CHECK_BOX.ordinal))
-            setChooseTypeInt(getInt(R.styleable.InputFormGroupButtons_choosingType, ChooseType.MULTIPLE.ordinal))
+        context.obtainStyledAttributes(attributeSet, R.styleable.process_flow_InputFormGroupButtons).run {
+            setButtonTypeInt(getInt(R.styleable.process_flow_InputFormGroupButtons_process_flow_btnType, ButtonType.CHECK_BOX.ordinal))
+            setChooseTypeInt(getInt(R.styleable.process_flow_InputFormGroupButtons_process_flow_choosingType, ChooseType.MULTIPLE.ordinal))
             recycle()
         }
     }

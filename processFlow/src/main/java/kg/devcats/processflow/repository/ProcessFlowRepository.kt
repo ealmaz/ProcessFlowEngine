@@ -3,20 +3,22 @@ package kg.devcats.processflow.repository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kg.devcats.processflow.CreditPreferences
+import kg.devcats.processflow.ProcessFlowPreferences
 import kg.devcats.processflow.model.common.FlowStatusHelper
+import kg.devcats.processflow.model.input_form.Option
 import kg.devcats.processflow.model.request.FlowAnswer
 import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
+import kg.devcats.processflow.util.PictureUtil
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-class CreditProcessFlowRepository constructor(
+open class ProcessFlowRepository constructor(
     private val _api: ProcessFlowNetworkApi,
-    private val _prefs: CreditPreferences,
+    private val _prefs: ProcessFlowPreferences,
 ) {
 
     fun getFlowStatus(): Single<String?> =
@@ -30,9 +32,9 @@ class CreditProcessFlowRepository constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun startProcessFlow(request: Any, fcmToken: String): Single<FlowResponse> =
+    fun startProcessFlow(request: Map<String, String>): Single<FlowResponse> =
         _api
-            .startFlow(request) //todo: copy(deviceToken = fcmToken)
+            .startFlow(request)
             .map { flow ->
                 flow.processId?.let { _prefs.processId = it }
                 _prefs.flowStatus = flow.flowStatus?.toString()
@@ -81,7 +83,7 @@ class CreditProcessFlowRepository constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchOptions(formId: String, parentSelectedId: String = ""): Single<List<Any>> {
+    fun fetchOptions(formId: String, parentSelectedId: String = ""): Single<List<Option>> {
         return _api.fetchAdditionalOptions(formId, parentSelectedId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -89,7 +91,7 @@ class CreditProcessFlowRepository constructor(
 
     private fun deleteFile(file: File, resultString: String): Single<String> {
         return Single.create {
-//            PictureUtils.deleteFile(file) //todo: delete file
+            PictureUtil.deleteFile(file)
             it.onSuccess(resultString)
         }
     }

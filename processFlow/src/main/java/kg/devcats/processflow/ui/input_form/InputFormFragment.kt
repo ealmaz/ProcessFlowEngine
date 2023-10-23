@@ -1,57 +1,53 @@
-package kg.devcats.processflow.input_form
+package kg.devcats.processflow.ui.input_form
 
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.os.bundleOf
+import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
-import androidx.fragment.app.commit
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.viewModels
 import com.design2.chili2.view.input.MaskedInputView
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import com.design2.chili2.view.modals.picker.DatePickerDialog
-import core.extension.showMessage
-import extensions.hideKeyboard
-import kg.o.nurtelecom.annotation.FragmentInjector
-import o.credits.R
-import o.credits.databinding.FragmentInputFormBinding
-import o.credits.di.DaggerCreditsComponent
-import o.credits.model.Event
-import o.credits.model.process_flow.FlowInputField
-import o.credits.new_ui.input_form.InputFormVM
-import o.credits.new_ui.input_form.input_form_custom_views.DatePickerInputField
-import o.credits.new_ui.input_form.input_form_custom_views.DropDownInputField
-import o.credits.new_ui.input_form.input_form_custom_views.InputFormGroupButtons
-import o.credits.new_ui.input_form.input_forms_model.DatePickerFieldInfo
-import o.credits.new_ui.input_form.input_forms_model.DropDownFieldInfo
-import o.credits.new_ui.input_form.input_forms_model.EnteredValue
-import o.credits.new_ui.input_form.input_forms_model.FormResponse
-import o.credits.new_ui.input_form.input_forms_model.GroupButtonFormItem
-import o.credits.new_ui.input_form.input_forms_model.InputForm
-import o.credits.new_ui.input_form.input_forms_model.LabelFormItem
-import o.credits.new_ui.input_form.item_creators.DatePickerFieldCreator
-import o.credits.new_ui.input_form.item_creators.DropDownFieldCreator
-import o.credits.new_ui.input_form.item_creators.GroupButtonsCreator
-import o.credits.new_ui.input_form.item_creators.InputFieldCreator
-import o.credits.new_ui.input_form.item_creators.LabelFormItemCreator
-import o.credits.new_ui.process_flow.BaseProcessFlowFragment
-import o.credits.new_ui.process_flow.ProcessFlow
-import o.credits.new_ui.process_flow.ProcessFlowCommit
-import o.credits.new_ui.process_flow.ProcessFlowScreenData
+import kg.devcats.processflow.R
+import kg.devcats.processflow.base.BaseProcessScreenFragment
+import kg.devcats.processflow.custom_view.DatePickerInputField
+import kg.devcats.processflow.custom_view.DropDownInputField
+import kg.devcats.processflow.custom_view.InputFormGroupButtons
+import kg.devcats.processflow.databinding.ProcessFlowFragmentInputFormBinding
+import kg.devcats.processflow.extension.getProcessFlowHolder
+import kg.devcats.processflow.extension.hideKeyboard
+import kg.devcats.processflow.item_creator.DatePickerFieldCreator
+import kg.devcats.processflow.item_creator.DropDownFieldCreator
+import kg.devcats.processflow.item_creator.GroupButtonsCreator
+import kg.devcats.processflow.item_creator.InputFieldCreator
+import kg.devcats.processflow.item_creator.LabelFormItemCreator
+import kg.devcats.processflow.model.ContentTypes
+import kg.devcats.processflow.model.Event
+import kg.devcats.processflow.model.ProcessFlowCommit
+import kg.devcats.processflow.model.ProcessFlowScreenData
+import kg.devcats.processflow.model.common.Content
+import kg.devcats.processflow.model.component.FlowInputField
+import kg.devcats.processflow.model.input_form.DatePickerFieldInfo
+import kg.devcats.processflow.model.input_form.DropDownFieldInfo
+import kg.devcats.processflow.model.input_form.EnteredValue
+import kg.devcats.processflow.model.input_form.FormResponse
+import kg.devcats.processflow.model.input_form.GroupButtonFormItem
+import kg.devcats.processflow.model.input_form.InputForm
+import kg.devcats.processflow.model.input_form.LabelFormItem
 import java.util.Calendar
-import javax.inject.Inject
 
-@FragmentInjector
-class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), FragmentResultListener {
 
-    @Inject
-    lateinit var vm: InputFormVM
+class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputFormBinding>(), FragmentResultListener {
 
-    private val buttonTextRes = R.string.next
+    private var currentFormId: String = ""
+
+    private val vm: InputFormVM by viewModels()
+
+    private val buttonTextRes = R.string.process_flow_next
 
     private val scrollOffset16px: Int by lazy { resources.getDimensionPixelSize(R.dimen.padding_75dp) }
 
@@ -59,9 +55,6 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
 
     override val unclickableMask: View
         get() = vb.unclickableMask
-
-    override val buttonsLinearLayout: LinearLayout?
-        get() = null
 
     private val result = HashMap<String, List<String>?>()
 
@@ -72,12 +65,9 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
         subscribeToLiveData()
     }
 
-    override fun performAndroidInjection() {
-        DaggerCreditsComponent.builder().inject(this)
-    }
 
-    override fun inflateViewBinging(): FragmentInputFormBinding {
-        return FragmentInputFormBinding.inflate(layoutInflater)
+    override fun inflateViewBinging(): ProcessFlowFragmentInputFormBinding {
+        return ProcessFlowFragmentInputFormBinding.inflate(layoutInflater)
     }
 
     override fun setupViews(): Unit = with(vb) {
@@ -88,7 +78,7 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
     }
 
     private fun subscribeToLiveData() {
-        vm.event.observe(viewLifecycleOwner) { event ->
+        vm.event.observe(viewLifecycleOwner) {event ->
             when (event) {
                 is Event.AdditionalOptionsFetched -> {
                     setOptionsForDropDownField(event.formId, event.options)
@@ -97,13 +87,14 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
                 is Event.AdditionalOptionsFetching -> {
                     vb.progressBar.isVisible = true
                 }
+                else -> {}
             }
         }
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
-        super.setScreenData(data)
         data?.allowedAnswer?.filterIsInstance<InputForm>()?.firstOrNull()?.let {
+            currentFormId = it.formId
             setupInputForm(it)
         }
     }
@@ -175,7 +166,7 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
             setOnClickListener {
                 currentOpenedDatePickerId = datePickerFieldInfo.fieldId
                 DatePickerDialog.create(
-                    getString(R.string.next),
+                    getString(R.string.process_flow_next),
                     datePickerFieldInfo.label ?: "",
                     startLimitDate = datePickerFieldInfo.startDateLimit?.let { Calendar.getInstance().apply { timeInMillis = it } },
                     endLimitDate = datePickerFieldInfo.endDateLimit?.let { Calendar.getInstance().apply { timeInMillis = it } }
@@ -187,21 +178,21 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
     private fun setFragmentResultAndClose() {
         if (!validateInput()) return
         requireContext().hideKeyboard()
-        (requireActivity() as ProcessFlow).commit(ProcessFlowCommit.OnInputFormFilled(collectResult()))
+        getProcessFlowHolder().commit(ProcessFlowCommit.CommitContentFormResponseId(currentFormId, collectResult()))
     }
 
-    override fun setIsLoading(isLoading: Boolean): Boolean {
+    override fun handleShowLoading(isLoading: Boolean): Boolean {
         vb.unclickableMask.isVisible = isLoading
         vb.btnDone.setIsLoading(isLoading)
         return true
     }
 
-    private fun collectResult(): FormResponse {
+    private fun collectResult(): List<Content> {
         val resultValues = mutableListOf<EnteredValue>()
         result.forEach {
             resultValues.add(EnteredValue(it.key, it.value))
         }
-        return FormResponse(resultValues)
+        return listOf(Content(FormResponse(resultValues), ContentTypes.INPUT_FORM_DATA))
     }
 
     private fun validateInput(): Boolean {
@@ -210,9 +201,9 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
                 try {
                     vb.formContainer
                         .findViewWithTag<MaskedInputView>(it.key)
-                        .setupFieldAsError(R.string.invalid_input)
+                        .setupFieldAsError(R.string.process_flow_invalid_input)
                 } catch (ex: Throwable) {
-                    requireContext().showMessage(R.string.invalid_input)
+                    Toast.makeText(requireContext(), R.string.process_flow_invalid_input, Toast.LENGTH_SHORT).show()
                 }
                 return false
             }
@@ -260,24 +251,6 @@ class InputFormFragment : BaseProcessFlowFragment<FragmentInputFormBinding>(), F
                 currentOpenedDatePickerId?.let {
                     vb.formContainer.findViewWithTag<DatePickerInputField>(it).setDate(calendar.timeInMillis)
                 }
-            }
-        }
-    }
-
-    companion object {
-
-        const val INPUT_FORM_RESULT = "input_form_result"
-        const val INPUT_FORM_ARGUMENT = "inputForm"
-
-        fun show(fragmentManager: FragmentManager, containerId: Int, inputForm: InputForm, lifecycleOwner: LifecycleOwner, fragmentResultListener: FragmentResultListener) {
-            fragmentManager.setFragmentResultListener(INPUT_FORM_RESULT, lifecycleOwner, fragmentResultListener)
-            val fragment = InputFormFragment().apply { arguments = bundleOf(
-                INPUT_FORM_ARGUMENT to inputForm
-            )
-            }
-            fragmentManager.commit {
-                add(containerId, fragment)
-                addToBackStack(null)
             }
         }
     }

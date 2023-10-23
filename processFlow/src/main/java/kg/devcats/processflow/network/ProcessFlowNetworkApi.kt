@@ -1,6 +1,7 @@
 package kg.devcats.processflow.network
 
 import io.reactivex.Single
+import kg.devcats.processflow.model.input_form.Option
 import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
@@ -25,7 +26,7 @@ interface ProcessFlowNetworkApi {
     fun fetchAdditionalOptions(
         formId: String,
         parentSelectedOptionId: String,
-    ): Single<List<Any>> //todo: Change option
+    ): Single<List<Option>>
 
     fun cancelFlow(request: FlowCancelRequest): Single<Boolean>
 

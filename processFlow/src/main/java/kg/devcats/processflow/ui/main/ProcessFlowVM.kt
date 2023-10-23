@@ -1,53 +1,35 @@
-package kg.devcats.processflow.main
+package kg.devcats.processflow.ui.main
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kg.devcats.processflow.ProcessFlowConfigurator
+import kg.devcats.processflow.R
+import kg.devcats.processflow.base.BaseVM
+import kg.devcats.processflow.extension.defaultSubscribe
 import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
 import kg.devcats.processflow.model.request.FlowAnswer
 import kg.devcats.processflow.model.request.FlowResponse
-import kg.devcats.processflow.repository.CreditProcessFlowRepository
 import kg.devcats.processflow.network.parser.ProcessFlowResponseParser
+import kg.devcats.processflow.repository.ProcessFlowRepository
+import kg.devcats.processflow.util.PictureUtil
+import kg.nurtelecom.text_recognizer.RecognizedMrz
 import java.io.File
 
-class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewModel() {
+class ProcessFlowVM : BaseVM() {
 
-    val disposable: CompositeDisposable by lazy {
-        return@lazy CompositeDisposable()
-    }
-
-    var event: MutableLiveData<Event> = MutableLiveData()
-    val isLoading: MutableLiveData<Boolean> = MutableLiveData()
-
-    fun triggerEvent(ev: Event?) {
-        event.value = ev
-    }
-
-
-    override fun onCleared() {
-        disposable.clear()
-        super.onCleared()
-    }
-
-    fun disposed(d: () -> Disposable) {
-        disposable.add(d.invoke())
-    }
-
-
-    var resultData: Pair<String, MutableList<Content>>? = null
-    var isProcessCreated = false
+    private val _repository: ProcessFlowRepository by lazy { ProcessFlowConfigurator.getProcessFlowRepository() }
 
     private var failGetStateCounts = 0
 
-    private fun showLoading(){}
-    private fun hideLoading(){}
+    val loaderState = MutableLiveData(false)
+
+    private fun showLoading(){ loaderState.postValue(true) }
+    private fun hideLoading(){ loaderState.postValue(false) }
 
     private val _flowResponseParser: ProcessFlowResponseParser by lazy {
         ProcessFlowResponseParser()
@@ -70,18 +52,15 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
             .subscribe({
-                isProcessCreated = it != null
-//                triggerEvent(Event.ProcessFlowIsExist(it != null))
+                triggerEvent(Event.ProcessFlowIsExist(it != null))
             }, {
-                isProcessCreated = false
-//                triggerEvent(Event.ProcessFlowIsExist(false))
+                triggerEvent(Event.ProcessFlowIsExist(false))
             })
     }
 
-    fun startProcessFlow(startFlowRequest: Any) = disposed {
-        isProcessCreated = true
+    fun startProcessFlow(startFlowRequest: Map<String, String>) = disposed {
         _repository
-            .startProcessFlow(startFlowRequest, "")
+            .startProcessFlow(startFlowRequest)
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
             .flatMap { dispatchValuesToLiveData(it) }
@@ -109,8 +88,10 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
 
 
     fun upload(
+        responseId: String,
         file: File,
         type: String,
+        recognizedMrz: RecognizedMrz? = null,
         onSuccess: () -> Unit,
         onFail: (warningMessage: String, finishOnFail: Boolean) -> Unit
     ) {
@@ -118,38 +99,11 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
             _repository.uploadAttachment(file)
                 .observeOn(Schedulers.io())
                 .flatMap {
-                    _repository.commit(FlowAnswer(resultData?.first!!, mutableListOf(Content(it, type))))
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    resultData = null
-                    onSuccess.invoke()
-                    it
-                }
-                .flatMap { dispatchValuesToLiveData(it) }
-                .defaultSubscribe(onError = {
-                    onFail.invoke("", true)
-                })
-        }
-    }
-
-    fun uploadRecognizedPhoto(
-        file: File,
-        recognizedMrz: Any?, //todo : recognized mrz
-        onSuccess: () -> Unit,
-        onFail: (warningMessage: String, finishOnFail: Boolean) -> Unit
-    ) {
-        disposed {
-            compressFile(file)
-                .subscribeOn(Schedulers.io())
-                .flatMap { _repository.uploadAttachment(file) }
-                .observeOn(Schedulers.io())
-                .flatMap {
                     _repository.commit(
                         FlowAnswer(
-                            resultData?.first!!,
+                            responseId,
                             mutableListOf(
-                                Content(it, ContentTypes.PASSPORT_BACK_PHOTO),
+                                Content(it, type),
                                 Content(recognizedMrz ?: "", ContentTypes.RECOGNIZED_PASSPORT_DATA)
                             )
                         )
@@ -157,11 +111,12 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
-                    resultData = null
                     onSuccess.invoke()
                     it
                 }
                 .flatMap { dispatchValuesToLiveData(it) }
+                .doOnSubscribe { showLoading() }
+                .doOnTerminate { hideLoading() }
                 .defaultSubscribe(onError = {
                     onFail.invoke("", true)
                 })
@@ -170,27 +125,26 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
 
     private fun compressFile(file: File): Single<File?> {
         return Single.create<File?> {
-            //todo: compress
-//            val compressedFile = PictureUtils.compressImage(file, COMPRESSION_QUALITY)
-//            if (compressedFile != null) {
-//                it.onSuccess(compressedFile)
-//            } else {
-//                it.onError(NullPointerException())
-//            }
+            val compressedFile = PictureUtil.compressImage(file, COMPRESSION_QUALITY)
+            if (compressedFile != null) {
+                it.onSuccess(compressedFile)
+            } else {
+                it.onError(NullPointerException())
+            }
         }
     }
 
     private fun handleOnGetStateFailure(it: Throwable) {
-//        if (failGetStateCounts > 5) {
-//            failGetStateCounts = 0
-//            val message = (it)?.message
-//            val event = if (message.isNullOrBlank()) Event.NotificationResId(R.string.unexpected_error)
-//            else Event.Notification(message)
-//            triggerEvent(event)
-//        } else {
-//            failGetStateCounts++
-//            handleError(it)
-//        }
+        if (failGetStateCounts > 5) {
+            failGetStateCounts = 0
+            val message = (it)?.message
+            val event = if (message.isNullOrBlank()) Event.NotificationResId(R.string.process_flow_unexpected_error)
+            else Event.Notification(message)
+            triggerEvent(event)
+        } else {
+            failGetStateCounts++
+            handleError(it)
+        }
     }
 
     private fun handleError(ex: Throwable) {
@@ -203,8 +157,8 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
             val allowedAnswers = mutableListOf<Any>()
 
             _flowResponseParser.parseButtons(response.allowedAnswer)?.let { allowedAnswers.addAll(it) }
-//            _flowResponseParser.parseInputField(response.allowedAnswer)?.let { allowedAnswers.add(it) }
-//            _flowResponseParser.parseRetry(response.allowedAnswer)?.let { allowedAnswers.add(it) }
+            _flowResponseParser.parseInputField(response.allowedAnswer)?.let { allowedAnswers.add(it) }
+            _flowResponseParser.parseRetry(response.allowedAnswer)?.let { allowedAnswers.add(it) }
             _flowResponseParser.parseWebView(response.allowedAnswer)?.let { allowedAnswers.addAll(it) }
             _flowResponseParser.parseInputForms(response.allowedAnswer)?.let { allowedAnswers.addAll(it) }
 
@@ -230,11 +184,4 @@ class ProcessFlowVM(private val _repository: CreditProcessFlowRepository): ViewM
     }
 
 
-}
-
-fun <R> Single<R>.defaultSubscribe(
-    onSuccess: (R) -> Unit = {},
-    onError: (Throwable) -> Unit = {}
-): Disposable {
-    return this.subscribe(onSuccess, onError)
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="process_flow_unexpected_error">Непредвиденная ошибка</string>
+    <string name="process_flow_next">Далее</string>
+    <string name="process_flow_invalid_input">Неверно введенные данные</string>
+    <string name="process_flow_share_with">Поделиться с помощью</string>
+    <string name="process_flow_error_pdf_loading">Не удалось загрузить PDF файл</string>
+    <string name="process_flow_permission_denied">Для использования данного функционала необходимо соответствующее разрешение.\nПерейти в настройки приложения?</string>
+    <string name="process_flow_permission_request_title">Для использования данного функционала необходимо соответствующее разрешение.</string>
+    <string name="process_flow_no_available_free_space">На телефоне недостаточно свободного места для сохранения и обработки фото. Освободите немного места на телефоне, и повторите попытку</string>
+    <string name="process_flow_confirm">Подтвердить</string>
+    <string name="process_flow_repeat_after">Повторить через %s</string>
+    <string name="process_flow_resend">Отправить повторно</string>
+    <string name="process_flow_warning_exit">Вы уверены, что хотите прервать процесс?</string>
+    <string name="process_flow_no">Нет</string>
+    <string name="process_flow_yes">Да</string>
+    <string name="process_flow_clearly">Понятно</string>
+
+    <!--    Flow Photo confirmation-->
+    <string name="process_flow_photo_confirmation_retake">Нет, переснять</string>
+    <string name="process_flow_photo_confirmation_title">Данные отчетливо видны?</string>
+    <string name="process_flow_photo_confirmation_yes_visible">Да, видны</string>
+    <string name="process_flow_photo_recognizer_timeout_description">Убедитесь, что паспорт полностью в кадре.</string>
+    <!--    Flow Photo Capture-->
+    <string name="process_flow_photo_capture_passport_front_title">Фото с лицевой стороны\nпаспорта</string>
+    <string name="process_flow_photo_capture_passport_back_title">Фото с оборотной стороны\nпаспорта</string>
+    <string name="process_flow_photo_capture_passport_front_description">Поместите паспорт в рамку\nи нажмите кнопку "сфотографировать"</string>
+    <string name="process_flow_photo_capture_passport_back_description">Пожалуйста, поместите паспорт в рамку \nи подождите пока появится кнопка \nсфотографировать</string>
+    <!--    Flow Photo Instruction -->
+    <string name="process_flow_photo_instruction_passport_front">Сделайте фото лицевой стороны паспорта</string>
+    <string name="process_flow_photo_instruction_passport_back">Сделайте фото оборотной стороны паспорта</string>
+    <string name="process_flow_photo_instruction_selfie">Сделайте селфи-фото держа паспорт перед собой</string>
+
+    <string name="process_flow_exit_video_call">Вы уверены, что хотите завершить звонок?</string>
+</resources>

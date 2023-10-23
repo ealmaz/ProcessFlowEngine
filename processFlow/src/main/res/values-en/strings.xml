@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="process_flow_unexpected_error">Unexpected error</string>
+    <string name="process_flow_next">Next</string>
+    <string name="process_flow_invalid_input">Invalid data</string>
+    <string name="process_flow_share_with">Share by</string>
+    <string name="process_flow_error_pdf_loading">Failed to load the PDF file</string>
+    <string name="process_flow_permission_denied">To use this functionality, you need to provide the appropriate permission.\n Go to app settings?</string>
+    <string name="process_flow_permission_request_title">To use this functionality, you need to provide the appropriate permission.</string>
+    <string name="process_flow_no_available_free_space">There is not enough free space on the phone to save and process photos. Free up some space on your phone, and try again.</string>
+    <string name="process_flow_confirm">Confirm</string>
+    <string name="process_flow_repeat_after">Repeat in %s</string>
+    <string name="process_flow_resend">Resend</string>
+    <string name="process_flow_warning_exit">Are you sure you want to abort the process?</string>
+    <string name="process_flow_no">NO</string>
+    <string name="process_flow_yes">YES</string>
+    <string name="process_flow_clearly">OK</string>
+
+    <!--    Flow Photo confirmation-->
+    <string name="process_flow_photo_confirmation_retake">No, retake</string>
+    <string name="process_flow_photo_confirmation_title">Is the data clearly visible?</string>
+    <string name="process_flow_photo_confirmation_yes_visible">Yes, its visible</string>
+    <string name="process_flow_photo_recognizer_timeout_description">Make sure the passport is completely within the frame.</string>
+    <!--    Flow Photo Capture-->
+    <string name="process_flow_photo_capture_passport_front_title">Take a picture of the passport\nfront</string>
+    <string name="process_flow_photo_capture_passport_back_title">Passport back photo</string>
+    <string name="process_flow_photo_capture_passport_front_description">Put the passport into the frame\nand press the Photo button</string>
+    <string name="process_flow_photo_capture_passport_back_description">Please, place your passport inside the frame \nand wait until the Photo button appears</string>
+    <!--    Flow Photo Instruction -->
+    <string name="process_flow_photo_instruction_passport_front">Take a photo of the front side of the passport</string>
+    <string name="process_flow_photo_instruction_passport_back">Take a photo of the back of the passport</string>
+    <string name="process_flow_photo_instruction_selfie">Take a selfie with your passport in front of you</string>
+
+    <string name="process_flow_exit_video_call">Are you sure you want to end the call?</string>
+</resources>

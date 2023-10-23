@@ -8,6 +8,7 @@ import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.component.FlowResponseType
 import kg.devcats.processflow.model.component.FlowRetryInfo
 import kg.devcats.processflow.model.component.FlowWebView
+import kg.devcats.processflow.model.input_form.InputForm
 import kg.devcats.processflow.model.request.FlowAllowedAnswer
 
 open class ProcessFlowResponseParser {

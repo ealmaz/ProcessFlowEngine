@@ -11,7 +11,7 @@ data class FlowResponse(
     @SerializedName("process_status")
     val flowStatus: FlowStatus? = null,
     @SerializedName("screen_code")
-    val screenKey: String,
+    val screenKey: String? = null,
     @SerializedName("screen_state")
     val screenState: ScreenState? = null,
     @SerializedName("messages")
