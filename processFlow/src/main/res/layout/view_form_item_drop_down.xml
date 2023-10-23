@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/padding_16dp"
+    android:paddingEnd="@dimen/padding_8dp"
+    android:paddingVertical="@dimen/padding_8dp"
+    android:background="?ChiliInputViewBackgroundColor"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Chili.H5.Primary.Bold"
+        android:layout_gravity="center_vertical"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="г. Бишкек"/>
+
+    <ImageView
+        android:layout_width="@dimen/view_32dp"
+        android:layout_height="@dimen/view_32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/padding_8dp"
+        android:src="@drawable/chili_ic_chevron"/>
+
+</LinearLayout>

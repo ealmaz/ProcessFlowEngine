@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="InputFormInputFieldView">
+        <attr name="android:text"/>
+        <attr name="android:hint"/>
+        <attr name="android:inputType"/>
+        <attr name="mask"/>
+        <attr name="android:enabled"/>
+    </declare-styleable>
+
+    <declare-styleable name="InputFormGroupButtons">
+        <attr name="choosingType" format="enum">
+            <enum name="MULTIPLE" value="0"/>
+            <enum name="SINGLE" value="1"/>
+        </attr>
+
+        <attr name="btnType" format="enum">
+            <enum name="CHECK_BOX" value="0"/>
+            <enum name="TOGGLE" value="1"/>
+            <enum name="RADIO_BUTTON" value="2"/>
+        </attr>
+    </declare-styleable>
+
+</resources>

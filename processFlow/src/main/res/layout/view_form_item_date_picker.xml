@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?ChiliInputViewBackgroundColor"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/padding_8dp"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingEnd="@dimen/padding_8dp">
+
+        <TextView
+            android:id="@+id/tv_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/Chili.H5.Primary.Bold"
+            tools:text="16.12.2022" />
+
+        <ImageView
+            android:layout_width="@dimen/view_32dp"
+            android:layout_height="@dimen/view_32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/padding_8dp"
+            android:src="@drawable/chili_ic_chevron" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvHelper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Chili.H9.Primary"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingTop="@dimen/padding_8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Helper text"/>
+
+</LinearLayout>
