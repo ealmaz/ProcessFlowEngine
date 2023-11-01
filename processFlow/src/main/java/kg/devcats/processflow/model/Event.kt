@@ -3,7 +3,7 @@ package kg.devcats.processflow.model
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 
 
-sealed class Event {
+open class Event {
 
     class Notification(val message: String) : Event()
     class NotificationResId(val messageResId: Int) : Event()

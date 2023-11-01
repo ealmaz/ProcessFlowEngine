@@ -6,7 +6,7 @@ import kg.devcats.processflow.model.input_form.FormResponse
 import kg.nurtelecom.text_recognizer.RecognizedMrz
 import java.io.File
 
-sealed class ProcessFlowCommit {
+open class ProcessFlowCommit {
 
     object Initial : ProcessFlowCommit()
 
