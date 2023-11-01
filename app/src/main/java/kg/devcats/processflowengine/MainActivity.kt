@@ -16,10 +16,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
-        vb.btnStart.setOnClickListener {
-            val i = Intent(this, TestProcessFlow::class.java)
-            startActivity(i)
-        }
+//        vb.btnStart.setOnClickListener {
+//            val i = Intent(this, TestProcessFlow::class.java)
+//            startActivity(i)
+//        }
     }
 }
 
