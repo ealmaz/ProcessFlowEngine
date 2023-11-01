@@ -198,13 +198,17 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     open fun resolveNewCommit(commit: ProcessFlowCommit) {
         when (commit) {
-            is ProcessFlowCommit.Initial -> vm.getFlowStatus(processType)
+            is ProcessFlowCommit.Initial -> handleInitCommit()
             is ProcessFlowCommit.OnButtonClick -> resolveButtonClickCommit(commit.buttonsInfo, commit.additionalContent)
             is ProcessFlowCommit.OnFlowPhotoCaptured -> uploadPhotos(commit)
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)
             is ProcessFlowCommit.FetchAdditionalOptionsForDropDown -> vm.fetchOptions(commit.formId, commit.parentSelectedOptionId)
             else -> {}
         }
+    }
+
+    open fun handleInitCommit() {
+        vm.getFlowStatus(processType)
     }
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {

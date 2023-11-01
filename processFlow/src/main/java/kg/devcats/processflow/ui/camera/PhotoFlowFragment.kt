@@ -152,7 +152,7 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
     private fun getCameraSettings(): CameraSettings {
         return when (cameraType) {
             CameraType.SELFIE -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
-            else -> CameraSettings(headerText = getString(R.string.process_flow_photo_capture_passport_front_description), description = getString(R.string.process_flow_photo_capture_passport_front_title))
+            else -> CameraSettings(description = getString(R.string.process_flow_photo_capture_passport_front_description), headerText = getString(R.string.process_flow_photo_capture_passport_front_title))
         }
     }
 

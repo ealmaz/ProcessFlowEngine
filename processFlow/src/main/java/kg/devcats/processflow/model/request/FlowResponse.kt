@@ -18,4 +18,6 @@ data class FlowResponse(
     val messages: List<FlowMessage>? = null,
     @SerializedName("allowed_answers")
     val allowedAnswer: List<FlowAllowedAnswer>? = null,
+    @SerializedName("definition_key")
+    val processType: String? = null,
 )
