@@ -50,11 +50,11 @@ import java.io.File
 
 abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), ProcessFlowHolder {
 
-    private var retryDelayMills = 1000L
-    private var retryRequestCounter = 0
-    private var isNeedToExecuteRetry = false
+    protected var retryDelayMills = 1000L
+    protected var retryRequestCounter = 0
+    protected var isNeedToExecuteRetry = false
 
-    private val loader: AlertDialog by lazy {
+    protected val loader: AlertDialog by lazy {
         val alert = AlertDialog.Builder(this)
             .setView(LayoutInflater.from(this).inflate(R.layout.process_flow_progress_dialog, null))
             .setCancelable(false)
@@ -67,7 +67,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     abstract val vm: VM
     abstract val processType: String
 
-    private val currentScreen: ProcessFlowScreen?
+    protected val currentScreen: ProcessFlowScreen?
         get() = (supportFragmentManager.findFragmentById(R.id.fl_container)) as? ProcessFlowScreen
 
 
@@ -90,11 +90,11 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         else showExitDialog()
     }
 
-    private fun setupViews() {
+    open fun setupViews() {
         setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
     }
 
-    private fun observeLiveData() = with (vm) {
+    open fun observeLiveData() = with (vm) {
         event.observe(this@ProcessFlowActivity) { resolveNewEvent(it) }
         processFlowScreenDataLive.observe(this@ProcessFlowActivity) { resolveNewScreenState(it); resolveNewScreenKey(it) }
         loaderState.observe(this@ProcessFlowActivity) { if (it) showLoading() else hideLoading() }
@@ -129,18 +129,18 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
 
-    private fun showLoading() {
+    protected fun showLoading() {
         if (currentScreen?.handleShowLoading(true) != true)
             loader.show()
     }
 
-    private fun hideLoading() {
+    protected fun hideLoading() {
         if (isNeedToExecuteRetry) return
         if (currentScreen?.handleShowLoading(false) != true)
             loader.dismiss()
     }
 
-    private fun showExitDialog() {
+    protected fun showExitDialog() {
         showDialog {
             setMessage(R.string.process_flow_warning_exit)
             positiveButton(android.R.string.ok) { cancelChatAndClose() }
@@ -150,7 +150,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     }
 
-    private fun showErrorDialog(message: String) {
+    protected fun showErrorDialog(message: String) {
         showDialog {
             setCancelable(false)
             setMessage(message)
@@ -207,7 +207,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         }
     }
 
-    private fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
+    protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
         val file = File(commit.filePath)
         vm.upload(commit.responseId, file, commit.fileType, commit.mrz, {}, {_, _ ->
             showErrorDialog(getString(R.string.process_flow_unexpected_error))
@@ -276,7 +276,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         }
     }
 
-    private fun fetchScreenStateAfter(millis: Long, showLoader: Boolean) {
+    protected fun fetchScreenStateAfter(millis: Long, showLoader: Boolean) {
         if (!showLoader) hideLoading()
         vb.flContainer.postDelayed({
             if (isNeedToExecuteRetry) vm.getState(showLoader)

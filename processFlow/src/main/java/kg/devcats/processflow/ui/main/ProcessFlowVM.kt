@@ -23,14 +23,14 @@ import java.io.File
 
 abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository: T) : BaseVM() {
 
-    private var failGetStateCounts = 0
+    protected var failGetStateCounts = 0
 
     val loaderState = MutableLiveData(false)
 
-    private fun showLoading(){ loaderState.postValue(true) }
-    private fun hideLoading(){ loaderState.postValue(false) }
+    protected fun showLoading(){ loaderState.postValue(true) }
+    protected fun hideLoading(){ loaderState.postValue(false) }
 
-    private val _flowResponseParser: ProcessFlowResponseParser by lazy {
+    protected val _flowResponseParser: ProcessFlowResponseParser by lazy {
         ProcessFlowResponseParser()
     }
 
@@ -122,7 +122,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         }
     }
 
-    private fun compressFile(file: File): Single<File?> {
+    protected fun compressFile(file: File): Single<File?> {
         return Single.create<File?> {
             val compressedFile = PictureUtil.compressImage(file, COMPRESSION_QUALITY)
             if (compressedFile != null) {
@@ -190,6 +190,4 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     companion object {
         const val COMPRESSION_QUALITY = 80
     }
-
-
 }
