@@ -526,12 +526,11 @@ object ProcessMocker {
           {
              "responseType":"BUTTON",
              "responseItem":{
-                "buttonId":"CREATE_CREDIT_APPLICATION",
+                "buttonId":"CREATE_qweqwew_APPLICATION",
                 "text":"Создать заявку",
                 "style":"ACCENT",
                 "properties":{
-                    "creditAmount":1000,
-                    "pdlPassportId":34
+                    
                 }
              }
           }
@@ -541,7 +540,7 @@ object ProcessMocker {
         )
 
         put(
-            "CREATE_CREDIT_APPLICATION", """
+            "CREATE_qweqwew_APPLICATION", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",

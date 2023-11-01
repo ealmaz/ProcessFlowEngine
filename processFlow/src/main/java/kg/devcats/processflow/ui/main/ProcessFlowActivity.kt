@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -41,7 +40,7 @@ import kg.devcats.processflow.model.component.WebViewFileTypes
 import kg.devcats.processflow.ui.camera.CameraType
 import kg.devcats.processflow.ui.camera.PhotoFlowFragment
 import kg.devcats.processflow.ui.input_form.InputFormFragment
-import kg.devcats.processflow.ui.sms.CreditFlowSmsConfirmationFragment
+import kg.devcats.processflow.ui.sms.ProcessFlowInputFieldFragment
 import kg.devcats.processflow.ui.status.ProcessStatusInfoFragment
 import kg.devcats.processflow.ui.status.VideoPromoStatusFragment
 import kg.devcats.processflow.ui.web_view.ProcessFlowPdfWebViewFragment
@@ -65,7 +64,7 @@ abstract class ProcessFlowActivity : AppCompatActivity(), ProcessFlowHolder {
     }
 
     protected lateinit var vb: ProcessFlowActivityProcessFlowBinding
-    private val vm: ProcessFlowVM by viewModels()
+    abstract val vm: ProcessFlowVM
 
     private val currentScreen: ProcessFlowScreen?
         get() = (supportFragmentManager.findFragmentById(R.id.fl_container)) as? ProcessFlowScreen
@@ -307,7 +306,7 @@ abstract class ProcessFlowActivity : AppCompatActivity(), ProcessFlowHolder {
     }
 
     open fun openInputOtp(data: ProcessFlowScreenData) {
-        navigateTo(CreditFlowSmsConfirmationFragment::class.java)
+        navigateTo(ProcessFlowInputFieldFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
     }
 }

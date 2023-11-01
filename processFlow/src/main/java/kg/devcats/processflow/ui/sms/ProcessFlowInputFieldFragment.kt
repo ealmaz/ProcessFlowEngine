@@ -11,7 +11,7 @@ import com.design2.chili2.view.input.MaskedInputView
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
-import kg.devcats.processflow.databinding.ProcessFlowFragmentCreditFlowSmsConfiramtionBinding
+import kg.devcats.processflow.databinding.ProcessFlowFragmentInputFieldBinding
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.getThemeColor
 import kg.devcats.processflow.extension.hideKeyboard
@@ -25,8 +25,8 @@ import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.component.FlowRetryInfo
 import kg.devcats.processflow.util.SmsBroadcastReceiver
 
-class CreditFlowSmsConfirmationFragment :
-    BaseProcessScreenFragment<ProcessFlowFragmentCreditFlowSmsConfiramtionBinding>(), SmsBroadcastReceiver.Listener {
+class ProcessFlowInputFieldFragment :
+    BaseProcessScreenFragment<ProcessFlowFragmentInputFieldBinding>(), SmsBroadcastReceiver.Listener {
 
     private var countDownTimer: CountDownTimer? = null
 
@@ -43,7 +43,7 @@ class CreditFlowSmsConfirmationFragment :
     private var resultData: Pair<String, MutableList<Content>>? = null
 
     override fun inflateViewBinging() =
-        ProcessFlowFragmentCreditFlowSmsConfiramtionBinding.inflate(layoutInflater)
+        ProcessFlowFragmentInputFieldBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

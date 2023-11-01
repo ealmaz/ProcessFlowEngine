@@ -16,7 +16,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-open class ProcessFlowRepository constructor(
+abstract class ProcessFlowRepository constructor(
     private val _api: ProcessFlowNetworkApi,
     private val _prefs: ProcessFlowPreferences,
 ) {

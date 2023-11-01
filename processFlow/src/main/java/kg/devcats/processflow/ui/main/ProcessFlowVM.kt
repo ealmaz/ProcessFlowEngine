@@ -20,9 +20,7 @@ import kg.devcats.processflow.util.PictureUtil
 import kg.nurtelecom.text_recognizer.RecognizedMrz
 import java.io.File
 
-class ProcessFlowVM : BaseVM() {
-
-    private val _repository: ProcessFlowRepository by lazy { ProcessFlowConfigurator.getProcessFlowRepository() }
+abstract class ProcessFlowVM(protected val _repository: ProcessFlowRepository) : BaseVM() {
 
     private var failGetStateCounts = 0
 
