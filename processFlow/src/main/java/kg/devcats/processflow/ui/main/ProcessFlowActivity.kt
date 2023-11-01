@@ -48,7 +48,7 @@ import kg.devcats.processflow.ui.web_view.ProcessFlowWebViewFragment
 import kg.devcats.processflow.ui.web_view.VideoCallWebViewFragment
 import java.io.File
 
-abstract class ProcessFlowActivity : AppCompatActivity(), ProcessFlowHolder {
+abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), ProcessFlowHolder {
 
     private var retryDelayMills = 1000L
     private var retryRequestCounter = 0
@@ -64,7 +64,8 @@ abstract class ProcessFlowActivity : AppCompatActivity(), ProcessFlowHolder {
     }
 
     protected lateinit var vb: ProcessFlowActivityProcessFlowBinding
-    abstract val vm: ProcessFlowVM
+    abstract val vm: VM
+    abstract val processType: String
 
     private val currentScreen: ProcessFlowScreen?
         get() = (supportFragmentManager.findFragmentById(R.id.fl_container)) as? ProcessFlowScreen
@@ -197,7 +198,7 @@ abstract class ProcessFlowActivity : AppCompatActivity(), ProcessFlowHolder {
 
     open fun resolveNewCommit(commit: ProcessFlowCommit) {
         when (commit) {
-            is ProcessFlowCommit.Initial -> vm.getFlowStatus()
+            is ProcessFlowCommit.Initial -> vm.getFlowStatus(processType)
             is ProcessFlowCommit.OnButtonClick -> resolveButtonClickCommit(commit.buttonsInfo, commit.additionalContent)
             is ProcessFlowCommit.OnFlowPhotoCaptured -> uploadPhotos(commit)
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)

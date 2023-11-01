@@ -21,9 +21,9 @@ abstract class ProcessFlowRepository constructor(
     private val _prefs: ProcessFlowPreferences,
 ) {
 
-    fun getFlowStatus(): Single<String?> =
+    fun getFlowStatus(processType: String): Single<String?> =
         _api
-            .getFlowStatus()
+            .getFlowStatus(processType)
             .map {
                 _prefs.processId = it.processId
                 _prefs.flowStatus = it.flowStatus?.toString()

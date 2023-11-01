@@ -21,7 +21,7 @@ import kg.devcats.processflow.util.PictureUtil
 import kg.nurtelecom.text_recognizer.RecognizedMrz
 import java.io.File
 
-abstract class ProcessFlowVM(protected val _repository: ProcessFlowRepository) : BaseVM() {
+abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository: T) : BaseVM() {
 
     private var failGetStateCounts = 0
 
@@ -45,9 +45,9 @@ abstract class ProcessFlowVM(protected val _repository: ProcessFlowRepository) :
             .defaultSubscribe(onError = ::handleError)
     }
 
-    fun getFlowStatus() = disposed {
+    fun getFlowStatus(processType: String) = disposed {
         _repository
-            .getFlowStatus()
+            .getFlowStatus(processType)
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
             .subscribe({

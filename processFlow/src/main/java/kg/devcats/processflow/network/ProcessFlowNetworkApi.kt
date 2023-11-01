@@ -10,7 +10,7 @@ import okhttp3.MultipartBody
 
 interface ProcessFlowNetworkApi {
 
-    fun getFlowStatus(): Single<FlowStatusResponse>
+    fun getFlowStatus(processType: String): Single<FlowStatusResponse>
 
     fun startFlow(request: Any): Single<FlowResponse>
 
