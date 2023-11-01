@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentResultListener
-import androidx.fragment.app.viewModels
 import com.design2.chili2.view.input.MaskedInputView
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import com.design2.chili2.view.modals.picker.DatePickerDialog
@@ -26,7 +25,6 @@ import kg.devcats.processflow.item_creator.GroupButtonsCreator
 import kg.devcats.processflow.item_creator.InputFieldCreator
 import kg.devcats.processflow.item_creator.LabelFormItemCreator
 import kg.devcats.processflow.model.ContentTypes
-import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
@@ -43,9 +41,9 @@ import java.util.Calendar
 
 class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputFormBinding>(), FragmentResultListener {
 
-    private var currentFormId: String = ""
+    private val optionsRelations = HashMap<String, MutableList<String>>()
 
-    private val vm: InputFormVM by viewModels()
+    private var currentFormId: String = ""
 
     private val buttonTextRes = R.string.process_flow_next
 
@@ -62,7 +60,6 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.setFragmentResultListener(DatePickerDialog.PICKER_DIALOG_RESULT, this, this)
-        subscribeToLiveData()
     }
 
 
@@ -77,19 +74,9 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         }
     }
 
-    private fun subscribeToLiveData() {
-        vm.event.observe(viewLifecycleOwner) {event ->
-            when (event) {
-                is Event.AdditionalOptionsFetched -> {
-                    setOptionsForDropDownField(event.formId, event.options)
-                    vb.progressBar.isVisible = false
-                }
-                is Event.AdditionalOptionsFetching -> {
-                    vb.progressBar.isVisible = true
-                }
-                else -> {}
-            }
-        }
+    fun setAdditionalFetchedOptions(formId: String, options: List<Option>) {
+        setOptionsForDropDownField(formId, options)
+        vb.progressBar.isVisible = false
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
@@ -217,11 +204,11 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     private fun onDropDownListItemSelectionChanged(dropDownId: String, selectedItemId: List<String>) {
-        vm.optionsRelations[dropDownId]?.forEach {
+        optionsRelations[dropDownId]?.forEach {
             if (selectedItemId.isEmpty()) {
                 setOptionsForDropDownField(it, listOf())
             } else {
-                vm.fetchOptions(it, selectedItemId.first())
+                fetchOptions(it, selectedItemId.first())
             }
         }
 
@@ -229,15 +216,19 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private fun needToFetchOptionsFor(formId: String, parentId: String?) {
         if (parentId == null) {
-            vm.fetchOptions(formId)
+            fetchOptions(formId)
         } else {
-            if (vm.optionsRelations[parentId] == null) {
-                vm.optionsRelations[parentId] = mutableListOf(formId)
+            if (optionsRelations[parentId] == null) {
+                optionsRelations[parentId] = mutableListOf(formId)
             } else {
-                vm.optionsRelations[parentId]?.add(formId)
+                optionsRelations[parentId]?.add(formId)
             }
         }
+    }
 
+    private fun fetchOptions(formId: String, parentSelectedOptionId: String = "") {
+        vb.progressBar.isVisible = true
+        getProcessFlowHolder().commit(ProcessFlowCommit.FetchAdditionalOptionsForDropDown(formId, parentSelectedOptionId))
     }
 
     private fun setOptionsForDropDownField(fieldId: String, newOptions: List<Option>) {

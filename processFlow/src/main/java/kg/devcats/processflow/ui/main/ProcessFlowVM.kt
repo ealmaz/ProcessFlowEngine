@@ -1,6 +1,7 @@
 package kg.devcats.processflow.ui.main
 
 import androidx.lifecycle.MutableLiveData
+import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -132,7 +133,7 @@ abstract class ProcessFlowVM(protected val _repository: ProcessFlowRepository) :
         }
     }
 
-    private fun handleOnGetStateFailure(it: Throwable) {
+    protected open fun handleOnGetStateFailure(it: Throwable) {
         if (failGetStateCounts > 5) {
             failGetStateCounts = 0
             val message = (it)?.message
@@ -145,11 +146,11 @@ abstract class ProcessFlowVM(protected val _repository: ProcessFlowRepository) :
         }
     }
 
-    private fun handleError(ex: Throwable) {
+    protected open fun handleError(ex: Throwable) {
         getState()
     }
 
-    private fun dispatchValuesToLiveData(response: FlowResponse): Single<FlowResponse> {
+    protected open fun dispatchValuesToLiveData(response: FlowResponse): Single<FlowResponse> {
         return Single.fromCallable {
 
             val allowedAnswers = mutableListOf<Any>()
@@ -171,6 +172,15 @@ abstract class ProcessFlowVM(protected val _repository: ProcessFlowRepository) :
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun fetchOptions(formId: String, parentSelectedOptionId: String = "") {
+        disposable.add(_repository.fetchOptions(formId, parentSelectedOptionId)
+            .doOnSubscribe { triggerEvent(Event.AdditionalOptionsFetching) }
+            .subscribe({
+                val options = it.map { Option(it.id, it.label ?: "", it.isSelected ?: false) }
+                triggerEvent(Event.AdditionalOptionsFetched(formId, options))
+            }, {}))
     }
 
     fun isProcessTerminated() : Boolean {

@@ -188,22 +188,20 @@ abstract class ProcessFlowActivity : AppCompatActivity(), ProcessFlowHolder {
                 if (event.isExist) vm.getState(true)
                 else vm.startProcessFlow(getProcessFlowStartParams())
             }
+            is Event.AdditionalOptionsFetched -> {
+                (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
+            }
             else -> {}
         }
     }
 
     open fun resolveNewCommit(commit: ProcessFlowCommit) {
         when (commit) {
-            //REQUIRE:
             is ProcessFlowCommit.Initial -> vm.getFlowStatus()
-
-            //RESULT:
-            is ProcessFlowCommit.OnButtonClick -> resolveButtonClickCommit(
-                commit.buttonsInfo,
-                commit.additionalContent
-            )
+            is ProcessFlowCommit.OnButtonClick -> resolveButtonClickCommit(commit.buttonsInfo, commit.additionalContent)
             is ProcessFlowCommit.OnFlowPhotoCaptured -> uploadPhotos(commit)
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)
+            is ProcessFlowCommit.FetchAdditionalOptionsForDropDown -> vm.fetchOptions(commit.formId, commit.parentSelectedOptionId)
             else -> {}
         }
     }

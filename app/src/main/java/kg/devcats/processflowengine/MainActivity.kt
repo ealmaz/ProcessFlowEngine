@@ -16,18 +16,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
-        initConfigurator()
         vb.btnStart.setOnClickListener {
             val i = Intent(this, TestProcessFlow::class.java)
             startActivity(i)
         }
-    }
-
-    private fun initConfigurator() {
-        ProcessFlowConfigurator.setProcessFlowRepositoryImpl(ProcessFlowRepository(
-            ProcessFlowApiImpl,
-            ProcessFlowPreferences(this)
-        ))
     }
 }
 
