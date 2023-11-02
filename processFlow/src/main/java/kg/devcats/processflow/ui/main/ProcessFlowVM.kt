@@ -98,13 +98,13 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
             _repository.uploadAttachment(file)
                 .observeOn(Schedulers.io())
                 .flatMap {
+                    val additionalData = mutableListOf<Content>()
+                    additionalData.add(Content(it, type))
+                    if (type == ContentTypes.PASSPORT_BACK_PHOTO) additionalData.add(Content(recognizedMrz ?: getDefaultMrz(), ContentTypes.RECOGNIZED_PASSPORT_DATA))
                     _repository.commit(
                         FlowAnswer(
                             responseId,
-                            mutableListOf(
-                                Content(it, type),
-                                Content(recognizedMrz ?: "", ContentTypes.RECOGNIZED_PASSPORT_DATA)
-                            )
+                            additionalData
                         )
                     )
                 }
@@ -117,7 +117,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
                 .doOnSubscribe { showLoading() }
                 .doOnTerminate { hideLoading() }
                 .defaultSubscribe(onError = {
-                    onFail.invoke("", true)
+                    handleError(it)
                 })
         }
     }
@@ -185,6 +185,10 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     fun isProcessTerminated() : Boolean {
         return _repository.isProcessTerminated()
+    }
+
+    private fun getDefaultMrz(): RecognizedMrz {
+        return RecognizedMrz(null, null,null,null,null,null,null,null,null,null,null,null)
     }
 
     companion object {
