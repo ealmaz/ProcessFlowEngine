@@ -3,8 +3,6 @@ package kg.devcats.processflow.repository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kg.devcats.processflow.ProcessFlowPreferences
-import kg.devcats.processflow.model.common.FlowStatusHelper
 import kg.devcats.processflow.model.input_form.Option
 import kg.devcats.processflow.model.request.FlowAnswer
 import kg.devcats.processflow.model.request.FlowCancelRequest
@@ -18,65 +16,44 @@ import java.io.File
 
 abstract class ProcessFlowRepository (
     private val _api: ProcessFlowNetworkApi,
-    private val _prefs: ProcessFlowPreferences,
 ) {
 
     fun findActiveProcess(): Single<FlowResponse?> =
         _api
             .findActiveProcess()
-            .map { flow ->
-                flow.processId?.let { _prefs.processId = it }
-                _prefs.flowStatus = flow.flowStatus?.toString()
-                flow
-            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
     fun startProcessFlow(request: Map<String, String>): Single<FlowResponse> =
         _api
             .startFlow(request)
-            .map { flow ->
-                flow.processId?.let { _prefs.processId = it }
-                _prefs.flowStatus = flow.flowStatus?.toString()
-                flow
-            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getProcessFlowState(): Single<FlowResponse> =
+    fun getProcessFlowState(processId: String): Single<FlowResponse> =
         _api
-            .getState(_prefs.processId)
-            .map { flow ->
-                flow.processId?.let { _prefs.processId = it }
-                _prefs.flowStatus = flow.flowStatus?.toString()
-                flow
-            }
+            .getState(processId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
 
-    fun commit(answer: FlowAnswer): Single<FlowResponse> =
+    fun commit(processId: String, answer: FlowAnswer): Single<FlowResponse> =
         _api
-            .commit(FlowCommitRequest(_prefs.processId, answer))
-            .map { flow ->
-                flow.processId?.let { _prefs.processId = it }
-                _prefs.flowStatus = flow.flowStatus?.toString()
-                flow
-            }
+            .commit(FlowCommitRequest(processId, answer))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun cancelProcessFlow(): Single<Boolean> {
+    fun cancelProcessFlow(processId: String): Single<Boolean> {
         return _api
-            .cancelFlow(FlowCancelRequest(_prefs.processId ?: ""))
+            .cancelFlow(FlowCancelRequest(processId))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun uploadAttachment(file: File): Single<String> {
+    fun uploadAttachment(processId: String, file: File): Single<String> {
         val requestBody = file.asRequestBody(MultipartBody.FORM)
         val body = MultipartBody.Part.createFormData("file", file.absolutePath, requestBody)
-        val applicationId = MultipartBody.Part.createFormData("process_id", _prefs.processId ?: "")
+        val applicationId = MultipartBody.Part.createFormData("process_id", processId)
         return _api.uploadAttachment(applicationId, body)
             .flatMap { deleteFile(file, it) }
             .subscribeOn(Schedulers.io())
@@ -95,6 +72,4 @@ abstract class ProcessFlowRepository (
             it.onSuccess(resultString)
         }
     }
-
-    fun isProcessTerminated(): Boolean = FlowStatusHelper.isProcessTerminated(_prefs.flowStatus)
 }

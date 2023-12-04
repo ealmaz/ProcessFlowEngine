@@ -1,17 +1,11 @@
 package kg.devcats.processflowengine
 
-import android.app.Application
 import android.content.Context
-import android.widget.Toast
-import kg.devcats.processflow.ProcessFlowPreferences
-import kg.devcats.processflow.extension.showDialog
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.repository.ProcessFlowRepository
 import kg.devcats.processflow.ui.main.ProcessFlowActivity
 import kg.devcats.processflow.ui.main.ProcessFlowVM
-import kotlinx.coroutines.GlobalScope
-import java.util.Objects
 
 class TestProcessFlow : ProcessFlowActivity<TestVM>()  {
 
@@ -37,7 +31,7 @@ sealed class MyEvent : Event() {
     object MySubEvent : MyEvent()
 }
 
-class TestRepo(context: Context) : ProcessFlowRepository(ProcessFlowApiImpl, ProcessFlowPreferences(context)) {
+class TestRepo(context: Context) : ProcessFlowRepository(ProcessFlowApiImpl) {
 
 }
 

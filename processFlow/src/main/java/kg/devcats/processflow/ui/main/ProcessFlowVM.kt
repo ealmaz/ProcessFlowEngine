@@ -13,6 +13,7 @@ import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
+import kg.devcats.processflow.model.common.FlowStatus
 import kg.devcats.processflow.model.request.FlowAnswer
 import kg.devcats.processflow.model.request.FlowResponse
 import kg.devcats.processflow.network.parser.ProcessFlowResponseParser
@@ -27,6 +28,9 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     val loaderState = MutableLiveData(false)
 
+    protected var processFlowId: String? = null
+    protected var processFlowStatus: FlowStatus? = null
+
     protected fun showLoading(){ loaderState.postValue(true) }
     protected fun hideLoading(){ loaderState.postValue(false) }
 
@@ -36,11 +40,20 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     val processFlowScreenDataLive = MutableLiveData<ProcessFlowScreenData>()
 
+    fun requireProcessFlowId(): String = processFlowId ?: throw Exception("Process flow id is null")
+
+    fun updateProcessInfo(processFlow: FlowResponse): FlowResponse {
+        processFlowId = processFlow.processId
+        processFlowStatus = processFlow.flowStatus
+        return processFlow
+    }
+
     fun restoreActiveFlow(processType: String) = disposed {
         _repository
             .findActiveProcess()
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
+            .map { updateProcessInfo(it) }
             .map {
                 if (it.processType == processType) it
                 else throw Exception("Process flow not exist")
@@ -54,9 +67,10 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     fun commit(responseId: String, additionalContents: List<Content>? = null) = disposed {
         _repository
-            .commit(FlowAnswer(responseId, additionalContents))
+            .commit(requireProcessFlowId(), FlowAnswer(responseId, additionalContents))
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
+            .map { updateProcessInfo(it) }
             .flatMap { dispatchValuesToLiveData(it) }
             .defaultSubscribe(onError = ::handleError)
     }
@@ -66,15 +80,17 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
             .startProcessFlow(startFlowRequest)
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
+            .map { updateProcessInfo(it) }
             .flatMap { dispatchValuesToLiveData(it) }
             .defaultSubscribe(onError = ::handleError)
     }
 
     fun getState(showLoader: Boolean = true) = disposed {
         _repository
-            .getProcessFlowState()
+            .getProcessFlowState(requireProcessFlowId())
             .doOnSubscribe { if (showLoader) showLoading() }
             .doOnTerminate { if (showLoader) hideLoading() }
+            .map { updateProcessInfo(it) }
             .flatMap { dispatchValuesToLiveData(it) }
             .defaultSubscribe(
                 onSuccess = { failGetStateCounts = 0 },
@@ -85,7 +101,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     fun cancelProcessFlow() {
         _repository
-            .cancelProcessFlow()
+            .cancelProcessFlow(requireProcessFlowId())
             .defaultSubscribe()
     }
 
@@ -99,13 +115,14 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         onFail: (warningMessage: String, finishOnFail: Boolean) -> Unit
     ) {
         disposed {
-            _repository.uploadAttachment(file)
+            _repository.uploadAttachment(requireProcessFlowId(), file)
                 .observeOn(Schedulers.io())
                 .flatMap {
                     val additionalData = mutableListOf<Content>()
                     additionalData.add(Content(it, type))
                     if (type == ContentTypes.PASSPORT_BACK_PHOTO) additionalData.add(Content(recognizedMrz ?: getDefaultMrz(), ContentTypes.RECOGNIZED_PASSPORT_DATA))
                     _repository.commit(
+                        requireProcessFlowId(),
                         FlowAnswer(
                             responseId,
                             additionalData
@@ -117,6 +134,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
                     onSuccess.invoke()
                     it
                 }
+                .map { updateProcessInfo(it) }
                 .flatMap { dispatchValuesToLiveData(it) }
                 .doOnSubscribe { showLoading() }
                 .doOnTerminate { hideLoading() }
@@ -188,7 +206,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     }
 
     fun isProcessTerminated() : Boolean {
-        return _repository.isProcessTerminated()
+        return processFlowStatus in listOf(FlowStatus.TERMINATED, FlowStatus.COMPLETED)
     }
 
     private fun getDefaultMrz(): RecognizedMrz {
