@@ -5,7 +5,6 @@ import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kg.devcats.processflow.ProcessFlowConfigurator
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseVM
 import kg.devcats.processflow.extension.defaultSubscribe
@@ -198,7 +197,6 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     fun fetchOptions(formId: String, parentSelectedOptionId: String = "") {
         disposable.add(_repository.fetchOptions(formId, parentSelectedOptionId)
-            .doOnSubscribe { triggerEvent(Event.AdditionalOptionsFetching) }
             .subscribe({
                 val options = it.map { Option(it.id, it.label ?: "", it.isSelected ?: false) }
                 triggerEvent(Event.AdditionalOptionsFetched(formId, options))

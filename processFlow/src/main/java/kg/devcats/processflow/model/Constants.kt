@@ -1,14 +1,5 @@
 package kg.devcats.processflow.model
 
-object ButtonIds {
-    const val EXIT_NAVIGATE_TO_WALLET_MAIN = "EXIT_NAVIGATE_TO_WALLET_MAIN"
-    const val RETURN_TO_QUEUE_LATER = "RETURN_TO_QUEUE_LATER"
-    const val SELFIE_PHOTO = "SELFIE_PHOTO"
-    const val PASSPORT_FRONT_PHOTO = "PASSPORT_FRONT_PHOTO"
-    const val PASSPORT_BACK_PHOTO = "PASSPORT_BACK_PHOTO"
-    const val VIDEO_IDENT_BUTTON = "VIDEO_IDENT_BUTTON"
-}
-
 object WebViewIds {
     const val WEB_VIEW_VIDEO_IDENT = "VIDEO_IDENT"
 }
