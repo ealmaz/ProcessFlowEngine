@@ -358,7 +358,9 @@ object ProcessMocker {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
        "screen_code":"INPUT_FORM",
-       "screen_state":{},
+       "screen_state":{
+            "app_bar_text":"Иднетификация"
+       },
        "messages":[],
        "allowed_answers":[
           {
@@ -426,6 +428,34 @@ object ProcessMocker {
                                 {
                                     "type":"REQUIRED",
                                     "value":"true"
+                                }
+                            ]
+                        }
+                    },
+                     {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"SINGLE",
+                            "buttonType":"CHECK_BOX",
+                            "options":[
+                                {
+                                    "id":"nda",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services",
+                                    "isSelected":"true"
+                                },
+                                {
+                                    "id":"nda",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services",
+                                    "isHtmlText":"true",
+                                    "isSelected":"true"
                                 }
                             ]
                         }

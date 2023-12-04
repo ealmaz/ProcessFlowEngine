@@ -3,6 +3,9 @@ package kg.devcats.processflow.ui.web_view
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.SystemClock
+import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_MOVE
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ShareCompat

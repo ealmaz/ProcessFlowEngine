@@ -15,6 +15,10 @@ import java.util.Objects
 
 class TestProcessFlow : ProcessFlowActivity<TestVM>()  {
 
+    override fun setupViews() {
+        super.setupViews()
+    }
+
     override val vm: TestVM by lazy {
         TestVM(this)
     }
@@ -29,7 +33,9 @@ class TestProcessFlow : ProcessFlowActivity<TestVM>()  {
 
 object MyCommit : ProcessFlowCommit()
 
-object MyEvent : Event()
+sealed class MyEvent : Event() {
+    object MySubEvent : MyEvent()
+}
 
 class TestRepo(context: Context) : ProcessFlowRepository(ProcessFlowApiImpl, ProcessFlowPreferences(context)) {
 

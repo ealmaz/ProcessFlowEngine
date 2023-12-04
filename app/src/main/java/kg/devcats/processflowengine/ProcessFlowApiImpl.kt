@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 object ProcessFlowApiImpl : ProcessFlowNetworkApi {
 
-    private const val FIRST_STEP_KEY = "start"
+    private const val FIRST_STEP_KEY = "OTP_INPUT"
     private const val REQUESTS_DELAY = 5000L
 
     override fun getFlowStatus(processType: String): Single<FlowStatusResponse> {
