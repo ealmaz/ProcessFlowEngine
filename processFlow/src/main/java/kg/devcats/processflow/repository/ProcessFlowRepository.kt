@@ -16,18 +16,18 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-abstract class ProcessFlowRepository constructor(
+abstract class ProcessFlowRepository (
     private val _api: ProcessFlowNetworkApi,
     private val _prefs: ProcessFlowPreferences,
 ) {
 
-    fun getFlowStatus(processType: String): Single<String?> =
+    fun findActiveProcess(): Single<FlowResponse?> =
         _api
-            .getFlowStatus(processType)
-            .map {
-                _prefs.processId = it.processId
-                _prefs.flowStatus = it.flowStatus?.toString()
-                it.processId
+            .findActiveProcess()
+            .map { flow ->
+                flow.processId?.let { _prefs.processId = it }
+                _prefs.flowStatus = flow.flowStatus?.toString()
+                flow
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

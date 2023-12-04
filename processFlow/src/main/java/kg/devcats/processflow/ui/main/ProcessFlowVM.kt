@@ -36,6 +36,22 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     val processFlowScreenDataLive = MutableLiveData<ProcessFlowScreenData>()
 
+    fun restoreActiveFlow(processType: String) = disposed {
+        _repository
+            .findActiveProcess()
+            .doOnSubscribe { showLoading() }
+            .doOnTerminate { hideLoading() }
+            .map {
+                if (it.processType == processType) it
+                else throw Exception("Process flow not exist")
+            }
+            .flatMap { dispatchValuesToLiveData(it) }
+            .subscribe(
+                { Event.ProcessFlowIsExist(it != null) },
+                { triggerEvent(Event.ProcessFlowIsExist(false)) }
+            )
+    }
+
     fun commit(responseId: String, additionalContents: List<Content>? = null) = disposed {
         _repository
             .commit(FlowAnswer(responseId, additionalContents))
@@ -43,18 +59,6 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
             .doOnTerminate { hideLoading() }
             .flatMap { dispatchValuesToLiveData(it) }
             .defaultSubscribe(onError = ::handleError)
-    }
-
-    fun getFlowStatus(processType: String) = disposed {
-        _repository
-            .getFlowStatus(processType)
-            .doOnSubscribe { showLoading() }
-            .doOnTerminate { hideLoading() }
-            .subscribe({
-                triggerEvent(Event.ProcessFlowIsExist(it != null))
-            }, {
-                triggerEvent(Event.ProcessFlowIsExist(false))
-            })
     }
 
     fun startProcessFlow(startFlowRequest: Map<String, String>) = disposed {

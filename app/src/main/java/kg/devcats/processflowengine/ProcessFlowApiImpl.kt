@@ -16,16 +16,16 @@ object ProcessFlowApiImpl : ProcessFlowNetworkApi {
     private const val FIRST_STEP_KEY = "OTP_INPUT"
     private const val REQUESTS_DELAY = 5000L
 
-    override fun getFlowStatus(processType: String): Single<FlowStatusResponse> {
-        Log.d("SAMPLE_TESTER", "getFlowStatus: Response null")
-        return Single.error(java.lang.NullPointerException())
-    }
-
-    override fun startFlow(request: Any): Single<FlowResponse> {
+    override fun startFlow(request: Map<String, String>): Single<FlowResponse> {
         Log.d("SAMPLE_TESTER", "startFlow: request: $request")
         return Single.just(
             Gson().fromJson(ProcessMocker.mock.get(FIRST_STEP_KEY), FlowResponse::class.java)
         ).delay(REQUESTS_DELAY, TimeUnit.MILLISECONDS)
+    }
+
+    override fun findActiveProcess(): Single<FlowResponse?> {
+        Log.d("SAMPLE_TESTER", "getFlowStatus: Response null")
+        return Single.error(java.lang.NullPointerException())
     }
 
     override fun getState(processId: String?): Single<FlowResponse> {

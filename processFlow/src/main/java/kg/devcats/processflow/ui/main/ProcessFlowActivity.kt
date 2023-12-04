@@ -65,6 +65,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     protected lateinit var vb: ProcessFlowActivityProcessFlowBinding
     abstract val vm: VM
+
     abstract val processType: String
 
     protected val currentScreen: ProcessFlowScreen?
@@ -129,18 +130,18 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
 
-    protected fun showLoading() {
+    open fun showLoading() {
         if (currentScreen?.handleShowLoading(true) != true)
             loader.show()
     }
 
-    protected fun hideLoading() {
+    open fun hideLoading() {
         if (isNeedToExecuteRetry) return
         if (currentScreen?.handleShowLoading(false) != true)
             loader.dismiss()
     }
 
-    protected fun showExitDialog() {
+    open fun showExitDialog() {
         showDialog {
             setMessage(R.string.process_flow_warning_exit)
             positiveButton(android.R.string.ok) { cancelChatAndClose() }
@@ -150,7 +151,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     }
 
-    protected fun showErrorDialog(message: String) {
+    open fun showErrorDialog(message: String) {
         showDialog {
             setCancelable(false)
             setMessage(message)
@@ -186,8 +187,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.Notification -> showErrorDialog(event.message)
             is Event.NotificationResId -> showErrorDialog(getString(event.messageResId))
             is Event.ProcessFlowIsExist -> {
-                if (event.isExist) vm.getState(true)
-                else vm.startProcessFlow(getProcessFlowStartParams())
+                if (!event.isExist) vm.startProcessFlow(getProcessFlowStartParams())
             }
             is Event.AdditionalOptionsFetched -> {
                 (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
@@ -208,7 +208,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun handleInitCommit() {
-        vm.getFlowStatus(processType)
+        vm.restoreActiveFlow(processType)
     }
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
