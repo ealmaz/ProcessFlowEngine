@@ -190,7 +190,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.AdditionalOptionsFetched -> {
                 (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
             }
-            is Event.FlowCancelledCloseActivity -> finish()
+            is Event.FlowCancelledCloseActivity -> closeCurrentFlowActivity()
             else -> {}
         }
     }
@@ -316,5 +316,9 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun openInputOtp(data: ProcessFlowScreenData) {
         navigateTo(ProcessFlowInputFieldFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
+    }
+
+    open fun closeCurrentFlowActivity() {
+        finish()
     }
 }
