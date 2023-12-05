@@ -10,6 +10,7 @@ open class Event {
 
     //Flow
     class ProcessFlowIsExist(val isExist: Boolean): Event()
+    object FlowCancelledCloseActivity: Event()
 
 
     //InputForm

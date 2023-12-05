@@ -101,7 +101,10 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     fun cancelProcessFlow() {
         _repository
             .cancelProcessFlow(requireProcessFlowId())
-            .defaultSubscribe()
+            .defaultSubscribe(
+                onSuccess = { triggerEvent(Event.FlowCancelledCloseActivity) },
+                onError = { triggerEvent(Event.FlowCancelledCloseActivity) }
+            )
     }
 
 

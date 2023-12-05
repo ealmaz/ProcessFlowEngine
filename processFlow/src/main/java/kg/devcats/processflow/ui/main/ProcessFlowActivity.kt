@@ -190,6 +190,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.AdditionalOptionsFetched -> {
                 (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
             }
+            is Event.FlowCancelledCloseActivity -> finish()
             else -> {}
         }
     }
