@@ -74,7 +74,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
             .defaultSubscribe(onError = ::handleError)
     }
 
-    fun startProcessFlow(startFlowRequest: Map<String, String>) = disposed {
+    fun startProcessFlow(startFlowRequest: Map<String, Any>) = disposed {
         _repository
             .startProcessFlow(startFlowRequest)
             .doOnSubscribe { showLoading() }

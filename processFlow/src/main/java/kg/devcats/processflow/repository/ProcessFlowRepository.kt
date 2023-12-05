@@ -24,7 +24,7 @@ abstract class ProcessFlowRepository (
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun startProcessFlow(request: Map<String, String>): Single<FlowResponse> =
+    fun startProcessFlow(request: Map<String, Any>): Single<FlowResponse> =
         _api
             .startFlow(request)
             .subscribeOn(Schedulers.io())

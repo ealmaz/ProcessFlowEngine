@@ -21,7 +21,7 @@ interface ProcessFlowNetworkApi {
     fun findActiveProcess(): Single<FlowResponse?>
 
     @POST("v2/process/start")
-    fun startFlow(@Body request: Map<String, String>): Single<FlowResponse>
+    fun startFlow(@Body request: Map<String, Any>): Single<FlowResponse>
 
     @GET("v2/process/state")
     fun getState(@Query("process_id") processId: String? = null): Single<FlowResponse>
