@@ -72,8 +72,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         get() = (supportFragmentManager.findFragmentById(R.id.fl_container)) as? ProcessFlowScreen
 
 
-    abstract fun getProcessFlowStartParams(): Map<String, String>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vb = ProcessFlowActivityProcessFlowBinding.inflate(layoutInflater)
@@ -187,7 +185,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.Notification -> showErrorDialog(event.message)
             is Event.NotificationResId -> showErrorDialog(getString(event.messageResId))
             is Event.ProcessFlowIsExist -> {
-                if (!event.isExist) vm.startProcessFlow(getProcessFlowStartParams())
+                if (!event.isExist) handleStartProcessFlow()
             }
             is Event.AdditionalOptionsFetched -> {
                 (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
@@ -210,6 +208,12 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun handleInitCommit() {
         vm.restoreActiveFlow(processType)
     }
+
+    open fun handleStartProcessFlow() {
+        vm.startProcessFlow(getProcessFlowStartParams())
+    }
+
+    open fun getProcessFlowStartParams(): Map<String, String> = mapOf()
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
         val file = File(commit.filePath)
