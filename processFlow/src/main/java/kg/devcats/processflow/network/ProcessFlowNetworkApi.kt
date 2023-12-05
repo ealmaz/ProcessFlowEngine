@@ -21,6 +21,7 @@ interface ProcessFlowNetworkApi {
     fun findActiveProcess(): Single<FlowResponse?>
 
     @POST("v2/process/start")
+    @JvmSuppressWildcards
     fun startFlow(@Body request: Map<String, Any>): Single<FlowResponse>
 
     @GET("v2/process/state")
