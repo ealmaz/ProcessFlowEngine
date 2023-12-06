@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit
 
 object ProcessFlowApiImpl : ProcessFlowNetworkApi {
 
-    private const val FIRST_STEP_KEY = "OTP_INPUT"
+    private const val FIRST_STEP_KEY = "start"
     private const val REQUESTS_DELAY = 5000L
 
-    override fun startFlow(request: Map<String, String>): Single<FlowResponse> {
+    override fun startFlow(request: Map<String, Any>): Single<FlowResponse> {
         Log.d("SAMPLE_TESTER", "startFlow: request: $request")
         return Single.just(
             Gson().fromJson(ProcessMocker.mock.get(FIRST_STEP_KEY), FlowResponse::class.java)
