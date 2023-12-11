@@ -33,11 +33,6 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
-    }
-
     override fun setupViews() = with(vb) {
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false

@@ -14,7 +14,7 @@ object ProcessMocker {
        "screen_code":"STATUS_INFO",
        "screen_state":{
           "status":"IN_PROCESS",
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Проверяем ваши \nдокументы",
           "description":""
        },
@@ -56,7 +56,7 @@ object ProcessMocker {
        "screen_code":"STATUS_INFO",
        "screen_state":{
           "status":"COMPLETE",
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Документы успешно \nпроверены",
           "description":"Перейдите к идендификации "
        },
@@ -101,7 +101,7 @@ object ProcessMocker {
         )
 
         put(
-            "PASSPORT_FRONT_PHOTO", """
+            "PASSPORT_FRONT_PHOTO2", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
@@ -122,7 +122,7 @@ object ProcessMocker {
         )
 
         put(
-            "PASSPORT_BACK_PHOTO", """
+            "PASSPORT_FRONT_PHOTO", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
@@ -151,7 +151,7 @@ object ProcessMocker {
        "screen_code":"VIDEO_CALL_PROMO",
        "screen_state":{
           "status":null,
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Осталось пройти \nвидеоидентификацию",
           "description":"Не забудьте приготовить паспорт."
        },
@@ -209,7 +209,7 @@ object ProcessMocker {
        "screen_code":"STATUS_INFO",
        "screen_state":{
           "status":"IN_PROCESS",
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Проверяем ваши \nдокументы",
           "description":""
        },
@@ -235,7 +235,9 @@ object ProcessMocker {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
        "screen_code":"WEB_VIEW",
-       "screen_state":{},
+       "screen_state":{
+            "app_bar_text":"OFERTA"
+       },
        "messages":[],
        "allowed_answers":[
           {
@@ -244,8 +246,17 @@ object ProcessMocker {
                 "id":"ANY_WEB_VIEW_2",
                 "url":"https://lk.o.kg/uploads/dogovor_ru.pdf",
                 "properties":{
-                    "fileType":"PDF"
+                    "fileType":"PDF",
+                    "isShareEnabled":true
                 }
+             }
+          },
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"ANY_WEB_VIEW_2",
+                "text":"Далее ",
+                "style":"ACCENT"
              }
           }
        ]
@@ -261,7 +272,7 @@ object ProcessMocker {
        "screen_code":"STATUS_INFO",
        "screen_state":{
           "status":"IN_PROCESS",
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Проверяем ваши \nдокументы",
           "description":""
        },
@@ -290,7 +301,7 @@ object ProcessMocker {
        "screen_code":"INPUT_OTP",
        "screen_state":{
           "status":null,
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"",
           "description":"Подтвердите заявку.\n SMS с кодом отправлено на номер \n+996 700 000 999"
        },
@@ -307,10 +318,8 @@ object ProcessMocker {
                        "value":"true"
                     }
                 ],
-                "properties":{
-                    "enableActionAfterMills":10000,
-                    "additionalActionResolutionCode":"RESEND_OTP"
-                }
+                "enableActionAfterMills":1000,
+                "additionalActionResolutionCode":"RESEND_OTP"
              }
           }
        ]
@@ -327,7 +336,7 @@ object ProcessMocker {
        "screen_code":"INPUT_OTP",
        "screen_state":{
           "status":null,
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"",
           "description":"Подтвердите заявку.\n SMS с кодом отправлено на номер \n+996 700 000 999"
        },
@@ -336,13 +345,9 @@ object ProcessMocker {
           {
              "responseType":"INPUT_FIELD",
              "responseItem":{
-                "fieldId":"OTP_INPUT",
-                "inputType":"NUMBER",
-                "properties":{
-                    "enableActionAfterMills":10000,
-                    "additionalActionResolutionCode":"RESEND_OTP",
-                    "errorMessage":"Не верный код ОТП"
-                }
+                "fieldId":"OTP_INPUT2",
+                "numberOfLines":6,
+                "placeholder":"Добавьте комментарий"
              }
           }
        ]
@@ -359,7 +364,7 @@ object ProcessMocker {
        "process_status":"RUNNING",
        "screen_code":"INPUT_FORM",
        "screen_state":{
-            "app_bar_text":"Иднетификация"
+            "app_bar_text":"Passport data"
        },
        "messages":[],
        "allowed_answers":[
@@ -443,16 +448,72 @@ object ProcessMocker {
                                     "value":"true"
                                 }
                             ],
-                            "chooseType":"SINGLE",
+                            "chooseType":"MULTIPLE",
                             "buttonType":"CHECK_BOX",
                             "options":[
                                 {
-                                    "id":"nda",
-                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services",
+                                    "id":"nda6",
+                                    "isHtmlText":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://lk.o.kg/uploads/dogovor_ru.pdf\"> to terms and conditions of communication services",
                                     "isSelected":"true"
                                 },
                                 {
-                                    "id":"nda",
+                                    "id":"nda5",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services",
+                                    "isHtmlText":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"SINGLE",
+                            "buttonType":"TOGGLE",
+                            "options":[
+                                {
+                                    "id":"nda4",
+                                    "isHtmlText":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services"
+                                },
+                                {
+                                    "id":"nda3",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/?theme=light\"> to terms and conditions of communication services",
+                                    "isHtmlText":"true",
+                                    "isSelected":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"SINGLE",
+                            "buttonType":"RADIO_BUTTON",
+                            "options":[
+                                {
+                                    "id":"nda1",
+                                    "isHtmlText":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services"
+                                },
+                                {
+                                    "id":"nda2",
                                     "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services",
                                     "isHtmlText":"true",
                                     "isSelected":"true"
@@ -547,7 +608,7 @@ object ProcessMocker {
        "screen_code":"STATUS_INFO",
        "screen_state":{
           "status":"COMPLETE",
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Документы успешно \nсформированы",
           "description":""
        },
@@ -597,7 +658,7 @@ object ProcessMocker {
        "screen_code":"STATUS_INFO",
        "screen_state":{
           "status":"COMPLETE",
-          "appBarText":"Идентификация",
+          "app_bar_text":"Идентификация",
           "title":"Документы успешно \nсформированы",
           "description":""
        },

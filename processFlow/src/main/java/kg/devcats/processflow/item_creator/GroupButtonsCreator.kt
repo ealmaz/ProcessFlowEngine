@@ -6,7 +6,7 @@ import kg.devcats.processflow.model.input_form.GroupButtonFormItem
 
 object GroupButtonsCreator : ValidatableItem() {
 
-    fun create(context: Context, groupInfo: GroupButtonFormItem, onSelectedChanged: (selected: List<String>, isValid: Boolean) -> Unit): InputFormGroupButtons {
+    fun create(context: Context, groupInfo: GroupButtonFormItem, onSelectedChanged: (selected: List<String>, isValid: Boolean) -> Unit, onLinkClick: ((String) -> Unit)? = null) : InputFormGroupButtons {
         return InputFormGroupButtons(context).apply {
             tag = groupInfo.fieldId
             setSelectedItemChangedListener {
@@ -16,7 +16,7 @@ object GroupButtonsCreator : ValidatableItem() {
             groupInfo.buttonType?.let { setButtonType(it) }
             groupInfo.chooseType?.let { setChooseType(it) }
             groupInfo.options?.let { setAllButtons(it) }
-            renderButtons()
+            renderButtons(onLinkClick)
         }
     }
 }

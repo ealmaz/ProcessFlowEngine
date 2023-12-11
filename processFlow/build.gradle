@@ -39,7 +39,7 @@ android {
 
 dependencies {
 
-    implementation 'com.github.ealmaz:DesignChili2:0.0.0.120'
+    implementation 'com.github.ealmaz:DesignChili2:0.0.0.162'
     implementation 'com.github.ealmaz:text_recognizer:0.0.45'
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'

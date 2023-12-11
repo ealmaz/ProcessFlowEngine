@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_MOVE
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
@@ -32,20 +33,32 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     private lateinit var remotePDFViewPager: RemotePDFViewPager
     private var adapter: PDFPagerAdapter? = null
 
+    private var isShareEnabled = false
+
     private var webViewId: String = ""
 
-    override val unclickableMask: View?
+    override val unclickableMask: View
         get() = vb.unclickableMask
+
+    override val buttonsLinearLayout: LinearLayout
+        get() = vb.llButtons
 
     override fun onResume() {
         super.onResume()
         getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
     }
 
+    override fun onPause() {
+        super.onPause()
+        getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
+    }
+
     override fun setScreenData(data: ProcessFlowScreenData?) {
+        super.setScreenData(data)
         data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let {
             it.url?.let { loadPdfUrl(it) }
             webViewId = it.id
+            isShareEnabled = (it.properties?.isShareEnabled) ?: false
         }
     }
 
@@ -56,14 +69,16 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
         with(vb) {
             flContainer.removeAllViews()
         }
-        remotePDFViewPager = RemotePDFViewPager(requireContext(), url, this)
+        try {
+            remotePDFViewPager = RemotePDFViewPager(requireContext(), url, this)
+        } catch (_: Exception) {}
     }
 
     override fun onSuccess(url: String?, destinationPath: String?) {
         vb.pbLoader.gone()
         try {
             setupPdfViewer(destinationPath)
-            setupShare(destinationPath)
+            if (isShareEnabled) setupShare(destinationPath)
         } catch (e: Exception) {
             showFailureException()
         }
@@ -83,7 +98,9 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     }
 
     private fun showFailureException() {
-        Toast.makeText(requireContext(), R.string.process_flow_error_pdf_loading, Toast.LENGTH_SHORT).show()
+        try {
+            Toast.makeText(requireContext(), R.string.process_flow_error_pdf_loading, Toast.LENGTH_SHORT).show()
+        } catch (_: Exception) {}
     }
 
     override fun onDestroy() {
@@ -121,16 +138,6 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     }
 
     override fun handleBackPress(): BackPressHandleState {
-        setStringResultAndClose(MANUAL_CLOSE_WEB_VIEW_STATUS)
-        return BackPressHandleState.HANDLED
-    }
-
-    private fun setStringResultAndClose(result: String) {
-        getProcessFlowHolder().commit(
-            ProcessFlowCommit.CommitContentFormResponseId(
-                webViewId,
-                listOf(Content(result, ContentTypes.WEB_VIEW_RESULT))
-            )
-        )
+        return BackPressHandleState.CALL_SUPER
     }
 }

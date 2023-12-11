@@ -6,9 +6,9 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
-import com.design2.chili2.view.buttons.LoaderButton
-import com.design2.chili2.view.input.MaskedInputView
 import com.design2.chili2.R
+import com.design2.chili2.view.buttons.LoaderButton
+import com.design2.chili2.view.input.BaseInputView
 import kg.devcats.processflow.base.process.ProcessFlowScreen
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.setMargins
@@ -71,7 +71,7 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     }
 
     //InputField handler
-    open fun renderInputField(inputFieldContainer: FrameLayout, inputFieldInfo: FlowInputField): MaskedInputView {
+    open fun renderInputField(inputFieldContainer: FrameLayout, inputFieldInfo: FlowInputField): BaseInputView {
         val inputFiledView = InputFieldCreator.create(requireContext(), inputFieldInfo, ::inputFieldChanged)
         inputFieldContainer.addView(inputFiledView)
         return inputFiledView.apply {
@@ -105,4 +105,8 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     }
 
     open fun onHandleRetry(retry: FlowRetryInfo? = null) {}
+
+    open fun onLinkClick(link: String) {
+        getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(link))
+    }
 }

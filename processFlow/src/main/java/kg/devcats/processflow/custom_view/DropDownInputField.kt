@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.getColor
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.SearchSelectorBottomSheet
+import kg.devcats.processflow.R
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemDropDownBinding
 import kg.devcats.processflow.extension.getThemeColor
 import kg.devcats.processflow.item_creator.DropDownFieldCreator
@@ -34,6 +35,7 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
         this.onSelectionChanged = onSelectionChanged
         this.dropDownListInfo = dropDownFieldInfo
         this.setOnClickListener {
+            clearError()
             if (options.isEmpty()) return@setOnClickListener
             val bs = createSearchBottomSheet(context, dropDownFieldInfo.chooseType != ChooseType.MULTIPLE)
             bs.setOnDismissListener { onBottomSheetDismiss() }
@@ -83,5 +85,14 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
         setText(selectedValues.joinToString { it })
         val isValid = DropDownFieldCreator.validateItem(dropDownListInfo?.validations, selectedIds)
         onSelectionChanged?.invoke(selectedIds, isValid)
+    }
+
+    fun setupAsError() {
+        views.root.setBackgroundColor(getColor(context, com.design2.chili2.R.color.red_3))
+    }
+
+    fun clearError() {
+        val color = context.getThemeColor(com.design2.chili2.R.attr.ChiliInputViewBackgroundColor)
+        views.root.setBackgroundColor(color)
     }
 }

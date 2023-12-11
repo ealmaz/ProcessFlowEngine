@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentResultListener
+import com.design2.chili2.view.input.BaseInputView
 import com.design2.chili2.view.input.MaskedInputView
 import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
 import com.design2.chili2.view.modals.picker.DatePickerDialog
@@ -80,6 +81,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
+        super.setScreenData(data)
         data?.allowedAnswer?.filterIsInstance<InputForm>()?.firstOrNull()?.let {
             currentFormId = it.formId
             setupInputForm(it)
@@ -112,7 +114,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         vb.formContainer.addView(container)
     }
 
-    private fun createInputField(inputField: FlowInputField): MaskedInputView {
+    private fun createInputField(inputField: FlowInputField): BaseInputView {
         result[inputField.fieldId] = null
         return InputFieldCreator.create(requireContext(), inputField, { values, isValid ->
             result[inputField.fieldId] = if (isValid) values else null
@@ -124,9 +126,9 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private fun createButtonGroup(groupInfo: GroupButtonFormItem): InputFormGroupButtons {
         result[groupInfo.fieldId] = null
-        return GroupButtonsCreator.create(requireContext(), groupInfo) { values, isValid ->
+        return GroupButtonsCreator.create(requireContext(), groupInfo, onLinkClick = ::onLinkClick, onSelectedChanged = { values, isValid ->
             result[groupInfo.fieldId] = if (isValid) values else null
-        }
+        })
 
     }
 
@@ -183,19 +185,20 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     private fun validateInput(): Boolean {
+        var isValid = true
         result.forEach {
             if (it.value == null) {
-                try {
-                    vb.formContainer
-                        .findViewWithTag<MaskedInputView>(it.key)
-                        .setupFieldAsError(R.string.process_flow_invalid_input)
-                } catch (ex: Throwable) {
-                    Toast.makeText(requireContext(), R.string.process_flow_invalid_input, Toast.LENGTH_SHORT).show()
+                isValid = false
+                val view = vb.formContainer.findViewWithTag<View>(it.key)
+                when (view) {
+                    is BaseInputView -> view.setupFieldAsError(R.string.process_flow_invalid_input)
+                    is DropDownInputField -> view.setupAsError()
+                    is InputFormGroupButtons -> view.setupAsError()
+                    else -> Toast.makeText(requireContext(), R.string.process_flow_invalid_input, Toast.LENGTH_SHORT).show()
                 }
-                return false
             }
         }
-        return true
+        return isValid
     }
 
     override fun onDestroyView() {

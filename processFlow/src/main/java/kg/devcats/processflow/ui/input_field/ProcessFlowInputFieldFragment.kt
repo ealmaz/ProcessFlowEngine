@@ -1,4 +1,4 @@
-package kg.devcats.processflow.ui.sms
+package kg.devcats.processflow.ui.input_field
 
 import android.content.IntentFilter
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.design2.chili2.extensions.setOnSingleClickListener
+import com.design2.chili2.view.input.BaseInputView
 import com.design2.chili2.view.input.MaskedInputView
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import kg.devcats.processflow.R
@@ -65,7 +66,7 @@ class ProcessFlowInputFieldFragment :
     override fun renderInputField(
         inputFieldContainer: FrameLayout,
         inputFieldInfo: FlowInputField
-    ): MaskedInputView {
+    ): BaseInputView {
         inputFieldInfo?.otpLength?.let { initSmsRetrieverApi(it) }
         resultData = inputFieldInfo.fieldId to mutableListOf()
         val inputView = super.renderInputField(inputFieldContainer, inputFieldInfo.copy(label = null))
@@ -85,7 +86,7 @@ class ProcessFlowInputFieldFragment :
         }
     }
 
-    private fun setTimer(timeOut: Long, inputField: MaskedInputView, actionId: String) {
+    private fun setTimer(timeOut: Long, inputField: BaseInputView, actionId: String) {
         countDownTimer = object : CountDownTimer(timeOut, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 try {

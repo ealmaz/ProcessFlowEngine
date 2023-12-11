@@ -1,8 +1,11 @@
 package kg.devcats.processflow.custom_view
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -10,8 +13,12 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Switch
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import kg.devcats.processflow.R
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemGroupButtonsBinding
+import kg.devcats.processflow.extension.handleUrlClicks
 import kg.devcats.processflow.model.input_form.ButtonType
 import kg.devcats.processflow.model.input_form.ChooseType
 import kg.devcats.processflow.model.input_form.Option
@@ -92,7 +99,8 @@ class InputFormGroupButtons @JvmOverloads constructor(
     }
 
 
-    fun renderButtons() {
+    @SuppressLint("ClickableViewAccessibility")
+    fun renderButtons(onLinkClick: ((String) -> Unit)? = null) {
         buttonsContainer?.let { vb.flRoot.removeView(it) }
         prepareContainer().let { container ->
             buttons.forEach {
@@ -100,7 +108,13 @@ class InputFormGroupButtons @JvmOverloads constructor(
                     setOnCheckedChangeListener(this@InputFormGroupButtons)
                     tag = it.id
                     id = it.hashCode()
-                    text = it.label
+                    if (it.isHtmlText == true) {
+                        text = it.label?.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)?.trimEnd()
+                        handleUrlClicks {
+                            this.isChecked = this.isChecked.not()
+                            onLinkClick?.invoke(it)
+                        }
+                    } else text = it.label
                 }
                 button.isChecked = it.isSelected ?: false
                 container.addView(button)
@@ -135,7 +149,10 @@ class InputFormGroupButtons @JvmOverloads constructor(
         }
     }
 
+
+
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        clearError()
         val optionId = buttonView?.tag?.toString()
         val option = buttons.find { it.id == optionId }
         if (option == null || option.isSelected == isChecked) return
@@ -169,5 +186,13 @@ class InputFormGroupButtons @JvmOverloads constructor(
 
     fun setSelectedItemChangedListener(listener: (selectedId: List<String>) -> Unit) {
         this.onSelectedItemChanged = listener
+    }
+
+    fun setupAsError() {
+        vb.flRoot.setBackgroundColor(context.getColor(com.design2.chili2.R.color.red_3))
+    }
+
+    fun clearError() {
+        vb.flRoot.setBackgroundColor(context.getColor(android.R.color.transparent))
     }
 }

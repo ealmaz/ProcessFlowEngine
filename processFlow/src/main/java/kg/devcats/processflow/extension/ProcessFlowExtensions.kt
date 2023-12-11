@@ -6,11 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.text.Selection
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -84,40 +92,6 @@ inline fun <reified T : Activity> Context.startActivity(noinline extra: Intent.(
     intent.extra()
     startActivity(intent)
 }
-
-//
-//fun Fragment.rxRequestPermissions(
-//    permissions: Array<String>,
-//    onRequestGranted: () -> Unit,
-//    onRequestNotGranted: () -> Unit = {},
-//    onRequestDenied: () -> Unit = {},
-//    showAdditionalDialog: Boolean = true,
-//) {
-//    try {
-//        RxPermissions(this)
-//            .request(*permissions)
-//            .subscribe({ result ->
-//                when {
-//                    result.granted -> {
-//                        onRequestGranted()
-//                    }
-//                    result.shouldShowRequestPermissionRationale -> {
-//                        onRequestNotGranted()
-//                    }
-//                    else -> {
-//                        if (showAdditionalDialog)
-//                            this.activity?.showWarningDialog(
-//                                content = this.getString(R.string.permission_denied),
-//                                onOkListener = { requireActivity().openApplicationSettings(); onRequestDenied() }
-//                            )
-//                    }
-//                }
-//            }, { it.printStackTrace() })
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//        onRequestNotGranted()
-//    }
-//}
 
 fun Context.showWarningDialog(content: CharSequence, onOkListener: () -> Unit = { }): Dialog {
     val builder = AlertDialog.Builder(this, R.style.AppAlertDialog)
@@ -206,4 +180,23 @@ fun android.app.AlertDialog.Builder.negativeButton(@StringRes btnTextId: Int, ha
     }
 }
 
+
+fun TextView.handleUrlClicks(onClicked: ((String) -> Unit)? = null) {
+    text = SpannableStringBuilder.valueOf(text).apply {
+        getSpans(0, length, URLSpan::class.java).forEach {
+            setSpan(
+                object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        onClicked?.invoke(it.url)
+                    }
+                },
+                getSpanStart(it),
+                getSpanEnd(it),
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+            removeSpan(it)
+        }
+    }
+    movementMethod = LinkMovementMethod.getInstance()
+}
 

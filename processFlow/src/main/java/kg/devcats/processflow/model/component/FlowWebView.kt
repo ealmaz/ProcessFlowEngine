@@ -9,7 +9,8 @@ data class FlowWebView(
 ): Serializable
 
 data class WebViewProperties(
-    val fileType: WebViewFileTypes? = null
+    val fileType: WebViewFileTypes? = null,
+    val isShareEnabled: Boolean? = null,
 ): Serializable
 
 enum class WebViewFileTypes {

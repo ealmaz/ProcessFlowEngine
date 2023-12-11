@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import com.design2.chili2.view.navigation_components.ChiliToolbar
 import kg.devcats.processflow.R
@@ -22,6 +23,7 @@ import kg.devcats.processflow.extension.showDialog
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
+import kg.devcats.processflow.model.ScreenKey.INPUT_FIELD
 import kg.devcats.processflow.model.ScreenKey.INPUT_FORM
 import kg.devcats.processflow.model.ScreenKey.INPUT_OTP
 import kg.devcats.processflow.model.ScreenKey.PASSPORT_BACK_PHOTO
@@ -40,9 +42,10 @@ import kg.devcats.processflow.model.component.WebViewFileTypes
 import kg.devcats.processflow.ui.camera.CameraType
 import kg.devcats.processflow.ui.camera.PhotoFlowFragment
 import kg.devcats.processflow.ui.input_form.InputFormFragment
-import kg.devcats.processflow.ui.sms.ProcessFlowInputFieldFragment
+import kg.devcats.processflow.ui.input_field.ProcessFlowInputFieldFragment
 import kg.devcats.processflow.ui.status.ProcessStatusInfoFragment
 import kg.devcats.processflow.ui.status.VideoPromoStatusFragment
+import kg.devcats.processflow.ui.web_view.ProcessFlowLinksWebView
 import kg.devcats.processflow.ui.web_view.ProcessFlowPdfWebViewFragment
 import kg.devcats.processflow.ui.web_view.ProcessFlowWebViewFragment
 import kg.devcats.processflow.ui.web_view.VideoCallWebViewFragment
@@ -171,7 +174,8 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
                 navigateTo(VideoPromoStatusFragment::class.java)
                 setScreenData(currentScreen as Fragment, data)
             }
-            INPUT_OTP -> openInputOtp(data)
+            INPUT_OTP -> openInputField(data)
+            INPUT_FIELD -> openInputField(data)
             PASSPORT_FRONT_PHOTO -> openCameraFlow(CameraType.FRONT_PASSPORT, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             PASSPORT_BACK_PHOTO -> openCameraFlow(CameraType.BACK_PASSPORT_WITH_RECOGNIZER, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             SELFIE_PHOTO -> openCameraFlow(CameraType.SELFIE, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
@@ -202,6 +206,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is ProcessFlowCommit.OnFlowPhotoCaptured -> uploadPhotos(commit)
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)
             is ProcessFlowCommit.FetchAdditionalOptionsForDropDown -> vm.fetchOptions(commit.formId, commit.parentSelectedOptionId)
+            is ProcessFlowCommit.OnLinkClicked -> openWebViewFromUrl(commit.link)
             else -> {}
         }
     }
@@ -238,19 +243,29 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun navigateTo(
         fragmentClass: Class<out Fragment>,
         checkPrevFragment: Boolean = true,
+        addToBackStack: Boolean = false,
         fragmentCreator: (fragmentClass: Class<out Fragment>) -> Fragment = { fragmentClass.newInstance() }
     ) {
         if (checkPrevFragment) {
             if ((currentScreen == null) || (currentScreen?.javaClass != fragmentClass)) {
-                supportFragmentManager.commitNow {
-                    replace(R.id.fl_container, fragmentCreator.invoke(fragmentClass))
+                supportFragmentManager.commit {
+                    if (addToBackStack) {
+                        add(R.id.fl_container, fragmentCreator.invoke(fragmentClass))
+                        addToBackStack(null)
+                    }
+                    else replace(R.id.fl_container, fragmentCreator.invoke(fragmentClass))
                 }
             }
         } else {
-            supportFragmentManager.commitNow {
-                replace(R.id.fl_container, fragmentCreator.invoke(fragmentClass))
+            supportFragmentManager.commit {
+                if (addToBackStack) {
+                    add(R.id.fl_container, fragmentCreator.invoke(fragmentClass))
+                    addToBackStack(null)
+                }
+                else replace(R.id.fl_container, fragmentCreator.invoke(fragmentClass))
             }
         }
+        supportFragmentManager.executePendingTransactions()
     }
 
     open fun setScreenData(currentScreen: Fragment, data: ProcessFlowScreenData) {
@@ -302,6 +317,12 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         setScreenData(currentScreen as Fragment, data)
     }
 
+    open fun openWebViewFromUrl(url: String) {
+        if (url.endsWith(".pdf")) navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true)
+        else navigateTo(ProcessFlowLinksWebView::class.java, addToBackStack = true)
+        setScreenData(currentScreen as Fragment, ProcessFlowScreenData(screenKey = WEB_VIEW, allowedAnswer = listOf(FlowWebView(id = "OPEN_LINK", url = url))))
+    }
+
     open fun openStatusScreen(data: ProcessFlowScreenData) {
         navigateTo(ProcessStatusInfoFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
@@ -313,7 +334,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         }
     }
 
-    open fun openInputOtp(data: ProcessFlowScreenData) {
+    open fun openInputField(data: ProcessFlowScreenData) {
         navigateTo(ProcessFlowInputFieldFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
     }

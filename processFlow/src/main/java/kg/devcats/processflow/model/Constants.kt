@@ -14,6 +14,7 @@ object ScreenKey {
     const val SELFIE_PHOTO = "SELFIE_PHOTO"
     const val INPUT_FORM = "INPUT_FORM"
     const val WEB_VIEW = "WEB_VIEW"
+    const val INPUT_FIELD = "INPUT_FIELD"
 }
 
 object ContentTypes {
