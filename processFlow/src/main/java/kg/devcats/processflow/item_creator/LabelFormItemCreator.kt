@@ -13,9 +13,9 @@ object LabelFormItemCreator : ValidatableItem() {
             setTextAppearance(R.style.Chili_H7_Primary_Bold)
             setPadding(
                 context.resources.getDimensionPixelSize(R.dimen.padding_16dp),
-                context.resources.getDimensionPixelSize(R.dimen.padding_14dp),
                 context.resources.getDimensionPixelSize(R.dimen.padding_16dp),
-                context.resources.getDimensionPixelSize(R.dimen.padding_14dp)
+                context.resources.getDimensionPixelSize(R.dimen.padding_16dp),
+                context.resources.getDimensionPixelSize(R.dimen.padding_16dp)
             )
             text = labelFormItem.label
         }

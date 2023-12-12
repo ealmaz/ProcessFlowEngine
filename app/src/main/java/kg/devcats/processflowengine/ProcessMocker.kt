@@ -345,7 +345,7 @@ object ProcessMocker {
           {
              "responseType":"INPUT_FIELD",
              "responseItem":{
-                "fieldId":"OTP_INPUT2",
+                "fieldId":"OTP_INPUT",
                 "numberOfLines":6,
                 "placeholder":"Добавьте комментарий"
              }
@@ -372,13 +372,19 @@ object ProcessMocker {
             "responseType":"INPUT_FORM",
             "responseItem":{
                 "formId":"passport_form",
-                "title":"Паспортные данные",
                 "formItems":[
+                    {
+                        "formItemType":"LABEL",
+                        "formItem":{
+                            "fieldId":"passport_data",
+                            "label":"ФИО"
+                        }
+                    },
                     {
                         "formItemType":"INPUT_FIELD",
                         "formItem":{
                             "fieldId":"NAME",
-                            "label":"Введите заглавные буквы и номер без пробелов. Например: AN1234567, ID1234567",
+                            "label":"Имя",
                             "placeholder":"Имя",
                             "validations":[
                                 {
@@ -389,12 +395,11 @@ object ProcessMocker {
                         }
                     },
                     {
-                        "formItemType":"DROP_DOWN_FORM_ITEM",
+                        "formItemType":"INPUT_FIELD",
                         "formItem":{
-                            "fieldId":"CHOOSE_REGION",
-                            "chooseType":"SINGLE",
-                            "label":"Регион",
-                            "isNeedToFetchOptions":true,
+                            "fieldId":"SURNAME",
+                            "label":"Фамилия",
+                            "placeholder":"Фамилия",
                             "validations":[
                                 {
                                     "type":"REQUIRED",
@@ -404,19 +409,10 @@ object ProcessMocker {
                         }
                     },
                     {
-                        "formItemType":"DROP_DOWN_FORM_ITEM",
+                        "formItemType":"LABEL",
                         "formItem":{
-                            "fieldId":"CHOOSE_CITY",
-                            "parentFieldId":"CHOOSE_REGION",
-                            "chooseType":"SINGLE",
-                            "label":"Город",
-                            "isNeedToFetchOptions":true,
-                            "validations":[
-                                {
-                                    "type":"REQUIRED",
-                                    "value":"true"
-                                }
-                            ]
+                            "fieldId":"passport_data",
+                            "label":"Данные паспорта"
                         }
                     },
                     {
@@ -425,6 +421,7 @@ object ProcessMocker {
                             "fieldId":"INN",
                             "label":"Персональный номер, состоящий из 14 цифр",
                             "placeholder":"ИНН",
+                            "inputType":"NUMBER",
                             "validations":[
                                 {
                                     "type":"REGEX",
@@ -437,6 +434,60 @@ object ProcessMocker {
                             ]
                         }
                     },
+                    {
+                        "formItemType":"INPUT_FIELD",
+                        "formItem":{
+                            "fieldId":"PASSPORT",
+                            "label":"Номер паспорта",
+                            "placeholder":"Номер паспорта",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"DATE_PICKER_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"PASSPORT_date",
+                            "label":"Дата",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+          }
+       ]
+    }
+""".trimIndent()
+        )
+
+
+
+
+        put(
+            "passport_form", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"INPUT_FORM",
+       "screen_state":{
+            "app_bar_text":"Passport data"
+       },
+       "messages":[],
+       "allowed_answers":[
+          {
+            "responseType":"INPUT_FORM",
+            "responseItem":{
+                "formId":"passport_form2",
+                "formItems":[
                      {
                         "formItemType":"GROUP_BUTTON_FORM_ITEM",
                         "formItem":{
@@ -456,11 +507,6 @@ object ProcessMocker {
                                     "isHtmlText":"true",
                                     "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://lk.o.kg/uploads/dogovor_ru.pdf\"> to terms and conditions of communication services",
                                     "isSelected":"true"
-                                },
-                                {
-                                    "id":"nda5",
-                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services",
-                                    "isHtmlText":"true"
                                 }
                             ]
                         }
@@ -468,7 +514,7 @@ object ProcessMocker {
                     {
                         "formItemType":"GROUP_BUTTON_FORM_ITEM",
                         "formItem":{
-                            "fieldId":"agreement",
+                            "fieldId":"agreement_4",
                             "label":"",
                             "validations":[
                                 {
@@ -476,18 +522,13 @@ object ProcessMocker {
                                     "value":"true"
                                 }
                             ],
-                            "chooseType":"SINGLE",
-                            "buttonType":"TOGGLE",
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"CHECK_BOX",
                             "options":[
                                 {
-                                    "id":"nda4",
+                                    "id":"nda632",
                                     "isHtmlText":"true",
-                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services"
-                                },
-                                {
-                                    "id":"nda3",
-                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/?theme=light\"> to terms and conditions of communication services",
-                                    "isHtmlText":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://lk.o.kg/uploads/dogovor_ru.pdf\"> to terms and conditions of communication services",
                                     "isSelected":"true"
                                 }
                             ]
@@ -496,7 +537,59 @@ object ProcessMocker {
                     {
                         "formItemType":"GROUP_BUTTON_FORM_ITEM",
                         "formItem":{
-                            "fieldId":"agreement",
+                            "fieldId":"agreement_7",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"CHECK_BOX",
+                            "options":[
+                                {
+                                    "id":"nda23216",
+                                    "isHtmlText":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://lk.o.kg/uploads/dogovor_ru.pdf\"> to terms and conditions of communication services",
+                                    "isSelected":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement_2",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"TOGGLE",
+                            "options":[
+                                {
+                                    "id":"nda4",
+                                    "isHtmlText":"true",
+                                    "isSelected":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/light/\"> to terms and conditions of communication services"
+                                },
+                                {
+                                    "id":"nda3",
+                                    "isSelected":"true",
+                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://dengi.kg/soglasie_pers_dannie/en/?theme=light\"> to terms and conditions of communication services",
+                                    "isHtmlText":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement_3",
                             "label":"",
                             "validations":[
                                 {
@@ -530,8 +623,10 @@ object ProcessMocker {
         )
 
 
+
+
         put(
-            "passport_form", """
+            "passport_form2", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
@@ -543,21 +638,27 @@ object ProcessMocker {
             "responseType":"INPUT_FORM",
             "responseItem":{
                 "formId":"address",
-                "title":"Адрес проживания",
                 "formItems":[
                     {
-                        "formItemType":"INPUT_FIELD",
+                        "formItemType":"LABEL",
                         "formItem":{
-                            "fieldId":"NAME",
-                            "placeholder":"No required"
+                            "fieldId":"address_live",
+                            "label":"Укажите место жительства"
                         }
                     },
-                    {
-                        "formItemType":"INPUT_FIELD",
+                     {
+                        "formItemType":"DROP_DOWN_FORM_ITEM",
                         "formItem":{
-                            "fieldId":"NAME2",
-                            "placeholder":"No required",
-                            "value":"Default"
+                            "fieldId":"CHOOSE_REGION_1",
+                            "chooseType":"SINGLE",
+                            "label":"Область",
+                            "isNeedToFetchOptions":true,
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ]
                         }
                     },
                     {
@@ -587,6 +688,55 @@ object ProcessMocker {
                                 {
                                     "type":"REQUIRED",
                                     "value":"true"
+                                }
+                            ]
+                        }
+                    }, 
+                    {
+                        "formItemType":"INPUT_FIELD",
+                        "formItem":{
+                            "fieldId":"street",
+                            "placeholder":"Street",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"INPUT_FIELD",
+                        "formItem":{
+                            "fieldId":"house",
+                            "placeholder":"Номер дома",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "formItemType":"INPUT_FIELD",
+                        "formItem":{
+                            "fieldId":"apparment_number",
+                            "placeholder":"Номер квартиры"
+                        }
+                    },
+                    {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"same_adress",
+                            "label":"",
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"CHECK_BOX",
+                            "options":[
+                                {
+                                    "id":"nda612",
+                                    "label":"Адрес места жительства совпадает с адресом прописки",
+                                    "isSelected":"true"
                                 }
                             ]
                         }

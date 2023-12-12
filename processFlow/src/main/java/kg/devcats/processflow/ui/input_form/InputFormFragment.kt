@@ -153,6 +153,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
             result[datePickerFieldInfo.fieldId] = if (isValid) values else null
         }.apply {
             setOnClickListener {
+                this.clearError()
                 currentOpenedDatePickerId = datePickerFieldInfo.fieldId
                 DatePickerDialog.create(
                     getString(R.string.process_flow_next),
@@ -194,6 +195,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
                     is BaseInputView -> view.setupFieldAsError(R.string.process_flow_invalid_input)
                     is DropDownInputField -> view.setupAsError()
                     is InputFormGroupButtons -> view.setupAsError()
+                    is DatePickerInputField -> view.setupAsError()
                     else -> Toast.makeText(requireContext(), R.string.process_flow_invalid_input, Toast.LENGTH_SHORT).show()
                 }
             }

@@ -2,10 +2,8 @@ package kg.devcats.processflow.custom_view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -13,7 +11,6 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Switch
-import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import kg.devcats.processflow.R

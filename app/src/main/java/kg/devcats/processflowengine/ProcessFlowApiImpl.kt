@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
 
 object ProcessFlowApiImpl : ProcessFlowNetworkApi {
 
-    private const val FIRST_STEP_KEY = "WEB_VIEW_OFERTA"
-    private const val REQUESTS_DELAY = 500L
+    var FIRST_STEP_KEY = "start"
+    private const val REQUESTS_DELAY = 3000L
 
     override fun startFlow(request: Map<String, Any>): Single<FlowResponse> {
         Log.d("SAMPLE_TESTER", "startFlow: request: $request")
@@ -56,11 +56,11 @@ object ProcessFlowApiImpl : ProcessFlowNetworkApi {
     ): io.reactivex.Single<List<Option>> {
         Log.d("SAMPLE_TESTER", "fetchAdditionalOptions")
         return Single.just(listOf(
-            Option("1", "1"),
-            Option("2", "2"),
-            Option("3", "3"),
-            Option("4", "4"),
-            Option("5", "5"),
+            Option("1", "Бишкек"),
+            Option("2", "Токмок"),
+            Option("3", "Ош"),
+            Option("4", "Талас"),
+            Option("5", "Нарын"),
         )).delay(REQUESTS_DELAY, TimeUnit.MILLISECONDS)
     }
 

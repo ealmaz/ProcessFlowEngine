@@ -5,8 +5,8 @@
     android:orientation="horizontal"
     android:paddingStart="@dimen/padding_16dp"
     android:paddingEnd="@dimen/padding_8dp"
-    android:paddingVertical="@dimen/padding_8dp"
-    android:background="?ChiliInputViewBackgroundColor"
+    android:paddingVertical="@dimen/padding_10dp"
+    android:background="@drawable/chili_bg_input_view_rounded"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView

@@ -6,11 +6,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/ll_field_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?ChiliInputViewBackgroundColor"
+        android:background="@drawable/chili_bg_input_view_rounded"
         android:orientation="horizontal"
-        android:paddingVertical="@dimen/padding_8dp"
+        android:paddingVertical="@dimen/padding_10dp"
         android:paddingStart="@dimen/padding_16dp"
         android:paddingEnd="@dimen/padding_8dp">
 

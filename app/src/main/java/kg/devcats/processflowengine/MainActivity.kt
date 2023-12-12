@@ -13,10 +13,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
-        vb.btnStart.setOnClickListener {
-            val i = Intent(this, TestProcessFlow::class.java)
-            startActivity(i)
-        }
+        vb.btnStart.setOnClickListener { openFlow("start") }
+        vb.btnStartForm.setOnClickListener { openFlow("OTP_INPUT") }
+        vb.btnStartAgreemrnt.setOnClickListener { openFlow("passport_form") }
+        vb.btnStartOferta.setOnClickListener { openFlow("WEB_VIEW_OFERTA") }
+        vb.btnStartCallWebView.setOnClickListener { openFlow("VIDEO_IDENT_BUTTON") }
+    }
+
+    private fun openFlow(startPoint: String) {
+        val i = Intent(this, TestProcessFlow::class.java)
+        ProcessFlowApiImpl.FIRST_STEP_KEY = startPoint
+        startActivity(i)
     }
 }
 

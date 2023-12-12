@@ -88,11 +88,10 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
     }
 
     fun setupAsError() {
-        views.root.setBackgroundColor(getColor(context, com.design2.chili2.R.color.red_3))
+        views.root.setBackgroundResource(com.design2.chili2.R.drawable.chili_bg_input_view_error_rounded)
     }
 
     fun clearError() {
-        val color = context.getThemeColor(com.design2.chili2.R.attr.ChiliInputViewBackgroundColor)
-        views.root.setBackgroundColor(color)
+        views.root.setBackgroundResource(com.design2.chili2.R.drawable.chili_bg_input_view_rounded)
     }
 }

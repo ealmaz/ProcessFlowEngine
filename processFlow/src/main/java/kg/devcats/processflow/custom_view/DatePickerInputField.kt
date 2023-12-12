@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import kg.devcats.processflow.R
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemDatePickerBinding
 import kg.devcats.processflow.extension.getThemeColor
 import kg.devcats.processflow.item_creator.DatePickerFieldCreator
@@ -64,5 +65,13 @@ class DatePickerInputField @JvmOverloads constructor(context: Context, attribute
             visibility = VISIBLE
             text = helperText
         }
+    }
+
+    fun setupAsError() {
+        vb.llFieldContainer.setBackgroundResource(com.design2.chili2.R.drawable.chili_bg_input_view_error_rounded)
+    }
+
+    fun clearError() {
+        vb.llFieldContainer.setBackgroundResource(com.design2.chili2.R.drawable.chili_bg_input_view_rounded)
     }
 }

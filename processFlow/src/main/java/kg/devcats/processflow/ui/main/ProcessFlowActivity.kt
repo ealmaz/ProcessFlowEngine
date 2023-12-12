@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.commitNow
 import com.design2.chili2.view.navigation_components.ChiliToolbar
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
@@ -41,8 +40,8 @@ import kg.devcats.processflow.model.component.FlowWebView
 import kg.devcats.processflow.model.component.WebViewFileTypes
 import kg.devcats.processflow.ui.camera.CameraType
 import kg.devcats.processflow.ui.camera.PhotoFlowFragment
-import kg.devcats.processflow.ui.input_form.InputFormFragment
 import kg.devcats.processflow.ui.input_field.ProcessFlowInputFieldFragment
+import kg.devcats.processflow.ui.input_form.InputFormFragment
 import kg.devcats.processflow.ui.status.ProcessStatusInfoFragment
 import kg.devcats.processflow.ui.status.VideoPromoStatusFragment
 import kg.devcats.processflow.ui.web_view.ProcessFlowLinksWebView
@@ -318,7 +317,9 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun openWebViewFromUrl(url: String) {
-        if (url.endsWith(".pdf")) navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true)
+        if (url.endsWith(".pdf")) navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true) {
+            ProcessFlowPdfWebViewFragment.create(true)
+        }
         else navigateTo(ProcessFlowLinksWebView::class.java, addToBackStack = true)
         setScreenData(currentScreen as Fragment, ProcessFlowScreenData(screenKey = WEB_VIEW, allowedAnswer = listOf(FlowWebView(id = "OPEN_LINK", url = url))))
     }

@@ -3,6 +3,7 @@ package kg.devcats.processflow.ui.web_view
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_MOVE
@@ -43,9 +44,12 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     override val buttonsLinearLayout: LinearLayout
         get() = vb.llButtons
 
+    private val canBackPress: Boolean
+        get() = arguments?.getBoolean(CAN_BACK_PRESS) ?: false
+
     override fun onResume() {
         super.onResume()
-        getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
+        if (canBackPress) getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
     }
 
     override fun onPause() {
@@ -138,6 +142,20 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     }
 
     override fun handleBackPress(): BackPressHandleState {
-        return BackPressHandleState.CALL_SUPER
+        return if (canBackPress) BackPressHandleState.CALL_SUPER
+        else BackPressHandleState.NOT_HANDLE
+    }
+
+    companion object {
+
+        const val CAN_BACK_PRESS = "canBackPress"
+
+        fun create(canBackPress: Boolean = false): ProcessFlowPdfWebViewFragment {
+            return ProcessFlowPdfWebViewFragment().apply {
+                arguments =  Bundle().apply {
+                    putBoolean(CAN_BACK_PRESS, canBackPress)
+                }
+            }
+        }
     }
 }

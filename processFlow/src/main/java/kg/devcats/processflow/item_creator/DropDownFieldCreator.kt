@@ -13,10 +13,10 @@ object DropDownFieldCreator : ValidatableItem() {
             tag = dropDownFieldInfo.fieldId
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 setMargins(
-                    0,
-                    resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_4dp),
-                    0,
-                    resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_4dp)
+                    resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp),
+                    resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_8dp),
+                    resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp),
+                    resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_8dp)
                 )
             }
             setHint(dropDownFieldInfo.label ?: "")
