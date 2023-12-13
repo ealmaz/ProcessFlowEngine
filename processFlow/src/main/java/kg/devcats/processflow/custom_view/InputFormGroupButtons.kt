@@ -18,6 +18,7 @@ import androidx.core.text.parseAsHtml
 import com.design2.chili2.extensions.dp
 import kg.devcats.processflow.R
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemGroupButtonsBinding
+import kg.devcats.processflow.extension.getThemeColor
 import kg.devcats.processflow.extension.handleUrlClicks
 import kg.devcats.processflow.model.input_form.ButtonType
 import kg.devcats.processflow.model.input_form.ChooseType
@@ -187,7 +188,7 @@ class InputFormGroupButtons @JvmOverloads constructor(
     }
 
     fun setupAsError() {
-        vb.llRoot.setBackgroundColor(context.getColor(com.design2.chili2.R.color.red_3))
+        vb.llRoot.setBackgroundColor(context.getThemeColor(com.design2.chili2.R.attr.ChiliInputViewBackgroundErrorColor))
     }
 
     fun clearError() {
