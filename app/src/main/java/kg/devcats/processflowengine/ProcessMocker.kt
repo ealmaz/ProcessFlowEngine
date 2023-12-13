@@ -488,6 +488,29 @@ object ProcessMocker {
             "responseItem":{
                 "formId":"passport_form2",
                 "formItems":[
+                    {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement_4235",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"CHECK_BOX",
+                            "options":[
+                                {
+                                    "id":"nda6",
+                                    "isHtmlText":"true",
+                                    "label":"вцувцута цу ацу ацу а цуа цуа цу а",
+                                    "isSelected":"true"
+                                }
+                            ]
+                        }
+                    },
                      {
                         "formItemType":"GROUP_BUTTON_FORM_ITEM",
                         "formItem":{
@@ -504,8 +527,8 @@ object ProcessMocker {
                             "options":[
                                 {
                                     "id":"nda6",
-                                    "isHtmlText":"true",
-                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://lk.o.kg/uploads/dogovor_ru.pdf\"> to terms and conditions of communication services",
+                                    "isHtmlText":"false",
+                                    "label":"By pressing Select number you confirm y consent: to terms and conditions of communication services",
                                     "isSelected":"true"
                                 }
                             ]

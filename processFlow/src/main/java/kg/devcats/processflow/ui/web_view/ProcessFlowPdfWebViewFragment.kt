@@ -55,6 +55,7 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     override fun onPause() {
         super.onPause()
         getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
+        if (canBackPress) getProcessFlowHolder().setToolbarTitle("")
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {

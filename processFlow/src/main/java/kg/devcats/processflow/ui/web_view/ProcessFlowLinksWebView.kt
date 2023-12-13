@@ -12,7 +12,10 @@ class ProcessFlowLinksWebView : ProcessFlowWebViewFragment() {
 
     override fun onPause() {
         super.onPause()
-        getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
+        getProcessFlowHolder().apply {
+            setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
+            setToolbarTitle("")
+        }
     }
 
     override fun handleBackPress(): BackPressHandleState {

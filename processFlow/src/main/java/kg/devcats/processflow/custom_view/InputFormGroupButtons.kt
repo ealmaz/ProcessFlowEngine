@@ -3,6 +3,7 @@ package kg.devcats.processflow.custom_view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
@@ -11,8 +12,10 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Switch
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
+import com.design2.chili2.extensions.dp
 import kg.devcats.processflow.R
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemGroupButtonsBinding
 import kg.devcats.processflow.extension.handleUrlClicks
@@ -26,17 +29,11 @@ class InputFormGroupButtons @JvmOverloads constructor(
 ) : LinearLayout(context, attributeSet),
     CompoundButton.OnCheckedChangeListener {
 
-    private val buttonsMarginPx: Int by lazy {
-        resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp)
-    }
-
     private val buttonsLayoutParams: LayoutParams by lazy {
         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            setMargins(buttonsMarginPx, buttonsMarginPx, buttonsMarginPx, 0)
+            setMargins(16.dp, 4.dp, 12.dp, 4.dp)
         }
     }
-
-    private var buttonsContainer: LinearLayout? = null
 
     private var onSelectedItemChanged: ((selectedId: List<String>) -> Unit)? = null
 
@@ -98,40 +95,25 @@ class InputFormGroupButtons @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     fun renderButtons(onLinkClick: ((String) -> Unit)? = null) {
-        buttonsContainer?.let { vb.flRoot.removeView(it) }
-        prepareContainer().let { container ->
-            buttons.forEach {
-                val button = getButton().apply {
-                    setOnCheckedChangeListener(this@InputFormGroupButtons)
-                    tag = it.id
-                    id = it.hashCode()
-                    if (it.isHtmlText == true) {
-                        text = it.label?.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)?.trimEnd()
-                        handleUrlClicks {
-                            this.isChecked = this.isChecked.not()
-                            onLinkClick?.invoke(it)
-                        }
-                    } else text = it.label
-                }
-                button.isChecked = it.isSelected ?: false
-                container.addView(button)
+        vb.llRoot.removeAllViews()
+        buttons.forEach {
+            val button = getButton().apply {
+                setOnCheckedChangeListener(this@InputFormGroupButtons)
+                tag = it.id
+                id = it.hashCode()
             }
-            val result = validateCheckedStatesAndGetResult()
-            onSelectedItemChanged?.invoke(result)
-            vb.flRoot.addView(container)
-        }
-    }
+            button.isChecked = it.isSelected ?: false
 
-    private fun prepareContainer(): LinearLayout {
-        return buttonsContainer ?: LinearLayout(context).apply {
-            orientation = VERTICAL
-            layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
-            buttonsContainer = this
+            val row = getRowContainer()
+            row.addView(button)
+            row.addView(getLabelView(it.label, it.isHtmlText, onLinkClick))
+            vb.llRoot.addView(row)
         }
+        val result = validateCheckedStatesAndGetResult()
+        onSelectedItemChanged?.invoke(result)
     }
 
     private fun getButton(): CompoundButton {
-
         return when (buttonType) {
             ButtonType.CHECK_BOX -> CheckBox(context).apply {
                 layoutParams = buttonsLayoutParams
@@ -140,9 +122,28 @@ class InputFormGroupButtons @JvmOverloads constructor(
                 layoutParams = buttonsLayoutParams
             }
             ButtonType.TOGGLE -> Switch(context).apply {
-                layoutDirection = View.LAYOUT_DIRECTION_RTL
                 layoutParams = buttonsLayoutParams
             }
+        }
+    }
+
+    private fun getLabelView(label: String?, isHtml: Boolean?, onLinkClick: ((String) -> Unit)?): TextView {
+        return TextView(context).apply {
+            layoutParams = LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f).apply {
+                setMargins(0, 4.dp, 16.dp, 4.dp)
+            }
+            if (isHtml == true) {
+                text = label?.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)?.trimEnd()
+                handleUrlClicks(onLinkClick)
+            } else text = label
+        }
+    }
+
+    private fun getRowContainer(): LinearLayout {
+        return LinearLayout(context).apply {
+            orientation = HORIZONTAL
+            layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            gravity = Gravity.CENTER_VERTICAL
         }
     }
 
@@ -169,7 +170,7 @@ class InputFormGroupButtons @JvmOverloads constructor(
     private fun validateCheckedStatesAndGetResult(): List<String> {
         val selectedIds = mutableListOf<String>()
         buttons.forEach {
-            buttonsContainer?.findViewWithTag<CompoundButton>(it.id)?.apply {
+            vb.llRoot.findViewWithTag<CompoundButton>(it.id)?.apply {
                 if (isChecked != it.isSelected) isChecked = it.isSelected ?: false
                 if (isChecked) selectedIds.add(it.id)
             }
@@ -186,10 +187,10 @@ class InputFormGroupButtons @JvmOverloads constructor(
     }
 
     fun setupAsError() {
-        vb.flRoot.setBackgroundColor(context.getColor(com.design2.chili2.R.color.red_3))
+        vb.llRoot.setBackgroundColor(context.getColor(com.design2.chili2.R.color.red_3))
     }
 
     fun clearError() {
-        vb.flRoot.setBackgroundColor(context.getColor(android.R.color.transparent))
+        vb.llRoot.setBackgroundColor(context.getColor(android.R.color.transparent))
     }
 }
