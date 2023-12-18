@@ -20,6 +20,7 @@ data class FlowInputField(
     val disabled: Boolean? = null,
     val numberOfLines: Int? = null,
     val maxLength: Int? = null,
+    val isOtpView: Boolean? = null,
 ): Serializable
 
 enum class InputFieldInputType {

@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import com.design2.chili2.extensions.setOnSingleClickListener
 import com.design2.chili2.view.input.BaseInputView
 import com.design2.chili2.view.input.MaskedInputView
+import com.design2.chili2.view.input.otp.OtpInputView
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
@@ -63,6 +64,19 @@ class ProcessFlowInputFieldFragment :
         state?.description?.let { vb.tvDescription.text = it }
     }
 
+    override fun renderOtpInputView(
+        inputFieldContainer: FrameLayout,
+        inputFieldInfo: FlowInputField
+    ): OtpInputView {
+        inputFieldInfo?.otpLength?.let { initSmsRetrieverApi(it) }
+        resultData = inputFieldInfo.fieldId to mutableListOf()
+        val inputView = super.renderOtpInputView(inputFieldContainer, inputFieldInfo.copy(label = null))
+        inputFieldInfo.enableActionAfterMills?.let {
+            setTimerForOtp(it, inputView, inputFieldInfo.additionalActionResolutionCode ?: "")
+        }
+        return inputView
+    }
+
     override fun renderInputField(
         inputFieldContainer: FrameLayout,
         inputFieldInfo: FlowInputField
@@ -109,6 +123,31 @@ class ProcessFlowInputFieldFragment :
         }.start()
     }
 
+    private fun setTimerForOtp(timeOut: Long, inputField: OtpInputView, actionId: String) {
+        countDownTimer = object : CountDownTimer(timeOut, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                try {
+                    inputField.apply {
+                        setActionTextEnabled(false)
+                        setActionText(getString(R.string.process_flow_repeat_after, millisUntilFinished.toTimeFromMillis))
+                    }
+                } catch (_: Throwable) {}
+            }
+
+            override fun onFinish() {
+                try {
+                    inputField.apply {
+                        setActionTextEnabled(true)
+                        setActionText(R.string.process_flow_resend)
+                        setOnActionClickListener {
+                            getProcessFlowHolder().commit(ProcessFlowCommit.OnButtonClick(FlowButton(actionId)))
+                        }
+                    }
+                } catch (_: Throwable) {}
+            }
+        }.start()
+    }
+
     override fun inputFieldChanged(result: List<String>, isValid: Boolean) {
         vb.btnConfirm.isEnabled = isValid
         if (isValid) {
@@ -144,6 +183,6 @@ class ProcessFlowInputFieldFragment :
     override fun onSmsReceived(code: String) {
         try {
             vb.inputContainer.findViewWithTag<MaskedInputView>(resultData!!.first)!!.setText(code)
-        } catch (ex: Throwable) {}
+        } catch (_: Throwable) {}
     }
 }

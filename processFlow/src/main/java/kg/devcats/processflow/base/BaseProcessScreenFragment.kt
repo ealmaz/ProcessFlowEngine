@@ -9,11 +9,13 @@ import androidx.viewbinding.ViewBinding
 import com.design2.chili2.R
 import com.design2.chili2.view.buttons.LoaderButton
 import com.design2.chili2.view.input.BaseInputView
+import com.design2.chili2.view.input.otp.OtpInputView
 import kg.devcats.processflow.base.process.ProcessFlowScreen
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.setMargins
 import kg.devcats.processflow.item_creator.FlowButtonCreator
 import kg.devcats.processflow.item_creator.InputFieldCreator
+import kg.devcats.processflow.item_creator.OtpInputViewCreator
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.ScreenState
@@ -59,7 +61,10 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
         allowedAnswers?.forEach { allowedAnswer ->
             when (allowedAnswer) {
                 is FlowButton -> buttonsLinearLayout?.let { renderButton(it, allowedAnswer) }
-                is FlowInputField -> inputFieldContainer?.let { renderInputField(it, allowedAnswer) }
+                is FlowInputField -> {
+                    if (allowedAnswer.isOtpView == true) inputFieldContainer?.let { renderOtpInputView(it, allowedAnswer) }
+                    else inputFieldContainer?.let { renderInputField(it, allowedAnswer) }
+                }
             }
         }
     }
@@ -78,6 +83,13 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
             requestInputFocus()
             showSystemKeyboard()
         }
+    }
+
+    //OtpInputView
+    open fun renderOtpInputView(inputFieldContainer: FrameLayout, inputFieldInfo: FlowInputField): OtpInputView {
+        val otpView = OtpInputViewCreator.create(requireContext(), inputFieldInfo, ::inputFieldChanged)
+        inputFieldContainer.addView(otpView)
+        return otpView.apply { requestFocusAndShowKeyboard() }
     }
 
     open fun inputFieldChanged(result: List<String>, isValid: Boolean) {}

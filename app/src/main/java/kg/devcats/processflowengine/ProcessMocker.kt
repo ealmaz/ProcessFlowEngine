@@ -318,8 +318,10 @@ object ProcessMocker {
                        "value":"true"
                     }
                 ],
-                "enableActionAfterMills":1000,
-                "additionalActionResolutionCode":"RESEND_OTP"
+                "enableActionAfterMills":10000,
+                "additionalActionResolutionCode":"RESEND_OTP",
+                "isOtpView":"true",
+                "errorMessage":"Неверный код"
              }
           }
        ]

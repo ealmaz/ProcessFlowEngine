@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         vb.btnStartAgreemrnt.setOnClickListener { openFlow("passport_form") }
         vb.btnStartOferta.setOnClickListener { openFlow("WEB_VIEW_OFERTA") }
         vb.btnStartCallWebView.setOnClickListener { openFlow("VIDEO_IDENT_BUTTON") }
+        vb.btnStartOtp.setOnClickListener { openFlow("OTP") }
 
 
         vb.swTheme.setOnCheckedChangeListener { buttonView, isChecked ->
