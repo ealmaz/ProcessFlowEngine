@@ -75,7 +75,7 @@ class DropDownFieldBottomSheet(
     }
 
     private fun setAdapterFilteredItems() {
-        itemsAdapter.setItems(optionsList.filter { it.label?.contains(filterText, true) ?: false })
+        itemsAdapter.setItems(optionsList.filter { it.label?.contains(filterText.trim(), true) ?: false })
     }
 
     private fun expandBottomSheet() {
