@@ -30,6 +30,7 @@
     <string name="process_flow_photo_instruction_passport_front">Сделайте фото лицевой стороны паспорта</string>
     <string name="process_flow_photo_instruction_passport_back">Сделайте фото оборотной стороны паспорта</string>
     <string name="process_flow_photo_instruction_selfie">Сделайте селфи-фото держа паспорт перед собой</string>
+    <string name="process_flow_photo_instruction_simple_selfie">Сделайте селфи-фото</string>
 
     <string name="process_flow_exit_video_call">Вы уверены, что хотите завершить звонок?</string>
 </resources>

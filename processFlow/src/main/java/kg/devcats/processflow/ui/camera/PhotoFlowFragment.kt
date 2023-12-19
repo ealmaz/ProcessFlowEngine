@@ -25,6 +25,7 @@ import kg.devcats.processflow.ui.camera.instruction.BasePhotoInstructionFragment
 import kg.devcats.processflow.ui.camera.instruction.photo.PassportBackInstructionFragment
 import kg.devcats.processflow.ui.camera.instruction.photo.PassportFrontInstructionFragment
 import kg.devcats.processflow.ui.camera.instruction.photo.SelfiePhotoInstructionFragment
+import kg.devcats.processflow.ui.camera.instruction.photo.SimpleSelfiePhotoInstructionFragment
 import kg.nurtelecom.text_recognizer.RecognizedMrz
 import kg.nurtelecom.text_recognizer.photo_capture.OverlayType
 import kg.nurtelecom.text_recognizer.photo_capture.PhotoRecognizerActivity
@@ -103,6 +104,8 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
             CameraType.FRONT_PASSPORT -> PassportFrontInstructionFragment()
             CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> PassportBackInstructionFragment()
             CameraType.SELFIE -> SelfiePhotoInstructionFragment()
+            CameraType.SIMPLE_SELFIE_PHOTO -> SimpleSelfiePhotoInstructionFragment()
+            CameraType.SIMPLE_CAMERA -> { startPhotoFlow(); return }
         }
         childFragmentManager.commit {
             replace(R.id.container, fragment)
@@ -134,6 +137,8 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
             CameraType.FRONT_PASSPORT -> ContentTypes.PASSPORT_FRONT_PHOTO
             CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> ContentTypes.PASSPORT_BACK_PHOTO
             CameraType.SELFIE -> ContentTypes.SELFIE_PHOTO
+            CameraType.SIMPLE_SELFIE_PHOTO -> ContentTypes.SIMPLE_SELFIE_PHOTO
+            CameraType.SIMPLE_CAMERA -> ContentTypes.SIMPLE_CAMERA
         }
     }
 
@@ -151,7 +156,8 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 
     private fun getCameraSettings(): CameraSettings {
         return when (cameraType) {
-            CameraType.SELFIE -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
+            CameraType.SELFIE, CameraType.SIMPLE_SELFIE_PHOTO -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
+            CameraType.SIMPLE_CAMERA -> CameraSettings(cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
             else -> CameraSettings(description = getString(R.string.process_flow_photo_capture_passport_front_description), headerText = getString(R.string.process_flow_photo_capture_passport_front_title))
         }
     }
@@ -168,10 +174,14 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
         return when(childFragmentManager.findFragmentById(R.id.container)) {
             is BasePhotoInstructionFragment -> BackPressHandleState.NOT_HANDLE
             is SelfiePhotoInstructionFragment -> BackPressHandleState.NOT_HANDLE
+            is SimpleSelfiePhotoInstructionFragment -> BackPressHandleState.NOT_HANDLE
             is PhotoConfirmationFragment -> BackPressHandleState.NOT_HANDLE
             else -> {
-                childFragmentManager.popBackStack()
-                BackPressHandleState.HANDLED
+                if (cameraType == CameraType.SIMPLE_CAMERA) BackPressHandleState.NOT_HANDLE
+                else {
+                    childFragmentManager.popBackStack()
+                    BackPressHandleState.HANDLED
+                }
             }
         }
     }
@@ -194,5 +204,5 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 }
 
 enum class CameraType {
-    FRONT_PASSPORT, BACK_PASSPORT_WITH_RECOGNIZER, SELFIE
+    FRONT_PASSPORT, BACK_PASSPORT_WITH_RECOGNIZER, SELFIE, SIMPLE_CAMERA, SIMPLE_SELFIE_PHOTO
 }

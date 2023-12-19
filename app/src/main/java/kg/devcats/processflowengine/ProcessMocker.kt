@@ -100,6 +100,8 @@ object ProcessMocker {
 """.trimIndent()
         )
 
+
+
         put(
             "PASSPORT_FRONT_PHOTO2", """
     {
@@ -143,8 +145,84 @@ object ProcessMocker {
 """.trimIndent()
         )
 
+
         put(
             "SELFIE_PHOTO", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"SIMPLE_SELFIE_PHOTO",
+       "screen_state":{},
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"SIMPLE_SELFIE_PHOTO",
+                "text":"Далее",
+                "style":"ACCENT"
+             }
+          }
+       ]
+    }
+""".trimIndent()
+        )
+
+
+        put(
+            "SIMPLE_SELFIE_PHOTO", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"STATUS_INFO",
+       "screen_state":{
+          "status":"COMPLETE",
+          "app_bar_text":"Дополнительные сведения",
+          "description":"Откуда у вас, простого смертного,\nстолько денег? Пожалуйста, \nпредоставьте документ о доходах."
+       },
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"make_simple_photo",
+                "text":"Приложить фото",
+                "style":"ACCENT",
+                "properties":{
+                   "isEnabled":true
+                }
+             }
+          }   
+       ]
+    }
+""".trimIndent()
+        )
+
+
+        put(
+            "make_simple_photo", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"SIMPLE_CAMERA",
+       "screen_state":{},
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"SIMPLE_CAMERA",
+                "text":"Далее",
+                "style":"ACCENT"
+             }
+          }
+       ]
+    }
+""".trimIndent()
+        )
+
+        put(
+            "SIMPLE_CAMERA", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",

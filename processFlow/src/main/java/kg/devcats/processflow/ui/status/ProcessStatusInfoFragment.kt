@@ -55,7 +55,7 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
 
             StateScreenStatus.COMPLETE -> AnimationData(R.raw.process_flow_lottie_anim_done)
             StateScreenStatus.REJECTED -> AnimationData(R.raw.process_flow_lottie_anim_reject)
-            StateScreenStatus.WARNING -> AnimationData(R.raw.process_flow_lottie_anim_reject)
+            StateScreenStatus.WARNING -> AnimationData(R.raw.process_flow_lottie_anim_reject) //todo
         }
         lottieAnimationHandler?.addToAnimationQueue(animationData)
     }

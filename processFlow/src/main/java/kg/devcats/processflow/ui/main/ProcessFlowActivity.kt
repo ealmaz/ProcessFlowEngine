@@ -28,6 +28,8 @@ import kg.devcats.processflow.model.ScreenKey.INPUT_OTP
 import kg.devcats.processflow.model.ScreenKey.PASSPORT_BACK_PHOTO
 import kg.devcats.processflow.model.ScreenKey.PASSPORT_FRONT_PHOTO
 import kg.devcats.processflow.model.ScreenKey.SELFIE_PHOTO
+import kg.devcats.processflow.model.ScreenKey.SIMPLE_CAMERA
+import kg.devcats.processflow.model.ScreenKey.SIMPLE_SELFIE_PHOTO
 import kg.devcats.processflow.model.ScreenKey.STATUS_INFO
 import kg.devcats.processflow.model.ScreenKey.VIDEO_CALL
 import kg.devcats.processflow.model.ScreenKey.VIDEO_CALL_PROMO
@@ -179,6 +181,9 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             PASSPORT_BACK_PHOTO -> openCameraFlow(CameraType.BACK_PASSPORT_WITH_RECOGNIZER, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             SELFIE_PHOTO -> openCameraFlow(CameraType.SELFIE, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             INPUT_FORM -> openInputForm(data)
+            SIMPLE_CAMERA -> openCameraFlow(CameraType.SIMPLE_CAMERA, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
+            SIMPLE_SELFIE_PHOTO -> openCameraFlow(CameraType.SIMPLE_SELFIE_PHOTO, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
+            else -> {}
         }
     }
 
