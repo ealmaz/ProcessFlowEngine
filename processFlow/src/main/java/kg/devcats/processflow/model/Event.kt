@@ -1,6 +1,6 @@
 package kg.devcats.processflow.model
 
-import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
+import kg.devcats.processflow.model.input_form.Option
 
 
 open class Event {

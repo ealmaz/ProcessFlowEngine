@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="@color/gray_2">
+
+    <View
+        android:layout_width="@dimen/view_40dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/padding_8dp"
+        android:layout_marginBottom="@dimen/padding_8dp"
+        android:background="@drawable/chili_cell_rounded_background" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/chili_bg_rounded_bottom_sheet"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:clipChildren="false">
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_44dp"
+            android:layout_marginHorizontal="@dimen/padding_16dp"
+            android:layout_marginBottom="@dimen/padding_16dp"
+            android:padding="@dimen/padding_8dp"
+            android:background="@drawable/chili_bg_input_view_rounded">
+
+            <ImageView
+                android:layout_width="@dimen/padding_24dp"
+                android:layout_height="@dimen/padding_24dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/padding_4dp"
+                android:layout_marginEnd="@dimen/padding_16dp"
+                android:layout_marginBottom="@dimen/padding_4dp"
+                android:src="@drawable/chili_ic_search" />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:focusable="true"
+                android:background="@android:color/transparent"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
+                android:textCursorDrawable="@drawable/chili_input_view_cursor_background"
+                style="@style/Chili.H8.Primary" />
+        </LinearLayout>
+
+        <com.design2.chili2.view.container.shadow_layout.ShadowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ShadowLayoutStyle"
+            android:layout_marginHorizontal="@dimen/padding_16dp"
+            android:layout_marginBottom="@dimen/padding_44dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.design2.chili2.view.container.shadow_layout.ShadowLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

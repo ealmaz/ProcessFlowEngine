@@ -769,6 +769,7 @@ object ProcessMocker {
                         "formItem":{
                             "fieldId":"CHOOSE_REGION",
                             "chooseType":"SINGLE",
+                            "parentFieldId":"CHOOSE_REGION_1",
                             "label":"Регион",
                             "isNeedToFetchOptions":true,
                             "validations":[

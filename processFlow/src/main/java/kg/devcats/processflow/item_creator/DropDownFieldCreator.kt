@@ -2,8 +2,7 @@ package kg.devcats.processflow.item_creator
 
 import android.content.Context
 import android.widget.LinearLayout
-import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
-import kg.devcats.processflow.custom_view.DropDownInputField
+import kg.devcats.processflow.custom_view.drop_down_input_field.DropDownInputField
 import kg.devcats.processflow.model.input_form.DropDownFieldInfo
 
 object DropDownFieldCreator : ValidatableItem() {
@@ -21,7 +20,7 @@ object DropDownFieldCreator : ValidatableItem() {
             }
             setHint(dropDownFieldInfo.label ?: "")
             setupViews(dropDownFieldInfo, onSelectionChanged)
-            dropDownFieldInfo.options?.let { options = it.map { Option(it.id, it.label ?: "", it.isSelected ?: false) } }
+            dropDownFieldInfo.options?.let { options = it }
         }
     }
 

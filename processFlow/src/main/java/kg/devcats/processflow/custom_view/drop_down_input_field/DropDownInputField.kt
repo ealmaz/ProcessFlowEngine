@@ -1,18 +1,17 @@
-package kg.devcats.processflow.custom_view
+package kg.devcats.processflow.custom_view.drop_down_input_field
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.getColor
-import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.Option
-import com.design2.chili2.view.modals.bottom_sheet.serach_bottom_sheet.SearchSelectorBottomSheet
-import kg.devcats.processflow.R
+import kg.devcats.processflow.custom_view.drop_down_input_field.bottom_sheet.DropDownFieldBottomSheet
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemDropDownBinding
 import kg.devcats.processflow.extension.getThemeColor
 import kg.devcats.processflow.item_creator.DropDownFieldCreator
 import kg.devcats.processflow.model.input_form.ChooseType
 import kg.devcats.processflow.model.input_form.DropDownFieldInfo
+import kg.devcats.processflow.model.input_form.Option
 
 class DropDownInputField @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null) : LinearLayout(context, attributeSet) {
 
@@ -37,7 +36,7 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
         this.setOnClickListener {
             clearError()
             if (options.isEmpty()) return@setOnClickListener
-            val bs = createSearchBottomSheet(context, dropDownFieldInfo.chooseType != ChooseType.MULTIPLE)
+            val bs = DropDownFieldBottomSheet(context, options, dropDownFieldInfo.chooseType != ChooseType.MULTIPLE)
             bs.setOnDismissListener { onBottomSheetDismiss() }
             bs.show()
         }
@@ -59,14 +58,6 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
         }
     }
 
-    private fun createSearchBottomSheet(context: Context, isSingleSelection: Boolean): SearchSelectorBottomSheet {
-        return SearchSelectorBottomSheet.Builder()
-            .setIsHeaderVisible(true)
-            .setIsSearchAvailable(true)
-            .setIsSingleSelection(isSingleSelection)
-            .build(context, options)
-    }
-
     fun clearSelected() {
         options.forEach { it.isSelected = false }
         onBottomSheetDismiss()
@@ -77,8 +68,8 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
         val selectedValues = mutableListOf<String>()
         val selectedIds = mutableListOf<String>()
         options.forEach {
-            if (it.isSelected) {
-                selectedValues.add(it.value)
+            if (it.isSelected == true) {
+                selectedValues.add(it.label ?: "")
                 selectedIds.add(it.id)
             }
         }

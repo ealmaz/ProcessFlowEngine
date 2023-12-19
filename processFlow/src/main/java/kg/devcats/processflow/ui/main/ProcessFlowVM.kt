@@ -201,8 +201,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     fun fetchOptions(formId: String, parentSelectedOptionId: String = "") {
         disposable.add(_repository.fetchOptions(formId, parentSelectedOptionId)
             .subscribe({
-                val options = it.map { Option(it.id, it.label ?: "", it.isSelected ?: false) }
-                triggerEvent(Event.AdditionalOptionsFetched(formId, options))
+                triggerEvent(Event.AdditionalOptionsFetched(formId, it))
             }, {}))
     }
 
