@@ -1,6 +1,7 @@
 package kg.devcats.processflow.ui.camera
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.system.ErrnoException
 import android.system.OsConstants
@@ -19,6 +20,7 @@ import androidx.camera.core.Preview
 import androidx.camera.core.SurfaceOrientedMeteringPointFactory
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toRect
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleOwner
 import com.design2.chili2.extensions.setOnSingleClickListener
@@ -49,6 +51,8 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
     private val cameraSetting: CameraSettings by lazy {
         (arguments?.getSerializable(ARG_CAMERA_SETTING) as? CameraSettings) ?: CameraSettings()
     }
+
+    private var passportOverlayView: PassportCardOverlay? = null
 
     override fun inflateViewBinging() = ProcessFlowFragmentPhotoCaptureBinding.inflate(layoutInflater)
 
@@ -91,6 +95,7 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
                 setHeaderText(cameraSetting.headerText)
                 setTitle(cameraSetting.title)
                 setDescription(cameraSetting.description)
+                passportOverlayView = this
             }
             CameraOverlayType.RECTANGLE_FRAME -> RectangleOverlay(requireContext())
         }
@@ -215,12 +220,18 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
 
     private fun cropImage(original: File): File? {
         return try {
-            PictureUtil.compressImage(original.absolutePath, 80)
+            PictureUtil.compressImage(original.absolutePath, 80, getImageCropRect(), resources.displayMetrics.heightPixels)
         } catch (e: Exception) {
             original
         } catch (e: OutOfMemoryError) {
             null
         }
+    }
+
+    private fun getImageCropRect(): Rect? {
+        return if (cameraSetting.cameraOverlayType == CameraOverlayType.PASSPORT_FRAME) {
+            passportOverlayView?.getPassportMaskRectF()?.toRect()
+        } else null
     }
 
     private fun showLoading() {}

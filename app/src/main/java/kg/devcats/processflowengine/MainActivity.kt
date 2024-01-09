@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb.root)
-        vb.btnStart.setOnClickListener { openFlow("start") }
+        vb.btnStart.setOnClickListener { openFlow(ProcessFlowApiImpl.FIRST_STEP_KEY) }
         vb.btnStartForm.setOnClickListener { openFlow("OTP_INPUT") }
         vb.btnStartAgreemrnt.setOnClickListener { openFlow("passport_form") }
         vb.btnStartOferta.setOnClickListener { openFlow("WEB_VIEW_OFERTA") }
