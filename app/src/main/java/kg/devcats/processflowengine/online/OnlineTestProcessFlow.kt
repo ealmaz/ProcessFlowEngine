@@ -1,7 +1,5 @@
 package kg.devcats.processflowengine.online
 
-import kg.devcats.processflow.R
-import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
 import kg.devcats.processflow.repository.ProcessFlowRepository
 import kg.devcats.processflow.ui.main.ProcessFlowActivity
