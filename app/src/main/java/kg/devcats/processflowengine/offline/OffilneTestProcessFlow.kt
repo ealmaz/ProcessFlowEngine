@@ -1,4 +1,4 @@
-package kg.devcats.processflowengine
+package kg.devcats.processflowengine.offline
 
 import android.content.Context
 import kg.devcats.processflow.model.Event
@@ -7,7 +7,7 @@ import kg.devcats.processflow.repository.ProcessFlowRepository
 import kg.devcats.processflow.ui.main.ProcessFlowActivity
 import kg.devcats.processflow.ui.main.ProcessFlowVM
 
-class TestProcessFlow : ProcessFlowActivity<TestVM>()  {
+class OfflineTestProcessFlow : ProcessFlowActivity<TestVM>()  {
 
     override fun setupViews() {
         super.setupViews()

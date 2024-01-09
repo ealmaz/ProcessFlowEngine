@@ -1,4 +1,4 @@
-package kg.devcats.processflowengine
+package kg.devcats.processflowengine.offline
 
 import android.util.Log
 import com.google.gson.Gson
@@ -7,7 +7,6 @@ import kg.devcats.processflow.model.input_form.Option
 import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
-import kg.devcats.processflow.model.request.FlowStatusResponse
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
 import java.util.concurrent.TimeUnit
 

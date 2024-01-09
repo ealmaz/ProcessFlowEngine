@@ -1,4 +1,4 @@
-package kg.devcats.processflowengine
+package kg.devcats.processflowengine.offline
 
 import java.util.Date
 

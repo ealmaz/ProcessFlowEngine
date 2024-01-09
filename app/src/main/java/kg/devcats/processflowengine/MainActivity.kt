@@ -1,11 +1,13 @@
 package kg.devcats.processflowengine
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import kg.devcats.processflowengine.databinding.ActivityMainBinding
+import kg.devcats.processflowengine.offline.OfflineTestProcessFlow
+import kg.devcats.processflowengine.offline.ProcessFlowApiImpl
+import kg.devcats.processflowengine.online.OnlineFlowConfiguratorActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         vb.btnStartOferta.setOnClickListener { openFlow("WEB_VIEW_OFERTA") }
         vb.btnStartCallWebView.setOnClickListener { openFlow("VIDEO_IDENT_BUTTON") }
         vb.btnStartOtp.setOnClickListener { openFlow("OTP") }
+        vb.btnStartReal.setOnClickListener { startActivity(Intent(this, OnlineFlowConfiguratorActivity::class.java)) }
 
 
         vb.swTheme.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openFlow(startPoint: String) {
-        val i = Intent(this, TestProcessFlow::class.java)
+        val i = Intent(this, OfflineTestProcessFlow::class.java)
         ProcessFlowApiImpl.FIRST_STEP_KEY = startPoint
         startActivity(i)
     }

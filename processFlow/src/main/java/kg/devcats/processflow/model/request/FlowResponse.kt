@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kg.devcats.processflow.model.component.FlowMessage
 import kg.devcats.processflow.model.common.FlowStatus
 import kg.devcats.processflow.model.common.ScreenState
+import java.io.Serializable
 
 data class FlowResponse(
     @SerializedName("process_id")
@@ -20,4 +21,4 @@ data class FlowResponse(
     val allowedAnswer: List<FlowAllowedAnswer>? = null,
     @SerializedName("definition_key")
     val processType: String? = null,
-)
+): Serializable

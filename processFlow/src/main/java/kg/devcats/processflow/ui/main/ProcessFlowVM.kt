@@ -171,7 +171,13 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     }
 
     protected open fun handleError(ex: Throwable) {
-        getState()
+        if (processFlowId != null) getState()
+        else {
+            val message = ex.message
+            val event = if (message.isNullOrBlank()) Event.NotificationResId(R.string.process_flow_unexpected_error)
+            else Event.Notification(message)
+            triggerEvent(event)
+        }
     }
 
     protected open fun dispatchValuesToLiveData(response: FlowResponse): Single<FlowResponse> {

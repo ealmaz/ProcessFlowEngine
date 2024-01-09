@@ -223,7 +223,9 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         vm.startProcessFlow(getProcessFlowStartParams())
     }
 
-    open fun getProcessFlowStartParams(): Map<String, Any> = mapOf()
+    open fun getProcessFlowStartParams(): Map<String, Any> = mapOf(
+        "process_type" to processType
+    )
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
         val file = File(commit.filePath)
