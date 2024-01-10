@@ -30,7 +30,7 @@
     <string name="process_flow_photo_instruction_passport_front">Паспорттун алдыңкы бетин сүрөткө тартыңыз</string>
     <string name="process_flow_photo_instruction_passport_back">Паспорттун арткы бетин сүрөткө тартыңыз</string>
     <string name="process_flow_photo_instruction_selfie">Паспортту алдыңызга кармап туруп селфи-сүрөт тартыңыз</string>
-    <string name="process_flow_photo_instruction_simple_selfie">Селфи-сүрөт тартыңыз</string>
+    <string name="process_flow_photo_instruction_simple_selfie">Жарык жерден камерага түз карап, сүрөткө көз айнексиз түшүңүз</string>
 
     <string name="process_flow_exit_video_call">Чалууну бүтүрөрүңүз аныкпы?</string>
 </resources>

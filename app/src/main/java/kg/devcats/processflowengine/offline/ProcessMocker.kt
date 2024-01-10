@@ -103,7 +103,7 @@ object ProcessMocker {
 
 
         put(
-            "PASSPORT_FRONT_PHOTO2", """
+            "PASSPORT_FRONT_PHOTO", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
@@ -124,7 +124,7 @@ object ProcessMocker {
         )
 
         put(
-            "PASSPORT_FRONT_PHOTO", """
+            "PASSPORT_BACK_PHOTO", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",

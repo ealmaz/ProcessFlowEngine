@@ -1,5 +1,7 @@
 package kg.devcats.processflow.ui.camera
 
+import android.widget.ImageView
+import android.widget.ImageView.ScaleType
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -15,6 +17,7 @@ import java.io.File
 class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportCardConfirmationBinding>() {
 
     private val filePath by lazy { arguments?.getString(ARG_FILE_PATH) ?: "" }
+    private val scaleType: ImageView.ScaleType by lazy { (arguments?.getSerializable(ARG_FILE_SCALE_TYPE) as? ImageView.ScaleType) ?: ImageView.ScaleType.CENTER_CROP }
 
     override fun inflateViewBinging() = ProcessFlowFragmentPassportCardConfirmationBinding.inflate(layoutInflater)
 
@@ -26,6 +29,7 @@ class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportCardCo
         vb.btnConfirm.setOnSingleClickListener {
             (parentFragment as PhotoFlowFragment).onPhotoConfirmed(filePath)
         }
+        vb.ivCapturedPhoto.scaleType = scaleType
         loadImage(filePath)
     }
 
@@ -58,10 +62,14 @@ class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportCardCo
     companion object {
 
         const val ARG_FILE_PATH = "ARG_FILE_PATH"
+        const val ARG_FILE_SCALE_TYPE = "ARG_FILE_SCALE_TYPE"
 
-        fun create(filePath: String?): PhotoConfirmationFragment {
+        fun create(filePath: String?, scaleType: ScaleType? = null): PhotoConfirmationFragment {
             return PhotoConfirmationFragment().apply {
-                arguments = bundleOf(ARG_FILE_PATH to filePath)
+                arguments = bundleOf(
+                    ARG_FILE_PATH to filePath,
+                    ARG_FILE_SCALE_TYPE to scaleType
+                )
             }
         }
     }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector.LENS_FACING_FRONT
@@ -114,9 +115,14 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 
     fun onPhotoCaptured(filePath: String?) {
         childFragmentManager.commit {
-            replace(R.id.container, PhotoConfirmationFragment.create(filePath), PHOTO_CONFIRM_FRAGMENT_TAG)
+            replace(R.id.container, PhotoConfirmationFragment.create(filePath, getScaleType()), PHOTO_CONFIRM_FRAGMENT_TAG)
             addToBackStack(null)
         }
+    }
+
+    private fun getScaleType(): ImageView.ScaleType? {
+        return if (cameraType in listOf(CameraType.BACK_PASSPORT_WITH_RECOGNIZER,  CameraType.FRONT_PASSPORT)) ImageView.ScaleType.CENTER_INSIDE
+        else null
     }
 
     private fun onPermissionDeny() {

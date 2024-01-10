@@ -30,7 +30,7 @@
     <string name="process_flow_photo_instruction_passport_front">Take a photo of the front side of the passport</string>
     <string name="process_flow_photo_instruction_passport_back">Take a photo of the back of the passport</string>
     <string name="process_flow_photo_instruction_selfie">Take a selfie with your passport in front of you</string>
-    <string name="process_flow_photo_instruction_simple_selfie">Take a selfie</string>
+    <string name="process_flow_photo_instruction_simple_selfie">Make a photo without glasses, with good lighting and looking straight to camera</string>
 
     <string name="process_flow_exit_video_call">Are you sure you want to end the call?</string>
 </resources>
