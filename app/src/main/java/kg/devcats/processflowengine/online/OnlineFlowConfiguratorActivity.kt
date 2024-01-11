@@ -20,7 +20,7 @@ class OnlineFlowConfiguratorActivity : AppCompatActivity() {
 
         val prefs = TestProcessPrefs(this)
 
-        vb.baseUrl.setText(prefs.base_url.takeIf { it.isNotBlank() } ?: "https://devproxy.o.kg/api/flow-screen/")
+        vb.baseUrl.setText(prefs.base_url.takeIf { it.isNotBlank() } ?: "")
         vb.baseUrl.setupClearTextButton()
 
         vb.etToken.setText(prefs.token)

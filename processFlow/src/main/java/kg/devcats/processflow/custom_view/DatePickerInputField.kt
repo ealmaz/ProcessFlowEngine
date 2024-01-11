@@ -23,11 +23,11 @@ class DatePickerInputField @JvmOverloads constructor(context: Context, attribute
     private val vb: ProcessFlowViewFormItemDatePickerBinding = ProcessFlowViewFormItemDatePickerBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun setupViews(datePickerFieldInfo: DatePickerFieldInfo, onSetNewValue: (List<String>, Boolean) -> Unit) {
-        setDate(datePickerFieldInfo.value)
+        this.onNewValueListener = onSetNewValue
         datePickerFieldInfo.hint?.let { setHelperText(it) }
         datePickerFieldInfo.placeHolder?.let { setHint(it) }
         datePickerFieldInfo.label?.let { setLabel(it) }
-        this.onNewValueListener = onSetNewValue
+        setDate(datePickerFieldInfo.value)
     }
 
     fun setHint(hint: String) {

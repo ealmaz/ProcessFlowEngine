@@ -3,6 +3,7 @@ package kg.devcats.processflow.ui.web_view
 import android.os.Bundle
 import android.view.View
 import android.webkit.JavascriptInterface
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.base.process.BackPressHandleState
@@ -19,6 +20,9 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     JsBridgeInterface {
 
     private var webViewId: String = ""
+
+    override val buttonsLinearLayout: LinearLayout?
+        get() = vb.llButtons
 
     override val unclickableMask: View?
         get() = null

@@ -103,7 +103,7 @@ object ProcessMocker {
 
 
         put(
-            "PASSPORT_FRONT_PHOTO", """
+            "PASSPORT_FRONT_PHOTO2", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
@@ -124,7 +124,7 @@ object ProcessMocker {
         )
 
         put(
-            "PASSPORT_BACK_PHOTO", """
+            "PASSPORT_FRONT_PHOTO", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",
@@ -471,7 +471,8 @@ object ProcessMocker {
                                     "type":"REQUIRED",
                                     "value":"true"
                                 }
-                            ]
+                            ],
+                            "value":"Prefilled value"
                         }
                     },
                     {
@@ -485,7 +486,8 @@ object ProcessMocker {
                                     "type":"REQUIRED",
                                     "value":"true"
                                 }
-                            ]
+                            ],
+                            "value":"Prefilled value"
                         }
                     },
                     {
@@ -511,7 +513,8 @@ object ProcessMocker {
                                     "type":"REQUIRED",
                                     "value":"true"
                                 }
-                            ]
+                            ],
+                            "value":"123123123"
                         }
                     },
                     {
@@ -525,20 +528,15 @@ object ProcessMocker {
                                     "type":"REQUIRED",
                                     "value":"true"
                                 }
-                            ]
+                            ],
+                            "value":"ID1234567"
                         }
                     },
                     {
                         "formItemType":"DATE_PICKER_FORM_ITEM",
                         "formItem":{
                             "fieldId":"PASSPORT_date",
-                            "label":"Дата",
-                            "validations":[
-                                {
-                                    "type":"REQUIRED",
-                                    "value":"true"
-                                }
-                            ]
+                            "label":"Дата"
                         }
                     }
                 ]
@@ -787,13 +785,7 @@ object ProcessMocker {
                             "parentFieldId":"CHOOSE_REGION",
                             "chooseType":"SINGLE",
                             "label":"Город",
-                            "isNeedToFetchOptions":true,
-                            "validations":[
-                                {
-                                    "type":"REQUIRED",
-                                    "value":"true"
-                                }
-                            ]
+                            "isNeedToFetchOptions":true
                         }
                     }, 
                     {
@@ -806,7 +798,8 @@ object ProcessMocker {
                                     "type":"REQUIRED",
                                     "value":"true"
                                 }
-                            ]
+                            ],
+                            "value":"Prefilled value"
                         }
                     },
                     {
@@ -819,14 +812,16 @@ object ProcessMocker {
                                     "type":"REQUIRED",
                                     "value":"true"
                                 }
-                            ]
+                            ],
+                            "value":"123"
                         }
                     },
                     {
                         "formItemType":"INPUT_FIELD",
                         "formItem":{
                             "fieldId":"apparment_number",
-                            "placeholder":"Номер квартиры"
+                            "placeholder":"Номер квартиры",
+                            "value":"123"
                         }
                     },
                     {

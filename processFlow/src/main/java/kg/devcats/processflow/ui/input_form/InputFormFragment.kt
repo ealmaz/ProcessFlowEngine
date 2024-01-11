@@ -81,6 +81,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
+        result.clear()
         data?.allowedAnswer?.filterIsInstance<InputForm>()?.firstOrNull()?.let {
             currentFormId = it.formId
             setupInputForm(it)

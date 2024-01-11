@@ -12,11 +12,29 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintTop_toTopOf="parent">
 
-        <kg.devcats.processflow.custom_view.AppWebView
-            android:id="@+id/webView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:isScrollContainer="true" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <kg.devcats.processflow.custom_view.AppWebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:isScrollContainer="true" />
+
+            <LinearLayout
+                android:id="@+id/ll_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/padding_16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </LinearLayout>
+
     </com.design2.chili2.view.common.ChiliSwipeToRefreshView>
 
     <ProgressBar
