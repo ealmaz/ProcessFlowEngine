@@ -5,64 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?ChiliSurfaceBackground"
+    android:background="?ChiliScreenBackground"
     tools:context=".MainActivity">
 
-    <com.design2.chili2.view.container.ExpandableContainer
-        android:id="@+id/buttons"
+    <com.design2.chili2.view.navigation_components.ChiliToolbar
+        android:id="@+id/toolbar"
+        app:title="@string/app_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:isExpanded="false"
-        android:layout_marginTop="@dimen/padding_16dp"
-        app:isNeedToSaveExpandedState="true"
-        app:title="Open page">
-        <Button
-            android:id="@+id/btn_start_form"
-            style="@style/Chili.ButtonStyle.NewAdditional"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_16dp"
-            android:layout_marginTop="@dimen/padding_16dp"
-            android:layout_marginHorizontal="@dimen/padding_16dp"
-            android:text="Open form"/>
-
-        <Button
-            android:id="@+id/btn_start_agreemrnt"
-            style="@style/Chili.ButtonStyle.NewAdditional"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_16dp"
-            android:layout_marginHorizontal="@dimen/padding_16dp"
-            android:text="Open agreement"/>
-
-        <Button
-            android:id="@+id/btn_start_oferta"
-            style="@style/Chili.ButtonStyle.NewAdditional"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_16dp"
-            android:layout_marginHorizontal="@dimen/padding_16dp"
-            android:text="Open pdf oferta"/>
-
-        <Button
-            android:id="@+id/btn_start_call_web_view"
-            style="@style/Chili.ButtonStyle.NewAdditional"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_16dp"
-            android:layout_marginHorizontal="@dimen/padding_16dp"
-            android:text="Open call webView"/>
-
-        <Button
-            android:id="@+id/btn_start_otp"
-            style="@style/Chili.ButtonStyle.NewAdditional"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_16dp"
-            android:layout_marginHorizontal="@dimen/padding_16dp"
-            android:text="Open Input Otp Field"/>
-
-    </com.design2.chili2.view.container.ExpandableContainer>
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/btn_start"
