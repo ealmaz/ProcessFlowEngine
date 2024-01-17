@@ -6,6 +6,12 @@
     android:background="?ChiliSurfaceBackground"
     android:orientation="vertical">
 
+    <com.design2.chili2.view.navigation_components.ChiliToolbar
+        android:id="@+id/toolbar"
+        app:title="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.design2.chili2.view.input.BaseInputView
         android:id="@+id/base_url"
         android:layout_width="match_parent"

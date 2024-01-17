@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 object ProcessFlowApiImpl : ProcessFlowNetworkApi {
 
     var FIRST_STEP_KEY = "start"
-    private const val REQUESTS_DELAY = 300L
+    var REQUESTS_DELAY = 300L
 
     override fun startFlow(request: Map<String, Any>): Single<FlowResponse> {
         Log.d("SAMPLE_TESTER", "startFlow: request: $request")

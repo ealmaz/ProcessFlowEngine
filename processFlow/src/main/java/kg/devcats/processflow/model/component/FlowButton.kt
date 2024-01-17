@@ -10,6 +10,10 @@ data class FlowButton(
     val properties: Map<String, String>? = null,
 ) : Serializable
 
+enum class ButtonProperties(val propertyName: String) {
+    ENABLED("enabled")
+}
+
 
 enum class FlowButtonStyle {
     ACCENT, SECONDARY

@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.design2.chili2.extensions.setOnSingleClickListener
 import com.design2.chili2.view.buttons.LoaderButton
+import kg.devcats.processflow.model.component.ButtonProperties
 import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.model.component.FlowButtonStyle
 
@@ -37,6 +38,7 @@ object FlowButtonCreator {
         buttonInfo.apply {
             text?.let { button.setText(it) }
             disabled.let { button.isEnabled = !it  }
+            properties?.get(ButtonProperties.ENABLED.propertyName)?.let { button.isEnabled = it.toBooleanStrictOrNull() ?: true }
         }
     }
 
@@ -44,6 +46,7 @@ object FlowButtonCreator {
         buttonInfo.apply {
             text?.let { button.text = it }
             disabled.let { button.isEnabled = !it  }
+            properties?.get(ButtonProperties.ENABLED.propertyName)?.let { button.isEnabled = it.toBooleanStrictOrNull() ?: true }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.design2.chili2.extensions.setOnSingleClickListener
+import com.design2.chili2.view.navigation_components.ChiliToolbar
 import kg.devcats.processflowengine.online.OnlineTestProcessFlow.Companion.EXTRA_BASE_URL
 import kg.devcats.processflowengine.online.OnlineTestProcessFlow.Companion.EXTRA_PROCESS_TYPE
 import kg.devcats.processflowengine.common.TestProcessPrefs
@@ -17,6 +18,8 @@ class OnlineFlowConfiguratorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         vb = ActivityOnlineFlowConfiguratorBinding.inflate(layoutInflater)
         setContentView(vb.root)
+
+        vb.toolbar.initToolbar(ChiliToolbar.Configuration(this, centeredTitle = true, isNavigateUpButtonEnabled = true))
 
         val prefs = TestProcessPrefs(this)
 

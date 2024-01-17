@@ -463,6 +463,23 @@ object ProcessMocker {
                     {
                         "formItemType":"INPUT_FIELD",
                         "formItem":{
+                            "fieldId":"PHONE",
+                            "label":"Phone",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "value":"996700000697",
+                            "mask":"996 XXX XXX XXX",
+                            "maskSymbols":[" "],
+                            "inputType":"NUMBER"
+                        }
+                    },
+                    {
+                        "formItemType":"INPUT_FIELD",
+                        "formItem":{
                             "fieldId":"NAME",
                             "label":"Имя",
                             "placeholder":"Имя",
