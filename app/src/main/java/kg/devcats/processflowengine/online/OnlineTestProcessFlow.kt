@@ -10,7 +10,7 @@ import kg.devcats.processflowengine.online.util.RetrofitCreator
 class OnlineTestProcessFlow : ProcessFlowActivity<OnlineTestVM>()  {
 
     private val prefs: TestProcessPrefs by lazy { TestProcessPrefs(this) }
-    override val vm: OnlineTestVM by lazy { OnlineTestVM(RetrofitCreator.create(prefs.token, (intent.getStringExtra(EXTRA_BASE_URL) ?: "https://devproxy.o.kg/api/flow-screen/")).create(ProcessFlowNetworkApi::class.java)) }
+    override val vm: OnlineTestVM by lazy { OnlineTestVM(RetrofitCreator.create(prefs.token, (intent.getStringExtra(EXTRA_BASE_URL) ?: "")).create(ProcessFlowNetworkApi::class.java)) }
     override val processType: String get() = intent.getStringExtra(EXTRA_PROCESS_TYPE) ?: ""
 
     override fun setupViews() {
