@@ -18,3 +18,4 @@ local.properties
 /.idea/deploymentTargetDropDown.xml
 /.idea/migrations.xml
 /.idea/*
+/app/*
