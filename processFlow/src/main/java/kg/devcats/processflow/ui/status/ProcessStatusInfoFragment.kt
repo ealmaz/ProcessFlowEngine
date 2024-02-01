@@ -3,9 +3,13 @@ package kg.devcats.processflow.ui.status
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.databinding.ProcessFlowFragmentStatusInfoBinding
+import kg.devcats.processflow.extension.gone
+import kg.devcats.processflow.extension.toTimeFromMillis
+import kg.devcats.processflow.extension.visible
 import kg.devcats.processflow.model.common.ScreenState
 import kg.devcats.processflow.model.common.StateScreenStatus
 import kg.devcats.processflow.util.AnimationData
@@ -30,8 +34,11 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
         super.renderScreenState(state)
         state?.run {
             vb.tvTitle.text = title ?: ""
+            vb.tvTitle.isVisible = title != null
             vb.tvSubtitle.text = description ?: ""
+            vb.tvSubtitle.isVisible = description != null
             status?.let { setupLottieAnimationByStatus(it) }
+            setupTimer(state)
         }
     }
 
@@ -58,5 +65,16 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
             StateScreenStatus.WARNING -> AnimationData(R.raw.process_flow_lottie_anim_reject) //todo
         }
         lottieAnimationHandler?.addToAnimationQueue(animationData)
+    }
+
+    private fun setupTimer(state: ScreenState?) {
+        state?.timer?.let {
+            val timerText = state?.timerText ?: ""
+            vb.tvTimer.visible()
+            setupTimerFor(
+                it,
+                { vb.tvTimer.gone() },
+                { vb.tvTimer.text = "$timerText ${it.toTimeFromMillis}" })
+        }
     }
 }

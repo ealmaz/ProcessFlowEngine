@@ -30,8 +30,6 @@ import kg.devcats.processflow.util.SmsBroadcastReceiver
 class ProcessFlowInputFieldFragment :
     BaseProcessScreenFragment<ProcessFlowFragmentInputFieldBinding>(), SmsBroadcastReceiver.Listener {
 
-    private var countDownTimer: CountDownTimer? = null
-
     private var receiver: SmsBroadcastReceiver? = null
 
     private var isConfirmClicked = false
@@ -101,51 +99,43 @@ class ProcessFlowInputFieldFragment :
     }
 
     private fun setTimer(timeOut: Long, inputField: BaseInputView, actionId: String) {
-        countDownTimer = object : CountDownTimer(timeOut, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                try {
-                    inputField.setActionWithColor(
-                        getString(R.string.process_flow_repeat_after, millisUntilFinished.toTimeFromMillis),
-                        requireContext().getThemeColor(com.design2.chili2.R.attr.ChiliValueTextColor))
-                } catch (_: Throwable) {}
-            }
-
-            override fun onFinish() {
-                try {
-                    inputField.setActionWithColor(
-                        getString(R.string.process_flow_resend),
-                        requireContext().getThemeColor(com.design2.chili2.R.attr.ChiliComponentButtonTextColorActive)
-                    ) {
-                        getProcessFlowHolder().commit(ProcessFlowCommit.OnButtonClick(FlowButton(actionId)))
-                    }
-                } catch (_: Throwable) {}
-            }
-        }.start()
+        setupMillsTimerFor(timeOut, {
+            try {
+                inputField.setActionWithColor(
+                    getString(R.string.process_flow_resend),
+                    requireContext().getThemeColor(com.design2.chili2.R.attr.ChiliComponentButtonTextColorActive)
+                ) {
+                    getProcessFlowHolder().commit(ProcessFlowCommit.OnButtonClick(FlowButton(actionId)))
+                }
+            } catch (_: Throwable) {}
+        }, {
+            try {
+                inputField.setActionWithColor(
+                    getString(R.string.process_flow_repeat_after, it.toTimeFromMillis),
+                    requireContext().getThemeColor(com.design2.chili2.R.attr.ChiliValueTextColor))
+            } catch (_: Throwable) {}
+        })
     }
 
     private fun setTimerForOtp(timeOut: Long, inputField: OtpInputView, actionId: String) {
-        countDownTimer = object : CountDownTimer(timeOut, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                try {
-                    inputField.apply {
-                        setActionTextEnabled(false)
-                        setActionText(getString(R.string.process_flow_repeat_after, millisUntilFinished.toTimeFromMillis))
+        setupMillsTimerFor(timeOut, {
+            try {
+                inputField.apply {
+                    setActionTextEnabled(true)
+                    setActionText(R.string.process_flow_resend)
+                    setOnActionClickListener {
+                        getProcessFlowHolder().commit(ProcessFlowCommit.OnButtonClick(FlowButton(actionId)))
                     }
-                } catch (_: Throwable) {}
-            }
-
-            override fun onFinish() {
-                try {
-                    inputField.apply {
-                        setActionTextEnabled(true)
-                        setActionText(R.string.process_flow_resend)
-                        setOnActionClickListener {
-                            getProcessFlowHolder().commit(ProcessFlowCommit.OnButtonClick(FlowButton(actionId)))
-                        }
-                    }
-                } catch (_: Throwable) {}
-            }
-        }.start()
+                }
+            } catch (_: Throwable) {}
+        }, {
+            try {
+                inputField.apply {
+                    setActionTextEnabled(false)
+                    setActionText(getString(R.string.process_flow_repeat_after, it.toTimeFromMillis))
+                }
+            } catch (_: Throwable) {}
+        })
     }
 
     override fun inputFieldChanged(result: List<String>, isValid: Boolean) {
@@ -176,8 +166,6 @@ class ProcessFlowInputFieldFragment :
         try { context?.unregisterReceiver(receiver) }
         catch (_: Exception) {}
         super.onDestroyView()
-        countDownTimer?.cancel()
-        countDownTimer = null
     }
 
     override fun onSmsReceived(code: String) {

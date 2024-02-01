@@ -1,5 +1,6 @@
 package kg.devcats.processflow.base
 
+import android.os.CountDownTimer
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -19,12 +20,16 @@ import kg.devcats.processflow.item_creator.OtpInputViewCreator
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.ScreenState
+import kg.devcats.processflow.model.component.ButtonProperties
 import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.component.FlowMessage
 import kg.devcats.processflow.model.component.FlowRetryInfo
+import java.util.Date
 
 abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), ProcessFlowScreen {
+
+    protected var countDownTimers = mutableListOf<CountDownTimer?>()
 
     protected var selectedButtonId: String? = null
 
@@ -51,6 +56,7 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
+        resetTimers()
         parseAllowedAnswers(data?.allowedAnswer)
         renderScreenState(data?.state)
         renderMessages(data?.message)
@@ -107,6 +113,11 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
         buttonsContainer.addView(
             FlowButtonCreator.create(requireContext(), buttonInfo, ::onButtonClick).apply {
                 setMargins(R.dimen.padding_16dp, R.dimen.padding_8dp, R.dimen.padding_16dp, R.dimen.padding_0dp)
+                setupTimerFor(
+                    buttonInfo.properties?.get(ButtonProperties.ENABLE_AT.propertyName)?.toLongOrNull(),
+                    { this.isEnabled = true },
+                    { this.isEnabled = false }
+                )
             }
         )
     }
@@ -120,5 +131,33 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
 
     open fun onLinkClick(link: String) {
         getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(link))
+    }
+
+
+    protected fun setupTimerFor(timestamp: Long?, onFinish: () -> Unit, onTick: (Long) -> Unit) {
+        if (timestamp == null) return
+        val mills = timestamp - Date().time
+        setupMillsTimerFor(mills, onFinish, onTick)
+    }
+
+    protected fun setupMillsTimerFor(mills: Long?, onFinish: () -> Unit, onTick: (Long) -> Unit) {
+        if (mills == null) return
+        if (mills <= 0) return onFinish.invoke()
+        countDownTimers += object : CountDownTimer(mills, 1000) {
+            override fun onTick(millisUntilFinished: Long) { onTick(millisUntilFinished) }
+            override fun onFinish() { onFinish() }
+        }.apply {
+            start()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        resetTimers()
+    }
+
+    protected fun resetTimers() {
+        countDownTimers.forEach { it?.cancel() }
+        countDownTimers.clear()
     }
 }

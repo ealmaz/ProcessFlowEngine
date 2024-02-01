@@ -30,7 +30,8 @@
         android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lav_status" />
+        app:layout_constraintTop_toBottomOf="@+id/lav_status"
+        tools:text="Title"/>
 
     <TextView
         android:id="@+id/tv_subtitle"
@@ -40,9 +41,24 @@
         android:layout_marginTop="@dimen/padding_16dp"
         android:gravity="center"
         android:textAppearance="@style/Chili.H7.Primary"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:visibility="visible"
+        tools:text="Subtitle"/>
+
+    <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_8dp"
+        android:gravity="center"
+        android:textAppearance="@style/Chili.H7.Primary"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
 
 
     <LinearLayout
