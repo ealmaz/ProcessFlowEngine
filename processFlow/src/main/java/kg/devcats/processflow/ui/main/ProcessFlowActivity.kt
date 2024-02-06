@@ -72,6 +72,8 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     abstract val processType: String
 
+    open val possibleProcessTypesToRestore: List<String> by lazy { listOf(processType) }
+
     protected val currentScreen: ProcessFlowScreen?
         get() = (supportFragmentManager.findFragmentById(R.id.fl_container)) as? ProcessFlowScreen
 
@@ -216,7 +218,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun handleInitCommit() {
-        vm.restoreActiveFlow(processType)
+        vm.restoreActiveFlow(possibleProcessTypesToRestore)
     }
 
     open fun handleStartProcessFlow() {

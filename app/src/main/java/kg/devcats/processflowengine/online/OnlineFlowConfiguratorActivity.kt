@@ -9,6 +9,7 @@ import kg.devcats.processflowengine.online.OnlineTestProcessFlow.Companion.EXTRA
 import kg.devcats.processflowengine.online.OnlineTestProcessFlow.Companion.EXTRA_PROCESS_TYPE
 import kg.devcats.processflowengine.common.TestProcessPrefs
 import kg.devcats.processflowengine.databinding.ActivityOnlineFlowConfiguratorBinding
+import kg.devcats.processflowengine.online.OnlineTestProcessFlow.Companion.EXTRA_POSSIBLE_PROCESS_FLOWS
 
 class OnlineFlowConfiguratorActivity : AppCompatActivity() {
 
@@ -32,6 +33,9 @@ class OnlineFlowConfiguratorActivity : AppCompatActivity() {
         vb.etProcessFlowId.setText(prefs.process_type)
         vb.etProcessFlowId.setupClearTextButton()
 
+        vb.etPossibleProcessFlowId.setText(prefs.possibleProcessIds.takeIf { it.isNotBlank() } ?: "")
+        vb.etPossibleProcessFlowId.setupClearTextButton()
+
         vb.btnStart.setOnSingleClickListener {
             val i = Intent(this, OnlineTestProcessFlow::class.java)
 
@@ -46,6 +50,11 @@ class OnlineFlowConfiguratorActivity : AppCompatActivity() {
                 prefs.process_type = it
                 i.putExtra(EXTRA_PROCESS_TYPE, it)
             }
+            vb.etPossibleProcessFlowId.getInputText().let {
+                prefs.possibleProcessIds = it
+                i.putExtra(EXTRA_POSSIBLE_PROCESS_FLOWS, it)
+            }
+
             startActivity(i)
         }
     }

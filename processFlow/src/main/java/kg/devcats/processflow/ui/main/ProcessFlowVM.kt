@@ -47,14 +47,14 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         return processFlow
     }
 
-    fun restoreActiveFlow(processType: String) = disposed {
+    fun restoreActiveFlow(possibleProcessTypes: List<String>) = disposed {
         _repository
-            .findActiveProcess()
+            .findActiveProcess(possibleProcessTypes)
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
             .map { updateProcessInfo(it) }
             .map {
-                if (it.processType == processType) it
+                if (it.processType in possibleProcessTypes) it
                 else throw Exception("Process flow not exist")
             }
             .flatMap { dispatchValuesToLiveData(it) }

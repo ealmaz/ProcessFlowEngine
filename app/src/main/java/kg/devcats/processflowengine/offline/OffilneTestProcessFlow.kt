@@ -21,7 +21,6 @@ class OfflineTestProcessFlow : ProcessFlowActivity<TestVM>()  {
     override val processType: String
         get() = "TEST_TYPE"
 
-
     override fun getProcessFlowStartParams(): Map<String, String> {
         return mapOf("identificationNumber" to "123456678")
     }

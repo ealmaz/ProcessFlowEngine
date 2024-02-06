@@ -17,8 +17,10 @@ import retrofit2.http.Query
 
 interface ProcessFlowNetworkApi {
 
-    @GET("v2/process/info/find-running-primary")
-    fun findActiveProcess(): Single<FlowResponse?>
+    @GET("v3/process/info/find-running-primary")
+    fun findActiveProcess(
+        @Query("flow_types") possibleProcessTypes: String
+    ): Single<FlowResponse?>
 
     @POST("v2/process/start")
     @JvmSuppressWildcards

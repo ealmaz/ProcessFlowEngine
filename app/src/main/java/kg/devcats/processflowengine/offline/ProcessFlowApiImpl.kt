@@ -22,7 +22,7 @@ object ProcessFlowApiImpl : ProcessFlowNetworkApi {
         ).delay(REQUESTS_DELAY, TimeUnit.MILLISECONDS)
     }
 
-    override fun findActiveProcess(): Single<FlowResponse?> {
+    override fun findActiveProcess(possibleProcessTypes: String): Single<FlowResponse?> {
         Log.d("SAMPLE_TESTER", "getFlowStatus: Response null")
         return Single.error(java.lang.NullPointerException())
     }

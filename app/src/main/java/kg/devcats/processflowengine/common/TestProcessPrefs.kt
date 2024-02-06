@@ -40,4 +40,14 @@ class TestProcessPrefs(context: Context) {
                 putString("token", value)
             }
         }
+
+    var possibleProcessIds: String
+        get() {
+            return pref.getString("possibleProcessIds", "") ?: ""
+        }
+        set(value) {
+            pref.edit {
+                putString("possibleProcessIds", value)
+            }
+        }
 }

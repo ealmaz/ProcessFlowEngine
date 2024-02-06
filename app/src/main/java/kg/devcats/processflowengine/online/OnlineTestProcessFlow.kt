@@ -13,6 +13,8 @@ class OnlineTestProcessFlow : ProcessFlowActivity<OnlineTestVM>()  {
     override val vm: OnlineTestVM by lazy { OnlineTestVM(RetrofitCreator.create(prefs.token, (intent.getStringExtra(EXTRA_BASE_URL) ?: "")).create(ProcessFlowNetworkApi::class.java)) }
     override val processType: String get() = intent.getStringExtra(EXTRA_PROCESS_TYPE) ?: ""
 
+    override val possibleProcessTypesToRestore: List<String> get() = intent.getStringExtra(EXTRA_POSSIBLE_PROCESS_FLOWS)?.split(" ") ?: listOf(processType)
+
     override fun setupViews() {
         super.setupViews()
     }
@@ -29,6 +31,7 @@ class OnlineTestProcessFlow : ProcessFlowActivity<OnlineTestVM>()  {
     companion object {
         const val EXTRA_PROCESS_TYPE = "EXTRA_PROCESS_TYPE"
         const val EXTRA_BASE_URL = "EXTRA_BASE_URL"
+        const val EXTRA_POSSIBLE_PROCESS_FLOWS = "EXTRA_POSSIBLE_PROCESS_FLOWS"
     }
 }
 
