@@ -31,3 +31,14 @@ object ContentTypes {
     const val INPUT_FIELD_CONTENT = "INPUT_FIELD_CONTENT"
     const val WEB_VIEW_RESULT = "WEB_VIEW_RESULT"
 }
+
+object AppActionUrlConstants {
+    const val APP_ACTION_URL_TYPE = "APP_ACTION"
+
+//    Params
+    const val PARAM_NAME_ACTION = "action"
+    const val PARAM_NAME_ADDITIONAL_PARAM = "param"
+
+//    Values
+    const val ACTION_TYPE_BUTTON_CLICK = "BUTTON_CLICK"
+}

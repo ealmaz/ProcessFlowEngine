@@ -1,13 +1,16 @@
 package kg.devcats.processflow.ui.status
 
-import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.databinding.ProcessFlowFragmentStatusInfoBinding
 import kg.devcats.processflow.extension.gone
+import kg.devcats.processflow.extension.handleUrlClicks
+import kg.devcats.processflow.extension.loadImage
 import kg.devcats.processflow.extension.toTimeFromMillis
 import kg.devcats.processflow.extension.visible
 import kg.devcats.processflow.model.common.ScreenState
@@ -18,11 +21,6 @@ import kg.devcats.processflow.util.LottieAnimationHandler
 open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFragmentStatusInfoBinding>() {
 
     protected var lottieAnimationHandler: LottieAnimationHandler? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        createLottieHandler()
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     override val unclickableMask: View?
         get() = vb.unclickableMask
@@ -35,9 +33,15 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
         state?.run {
             vb.tvTitle.text = title ?: ""
             vb.tvTitle.isVisible = title != null
-            vb.tvSubtitle.text = description ?: ""
+            if (isDescriptionHtml == true) {
+                vb.tvSubtitle.text = description?.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)?.trimEnd()
+                vb.tvSubtitle.handleUrlClicks {
+                    vb.tvSubtitle.invalidate()
+                    onLinkClick(it)
+                }
+            } else vb.tvSubtitle.text = description ?: ""
             vb.tvSubtitle.isVisible = description != null
-            status?.let { setupLottieAnimationByStatus(it) }
+            setupStatusIcon(status, statusImageUrl)
             setupTimer(state)
         }
     }
@@ -49,22 +53,40 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
         super.onDestroyView()
     }
 
-    private fun createLottieHandler() {
-        lottieAnimationHandler = LottieAnimationHandler(vb.lavStatus)
+    private fun getOrCreateLottieAnimationHandler(): LottieAnimationHandler {
+        return lottieAnimationHandler ?: LottieAnimationHandler(vb.lavStatus).also {
+            lottieAnimationHandler = it
+        }
     }
 
-    private fun setupLottieAnimationByStatus(stateScreenStatus: StateScreenStatus) {
-        val animationData = when (stateScreenStatus) {
-            StateScreenStatus.IN_PROCESS -> AnimationData(
-                R.raw.process_flow_lottie_anim_loop,
-                isInfiniteRepeat = true
-            )
-
-            StateScreenStatus.COMPLETE -> AnimationData(R.raw.process_flow_lottie_anim_done)
-            StateScreenStatus.REJECTED -> AnimationData(R.raw.process_flow_lottie_anim_reject)
-            StateScreenStatus.WARNING -> AnimationData(R.raw.process_flow_lottie_anim_reject) //todo
+    private fun setupStatusIcon(stateScreenStatus: StateScreenStatus?, statusImageUrl: String?) {
+        vb.lavStatus.gone()
+        vb.ivStatus.gone()
+        when {
+            statusImageUrl != null -> vb.ivStatus.apply {
+                loadImage(statusImageUrl)
+                visible()
+            }
+            stateScreenStatus == StateScreenStatus.IN_PROCESS -> {
+                getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(
+                    R.raw.process_flow_lottie_anim_loop,
+                    isInfiniteRepeat = true
+                ))
+                vb.lavStatus.visible()
+            }
+            stateScreenStatus == StateScreenStatus.COMPLETE -> {
+                getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(R.raw.process_flow_lottie_anim_done))
+                vb.lavStatus.visible()
+            }
+            stateScreenStatus == StateScreenStatus.REJECTED -> {
+                getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(R.raw.process_flow_lottie_anim_reject))
+                vb.lavStatus.visible()
+            }
+            stateScreenStatus == StateScreenStatus.WARNING -> {
+                getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(R.raw.process_flow_lottie_anim_reject))
+                vb.lavStatus.visible()
+            }
         }
-        lottieAnimationHandler?.addToAnimationQueue(animationData)
     }
 
     private fun setupTimer(state: ScreenState?) {

@@ -4,5 +4,5 @@ enum class StateScreenStatus {
     IN_PROCESS,
     COMPLETE,
     REJECTED,
-    WARNING
+    WARNING,
 }

@@ -1,5 +1,8 @@
 package kg.devcats.processflowengine.online
 
+import android.widget.Toast
+import kg.devcats.processflow.model.common.Content
+import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
 import kg.devcats.processflow.repository.ProcessFlowRepository
 import kg.devcats.processflow.ui.main.ProcessFlowActivity
@@ -26,7 +29,13 @@ class OnlineTestProcessFlow : ProcessFlowActivity<OnlineTestVM>()  {
         }
     }
 
-
+    override fun resolveButtonClickCommit(button: FlowButton?, additionalContent: List<Content>?) {
+        when (button?.buttonId) {
+            "OPEN_AGREEMENT_DOCUMETS" -> Toast.makeText(this, "Open documents fragment", Toast.LENGTH_SHORT).show()
+            "EXIT_NAVIGATE_TO_WALLET_MAIN" -> finish()
+            else -> super.resolveButtonClickCommit(button, additionalContent)
+        }
+    }
 
     companion object {
         const val EXTRA_PROCESS_TYPE = "EXTRA_PROCESS_TYPE"

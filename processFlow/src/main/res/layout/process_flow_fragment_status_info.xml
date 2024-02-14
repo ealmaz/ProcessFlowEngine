@@ -6,18 +6,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lav_status"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <FrameLayout
+        android:id="@+id/fl_image_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
-        android:contentDescription="@null"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_cacheComposition="true"
-        app:lottie_enableMergePathsForKitKatAndAbove="true" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_status"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:lottie_cacheComposition="true"
+            app:lottie_enableMergePathsForKitKatAndAbove="true" />
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_title"
@@ -30,7 +47,7 @@
         android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lav_status"
+        app:layout_constraintTop_toBottomOf="@+id/fl_image_container"
         tools:text="Title"/>
 
     <TextView

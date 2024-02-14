@@ -19,6 +19,10 @@ import kg.devcats.processflow.databinding.ProcessFlowActivityProcessFlowBinding
 import kg.devcats.processflow.extension.negativeButton
 import kg.devcats.processflow.extension.positiveButton
 import kg.devcats.processflow.extension.showDialog
+import kg.devcats.processflow.model.AppActionUrlConstants.ACTION_TYPE_BUTTON_CLICK
+import kg.devcats.processflow.model.AppActionUrlConstants.APP_ACTION_URL_TYPE
+import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ACTION
+import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_PARAM
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
@@ -51,6 +55,7 @@ import kg.devcats.processflow.ui.web_view.ProcessFlowPdfWebViewFragment
 import kg.devcats.processflow.ui.web_view.ProcessFlowWebViewFragment
 import kg.devcats.processflow.ui.web_view.VideoCallWebViewFragment
 import java.io.File
+import java.lang.Exception
 
 abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), ProcessFlowHolder {
 
@@ -326,10 +331,16 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun openWebViewFromUrl(url: String) {
-        if (url.endsWith(".pdf")) navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true) {
-            ProcessFlowPdfWebViewFragment.create(true)
+        when {
+            url.startsWith(APP_ACTION_URL_TYPE) -> {
+                handleCustomUrlActionClick(url)
+                return
+            }
+            url.endsWith(".pdf") -> navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true) {
+                ProcessFlowPdfWebViewFragment.create(true)
+            }
+            else -> navigateTo(ProcessFlowLinksWebView::class.java, addToBackStack = true)
         }
-        else navigateTo(ProcessFlowLinksWebView::class.java, addToBackStack = true)
         setScreenData(currentScreen as Fragment, ProcessFlowScreenData(screenKey = WEB_VIEW, allowedAnswer = listOf(FlowWebView(id = "OPEN_LINK", url = url))))
     }
 
@@ -347,6 +358,20 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun openInputField(data: ProcessFlowScreenData) {
         navigateTo(ProcessFlowInputFieldFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
+    }
+
+    //Example: "APP_ACTION?action=BUTTON_CLICK&param=OPEN_AGREEMENT_DOCUMETS\"
+    open fun handleCustomUrlActionClick(url: String) {
+        try {
+            val pairs = url.subSequence(url.indexOf("?") + 1, url.length).split("&")
+            val params = mutableMapOf<String, String>()
+            pairs.forEach {
+                params[it.substring(0, it.indexOf("="))] = it.substring(it.indexOf("=") + 1, it.length)
+            }
+            when(params[PARAM_NAME_ACTION]!!) {
+                ACTION_TYPE_BUTTON_CLICK -> commit(ProcessFlowCommit.OnButtonClick(FlowButton(buttonId = params[PARAM_NAME_ADDITIONAL_PARAM]!!)))
+            }
+        } catch (_: Exception) {}
     }
 
     open fun closeCurrentFlowActivity() {

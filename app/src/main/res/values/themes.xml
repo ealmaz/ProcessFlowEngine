@@ -3,6 +3,8 @@
     <style name="Base.Theme.ProcessFlowEngine" parent="ChiliDesignTheme">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="colorAccent">@color/magenta_1</item>
     </style>
 
     <style name="Theme.ProcessFlowEngine" parent="Base.Theme.ProcessFlowEngine" />

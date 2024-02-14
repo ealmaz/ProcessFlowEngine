@@ -2,9 +2,10 @@ package kg.devcats.processflow.ui.input_field
 
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import com.design2.chili2.extensions.setOnSingleClickListener
 import com.design2.chili2.view.input.BaseInputView
@@ -16,8 +17,10 @@ import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.databinding.ProcessFlowFragmentInputFieldBinding
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.getThemeColor
+import kg.devcats.processflow.extension.handleUrlClicks
 import kg.devcats.processflow.extension.hideKeyboard
 import kg.devcats.processflow.extension.toTimeFromMillis
+import kg.devcats.processflow.extension.visible
 import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.common.Content
@@ -59,7 +62,21 @@ class ProcessFlowInputFieldFragment :
 
     override fun renderScreenState(state: ScreenState?) {
         super.renderScreenState(state)
-        state?.description?.let { vb.tvDescription.text = it }
+        state?.run {
+            title?.let { vb.tvTitle.apply {
+                text = it
+                visible()
+            }}
+            description?.let { vb.tvDescription.text = it }
+            bottomDescriptionHtml?.let { vb.tvBottomDescription.apply {
+                text = it.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)?.trimEnd()
+                visible()
+                handleUrlClicks {
+                    vb.tvBottomDescription.invalidate()
+                    onLinkClick(it)
+                }
+            } }
+        }
     }
 
     override fun renderOtpInputView(
