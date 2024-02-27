@@ -322,9 +322,10 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     open fun openWebView(data: ProcessFlowScreenData) {
         val webView = data.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()
+        val fileType = webView?.properties?.fileType
         when {
             webView?.id == WEB_VIEW_VIDEO_IDENT -> navigateTo(VideoCallWebViewFragment::class.java, checkPrevFragment = false)
-            webView?.properties?.fileType == WebViewFileTypes.PDF -> navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false)
+            fileType == WebViewFileTypes.PDF || fileType == WebViewFileTypes.BASE_64 -> navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false)
             else -> navigateTo(ProcessFlowWebViewFragment::class.java)
         }
         setScreenData(currentScreen as Fragment, data)
