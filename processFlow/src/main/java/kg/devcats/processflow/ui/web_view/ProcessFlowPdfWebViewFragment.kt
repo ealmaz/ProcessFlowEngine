@@ -4,9 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
-import android.view.MotionEvent
-import android.view.MotionEvent.ACTION_MOVE
+import android.os.Environment
+import android.util.Base64
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -21,15 +20,15 @@ import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.databinding.ProcessFlowFragmentPdfViewerBinding
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.gone
-import kg.devcats.processflow.model.ContentTypes
-import kg.devcats.processflow.model.ProcessFlowCommit
+import kg.devcats.processflow.extension.visible
 import kg.devcats.processflow.model.ProcessFlowScreenData
-import kg.devcats.processflow.model.common.Content
 import kg.devcats.processflow.model.component.FlowWebView
-import kg.devcats.processflow.ui.web_view.ProcessFlowWebViewFragment.Companion.MANUAL_CLOSE_WEB_VIEW_STATUS
+import kg.devcats.processflow.model.component.WebViewFileTypes
 import java.io.File
+import java.io.FileOutputStream
 
-class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragmentPdfViewerBinding>(), DownloadFile.Listener {
+class ProcessFlowPdfWebViewFragment :
+    BaseProcessScreenFragment<ProcessFlowFragmentPdfViewerBinding>(), DownloadFile.Listener {
 
     private lateinit var remotePDFViewPager: RemotePDFViewPager
     private var adapter: PDFPagerAdapter? = null
@@ -47,6 +46,11 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     private val canBackPress: Boolean
         get() = arguments?.getBoolean(CAN_BACK_PRESS) ?: false
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        deleteExternalStorageIfExist()
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun onResume() {
         super.onResume()
         if (canBackPress) getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
@@ -60,10 +64,18 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
-        data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let {
-            it.url?.let { loadPdfUrl(it) }
-            webViewId = it.id
-            isShareEnabled = (it.properties?.isShareEnabled) ?: false
+        data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let { flow ->
+            isShareEnabled = (flow.properties?.isShareEnabled) ?: false
+            flow.url?.let { loadFileByType(flow.properties?.fileType, it) }
+            webViewId = flow.id
+        }
+    }
+
+    private fun loadFileByType(fileType: WebViewFileTypes?, fileSource: String) {
+        when (fileType) {
+            WebViewFileTypes.PDF -> loadPdfUrl(url = fileSource)
+            WebViewFileTypes.BASE_64 -> parsePdfFromBase64(pdfBase64 = fileSource)
+            else -> {}
         }
     }
 
@@ -91,7 +103,6 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
 
     override fun onFailure(e: Exception?) {
         vb.pbLoader.gone()
-        showFailureException()
     }
 
     override fun onProgressUpdate(progress: Int, total: Int) {}
@@ -112,6 +123,48 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
         getProcessFlowHolder().setupToolbarEndIcon(null, null)
         adapter?.close()
         super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        deleteExternalStorageIfExist()
+        super.onDestroyView()
+    }
+
+    private fun getExternalStorage(): File {
+        return when (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            true -> File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), FILE_DIRECTORY_NAME)
+            else -> File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), FILE_DIRECTORY_NAME)
+        }
+    }
+
+    private fun parsePdfFromBase64(pdfBase64: String) {
+        loadPdfUrl(" ")
+        vb.pbLoader.visible()
+        val mediaStorageDir = getExternalStorage()
+        mediaStorageDir.mkdir()
+        val file = File(mediaStorageDir.path + File.separator + System.currentTimeMillis() + ".pdf")
+        file.createNewFile()
+        val pdfAsBytes: ByteArray = Base64.decode(pdfBase64, 0)
+        val outputStream = FileOutputStream(file, false)
+        try {
+            outputStream.write(pdfAsBytes)
+            outputStream.flush()
+            outputStream.close()
+            onSuccess(null, file.absolutePath)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showFailureException()
+        } finally {
+            outputStream.close()
+            vb.pbLoader.gone()
+        }
+
+    }
+
+    private fun deleteExternalStorageIfExist() {
+        val mediaStorageDir = getExternalStorage()
+        if (!mediaStorageDir.exists()) return
+        mediaStorageDir.deleteRecursively()
     }
 
     private fun setupShare(pdfFilePath: String?) {
@@ -150,10 +203,11 @@ class ProcessFlowPdfWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragm
     companion object {
 
         const val CAN_BACK_PRESS = "canBackPress"
+        const val FILE_DIRECTORY_NAME = "files"
 
         fun create(canBackPress: Boolean = false): ProcessFlowPdfWebViewFragment {
             return ProcessFlowPdfWebViewFragment().apply {
-                arguments =  Bundle().apply {
+                arguments = Bundle().apply {
                     putBoolean(CAN_BACK_PRESS, canBackPress)
                 }
             }

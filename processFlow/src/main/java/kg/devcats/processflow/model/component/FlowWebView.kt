@@ -14,5 +14,5 @@ data class WebViewProperties(
 ): Serializable
 
 enum class WebViewFileTypes {
-    PDF
+    PDF, BASE_64
 }
