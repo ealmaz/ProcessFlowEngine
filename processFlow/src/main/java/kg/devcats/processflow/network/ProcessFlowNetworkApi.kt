@@ -22,30 +22,30 @@ interface ProcessFlowNetworkApi {
         @Query("flow_types") possibleProcessTypes: String
     ): Single<FlowResponse?>
 
-    @POST("v2/process/start")
+    @POST("v3/process/start")
     @JvmSuppressWildcards
     fun startFlow(@Body request: Map<String, Any>): Single<FlowResponse>
 
-    @GET("v2/process/state")
+    @GET("v3/process/state")
     fun getState(@Query("process_id") processId: String? = null): Single<FlowResponse>
 
-    @POST("v2/process/commit")
+    @POST("v3/process/commit")
     fun commit(@Body request: FlowCommitRequest): Single<FlowResponse>
 
     @Multipart
-    @POST("v2/attachments/upload")
+    @POST("v3/attachments/upload")
     fun uploadAttachment(
         @Part process_id: MultipartBody.Part? = null,
         @Part file: MultipartBody.Part? = null,
     ): Single<String>
 
-    @GET("v2/dictionaries/form-item/options/{form_item_id}/{parent_selected_option_id}")
+    @GET("v3/dictionaries/form-item/options/{form_item_id}/{parent_selected_option_id}")
     fun fetchAdditionalOptions(
         @Path("form_item_id") formId: String,
         @Path("parent_selected_option_id") parentSelectedOptionId: String,
     ): Single<List<Option>>
 
-    @POST("v2/process/cancel")
+    @POST("v3/process/cancel")
     fun cancelFlow(@Body request: FlowCancelRequest): Single<Boolean>
 
 }
