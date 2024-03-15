@@ -22,7 +22,7 @@ interface ProcessFlowNetworkApi {
         @Query("flow_types") possibleProcessTypes: String
     ): Single<FlowResponse?>
 
-    @POST("v2/process/start")
+    @POST("v3/process/start")
     @JvmSuppressWildcards
     fun startFlow(@Body request: Map<String, Any>): Single<FlowResponse>
 
