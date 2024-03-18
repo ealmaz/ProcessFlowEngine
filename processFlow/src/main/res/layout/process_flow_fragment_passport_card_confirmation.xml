@@ -51,13 +51,13 @@
 
         <Button
             android:id="@+id/btn_recapture"
-            style="@style/Chili.ButtonStyle.NewAdditional"
-            android:layout_marginStart="@dimen/padding_16dp"
-            android:layout_marginEnd="@dimen/padding_16dp"
+            style="@style/Chili.ButtonStyle.Additional"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_16dp"
+            android:layout_marginEnd="@dimen/padding_16dp"
             android:layout_marginBottom="@dimen/padding_8dp"
-            android:text="@string/process_flow_photo_confirmation_retake" />
+            android:text="@string/process_flow_photo_confirmation_retake_photo" />
 
         <com.design2.chili2.view.buttons.LoaderButton
             android:id="@+id/btn_confirm"
@@ -66,7 +66,7 @@
             android:layout_marginStart="@dimen/padding_16dp"
             android:layout_marginEnd="@dimen/padding_16dp"
             android:layout_marginBottom="@dimen/padding_16dp"
-            android:text="@string/process_flow_photo_confirmation_yes_visible" />
+            android:text="@string/process_flow_photo_confirmation_send_photo" />
 
     </LinearLayout>
 

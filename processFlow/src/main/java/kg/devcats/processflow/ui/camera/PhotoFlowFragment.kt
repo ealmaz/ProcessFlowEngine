@@ -114,8 +114,12 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
     }
 
     fun onPhotoCaptured(filePath: String?) {
+        val targetFragment = when(cameraType) {
+            CameraType.SIMPLE_SELFIE_PHOTO -> SimpleSelfiePhotoConfirmation.create(filePath, getScaleType())
+            else -> PhotoConfirmationFragment.create(filePath, getScaleType())
+        }
         childFragmentManager.commit {
-            replace(R.id.container, PhotoConfirmationFragment.create(filePath, getScaleType()), PHOTO_CONFIRM_FRAGMENT_TAG)
+            replace(R.id.container, targetFragment, PHOTO_CONFIRM_FRAGMENT_TAG)
             addToBackStack(null)
         }
     }

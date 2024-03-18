@@ -14,7 +14,7 @@ import kg.devcats.processflow.databinding.ProcessFlowFragmentPassportCardConfirm
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import java.io.File
 
-class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportCardConfirmationBinding>() {
+open class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportCardConfirmationBinding>() {
 
     private val filePath by lazy { arguments?.getString(ARG_FILE_PATH) ?: "" }
     private val scaleType: ImageView.ScaleType by lazy { (arguments?.getSerializable(ARG_FILE_SCALE_TYPE) as? ImageView.ScaleType) ?: ImageView.ScaleType.CENTER_CROP }

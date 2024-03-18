@@ -21,6 +21,10 @@
     <string name="process_flow_photo_confirmation_title">Данные отчетливо видны?</string>
     <string name="process_flow_photo_confirmation_yes_visible">Да, видны</string>
     <string name="process_flow_photo_recognizer_timeout_description">Убедитесь, что паспорт полностью в кадре.</string>
+
+    <string name="process_flow_photo_confirmation_retake_photo">Снять еще раз</string>
+    <string name="process_flow_photo_confirmation_send_photo">Отправить фото</string>
+
     <!--    Flow Photo Capture-->
     <string name="process_flow_photo_capture_passport_front_title">Фото с лицевой стороны\nпаспорта</string>
     <string name="process_flow_photo_capture_passport_back_title">Фото с оборотной стороны\nпаспорта</string>

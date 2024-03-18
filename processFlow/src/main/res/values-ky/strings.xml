@@ -21,6 +21,10 @@
     <string name="process_flow_photo_confirmation_title">Маалыматтар так көрүнүп жатабы?</string>
     <string name="process_flow_photo_confirmation_yes_visible">Ооба, көрүндү</string>
     <string name="process_flow_photo_recognizer_timeout_description">Паспорт кадрда толук көрүнүп тураарына ынаныңыз.</string>
+
+    <string name="process_flow_photo_confirmation_retake_photo">Дагы бир жолу тартуу</string>
+    <string name="process_flow_photo_confirmation_send_photo">Сүрөттү жөнөтүү</string>
+
     <!--    Flow Photo Capture-->
     <string name="process_flow_photo_capture_passport_front_title">Паспорттун бет жагынын\nсүрөтү</string>
     <string name="process_flow_photo_capture_passport_back_title">Паспорттун арткы бетинин\nсүрөтү</string>
