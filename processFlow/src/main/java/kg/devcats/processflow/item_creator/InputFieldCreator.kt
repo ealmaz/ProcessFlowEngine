@@ -45,12 +45,12 @@ object InputFieldCreator : ValidatableItem() {
             }
             setText(fieldInfo.value ?: "")
             setSelectionToEnd()
-            fieldInfo.hint?.let { setMessage(it) }
             fieldInfo.label.takeIf { it.isNullOrBlank().not() }?.let {
                 setHint(it)
                 setMessage(it)
                 setupMessageAsLabelBehavior(true)
             }
+            fieldInfo.hint?.let { setMessage(it) }
             fieldInfo.placeholder?.let { setHint(it) }
             fieldInfo?.errorMessage.takeIf { it.isNullOrBlank().not() }?.let { setupFieldAsError(it) }
             if (fieldInfo.disabled == true) disableEdition()
