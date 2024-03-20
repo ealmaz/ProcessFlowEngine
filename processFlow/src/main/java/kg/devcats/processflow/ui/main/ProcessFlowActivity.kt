@@ -62,6 +62,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     protected var retryDelayMills = 1000L
     protected var retryRequestCounter = 0
     protected var isNeedToExecuteRetry = false
+    protected var isRetryLoaderInProgress = false
 
     protected val loader: AlertDialog by lazy {
         val alert = AlertDialog.Builder(this)
@@ -145,7 +146,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun hideLoading() {
-        if (isNeedToExecuteRetry) return
+        if (isRetryLoaderInProgress) return
         if (currentScreen?.handleShowLoading(false) != true)
             loader.dismiss()
     }
@@ -307,6 +308,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         } else {
             retryDelayMills = 1000L
             isNeedToExecuteRetry = false
+            isRetryLoaderInProgress = false
             retryRequestCounter = 0
             hideLoading()
             (currentScreen as? BaseProcessScreenFragment<*>)?.onHandleRetry(null)
@@ -315,6 +317,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     protected fun fetchScreenStateAfter(millis: Long, showLoader: Boolean) {
         if (!showLoader) hideLoading()
+        isRetryLoaderInProgress = showLoader
         vb.flContainer.postDelayed({
             if (isNeedToExecuteRetry) vm.getState(showLoader)
         }, millis)
