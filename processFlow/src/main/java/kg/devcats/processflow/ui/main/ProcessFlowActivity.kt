@@ -44,6 +44,7 @@ import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.model.component.FlowRetryInfo
 import kg.devcats.processflow.model.component.FlowWebView
 import kg.devcats.processflow.model.component.WebViewFileTypes
+import kg.devcats.processflow.model.component.WebViewProperties
 import kg.devcats.processflow.ui.camera.CameraType
 import kg.devcats.processflow.ui.camera.PhotoFlowFragment
 import kg.devcats.processflow.ui.input_field.ProcessFlowInputFieldFragment
@@ -340,12 +341,15 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
                 handleCustomUrlActionClick(url)
                 return
             }
-            url.endsWith(".pdf") -> navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true) {
-                ProcessFlowPdfWebViewFragment.create(true)
+            url.endsWith(".pdf") -> {
+                navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false, addToBackStack = true) { ProcessFlowPdfWebViewFragment.create(true) }
+                setScreenData(currentScreen as Fragment, ProcessFlowScreenData(screenKey = WEB_VIEW, allowedAnswer = listOf(FlowWebView(id = "OPEN_LINK", url = url, properties = WebViewProperties(fileType = WebViewFileTypes.PDF)))))
             }
-            else -> navigateTo(ProcessFlowLinksWebView::class.java, addToBackStack = true)
+            else -> {
+                navigateTo(ProcessFlowLinksWebView::class.java, addToBackStack = true)
+                setScreenData(currentScreen as Fragment, ProcessFlowScreenData(screenKey = WEB_VIEW, allowedAnswer = listOf(FlowWebView(id = "OPEN_LINK", url = url))))
+            }
         }
-        setScreenData(currentScreen as Fragment, ProcessFlowScreenData(screenKey = WEB_VIEW, allowedAnswer = listOf(FlowWebView(id = "OPEN_LINK", url = url))))
     }
 
     open fun openStatusScreen(data: ProcessFlowScreenData) {

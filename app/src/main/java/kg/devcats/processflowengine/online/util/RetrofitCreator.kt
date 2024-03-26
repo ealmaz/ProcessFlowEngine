@@ -18,6 +18,7 @@ object RetrofitCreator {
                 val requestBuilder = it.request().newBuilder()
                 val newRequest = requestBuilder
                     .header("Authorization", token)
+                    .header("Additional-Information", "{\"imei\":\"custom-123\", \"imsi\":\"\" , \"platform\":\"android\", \"msisdn\":\"\"}")
                     .build()
                 it.proceed(newRequest)
             }
