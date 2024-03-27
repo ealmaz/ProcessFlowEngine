@@ -112,7 +112,7 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     open fun renderButton(buttonsContainer: ViewGroup, buttonInfo: FlowButton) {
         buttonsContainer.addView(
             FlowButtonCreator.create(requireContext(), buttonInfo, ::onButtonClick).apply {
-                setMargins(R.dimen.padding_16dp, R.dimen.padding_8dp, R.dimen.padding_16dp, R.dimen.padding_0dp)
+                setMargins(R.dimen.padding_16dp, R.dimen.padding_16dp, R.dimen.padding_16dp, R.dimen.padding_0dp)
                 setupTimerFor(
                     buttonInfo.properties?.get(ButtonProperties.ENABLE_AT.propertyName)?.toLongOrNull(),
                     { this.isEnabled = true },

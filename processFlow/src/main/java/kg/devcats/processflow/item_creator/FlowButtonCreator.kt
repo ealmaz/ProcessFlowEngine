@@ -18,7 +18,7 @@ object FlowButtonCreator {
         onClick: (buttonInfo: FlowButton) -> Unit
     ): View {
         val view = if (buttonInfo.style == FlowButtonStyle.ACCENT) LoaderButton(context)
-        else Button(context, null, 0, com.design2.chili2.R.style.Chili_ButtonStyle_NewAdditional)
+        else Button(context, null, 0, com.design2.chili2.R.style.Chili_ButtonStyle_Secondary)
         return view.apply {
             val margin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp)
             tag = buttonInfo.buttonId
