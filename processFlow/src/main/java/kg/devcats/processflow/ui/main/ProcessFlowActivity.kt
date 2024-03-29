@@ -155,7 +155,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun showExitDialog() {
         showDialog {
             setMessage(R.string.process_flow_warning_exit)
-            positiveButton(android.R.string.ok) { cancelChatAndClose() }
+            positiveButton(R.string.process_flow_yes) { cancelChatAndClose() }
             negativeButton(R.string.process_flow_no)
             setCancelable(false)
         }
