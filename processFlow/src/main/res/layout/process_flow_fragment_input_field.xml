@@ -1,47 +1,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="@dimen/padding_32dp"
+    android:paddingTop="@dimen/padding_40dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?ChiliSurfaceBackground">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <ScrollView
+        android:id="@+id/sv_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/padding_16dp"
-        android:paddingBottom="@dimen/padding_16dp"
-        android:gravity="center"
-        android:textAppearance="@style/Chili.H5.Marked.Bold"
-        android:textSize="22sp"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="@dimen/view_0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title"/>
+        app:layout_constraintBottom_toTopOf="@id/tv_bottom_description">
 
-    <TextView
-        android:id="@+id/tv_description"
-        style="@style/Chili.H7.Primary"
-        android:layout_width="@dimen/view_0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginHorizontal="@dimen/padding_16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        tools:text="Подтвердите заявку.\nSMS с кодом отправлено на номер\n+996 700 000 999" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/input_container"
-        style="@style/Chili.InputViewStyle"
-        android:layout_width="@dimen/view_0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/padding_16dp"
+                android:paddingBottom="@dimen/padding_12dp"
+                android:gravity="center"
+                android:textAppearance="@style/Chili.H5.Marked.Bold"
+                android:textSize="22sp"
+                android:visibility="gone"
+                tools:text="Title"/>
+
+            <TextView
+                android:id="@+id/tv_description"
+                style="@style/Chili.H7.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/padding_16dp"
+                tools:text="Подтвердите заявку.\nSMS с кодом отправлено на номер\n+996 700 000 999" />
+
+            <FrameLayout
+                android:id="@+id/input_container"
+                style="@style/Chili.InputViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_24dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <TextView
         android:id="@+id/tv_bottom_description"
@@ -53,7 +62,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_confirm"
-        app:layout_constraintTop_toBottomOf="@id/input_container"
+        app:layout_constraintTop_toBottomOf="@id/sv_container"
         app:layout_constraintVertical_bias="1" />
 
     <com.design2.chili2.view.buttons.LoaderButton
