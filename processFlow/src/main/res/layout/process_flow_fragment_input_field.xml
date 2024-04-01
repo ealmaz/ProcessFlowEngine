@@ -1,7 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="@dimen/padding_32dp"
+    android:paddingTop="@dimen/padding_40dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?ChiliSurfaceBackground">
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/padding_16dp"
-                android:paddingBottom="@dimen/padding_16dp"
+                android:paddingBottom="@dimen/padding_12dp"
                 android:gravity="center"
                 android:textAppearance="@style/Chili.H5.Marked.Bold"
                 android:textSize="22sp"
