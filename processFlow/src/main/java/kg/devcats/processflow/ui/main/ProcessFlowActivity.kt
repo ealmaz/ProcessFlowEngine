@@ -12,7 +12,6 @@ import androidx.fragment.app.commit
 import com.design2.chili2.view.navigation_components.ChiliToolbar
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
-import kg.devcats.processflow.base.custom_handler.CustomBackPressHandler
 import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.base.process.ProcessFlowHolder
 import kg.devcats.processflow.base.process.ProcessFlowScreen
@@ -98,12 +97,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     override fun onBackPressed() {
-        val backPressHandledState = when(currentScreen) {
-            is BaseProcessScreenFragment<*> -> (currentScreen as BaseProcessScreenFragment<*>).handleBackPress()
-            is CustomBackPressHandler -> (currentScreen as CustomBackPressHandler).handleBackPress()
-            else -> BackPressHandleState.NOT_HANDLE
-        }
-
+        val backPressHandledState = currentScreen?.handleBackPress() ?: BackPressHandleState.NOT_HANDLE
         when (backPressHandledState) {
             BackPressHandleState.HANDLED -> return
             BackPressHandleState.CALL_SUPER -> super.onBackPressed()
