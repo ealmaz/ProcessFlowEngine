@@ -23,6 +23,7 @@ import kg.devcats.processflow.extension.showDialog
 import kg.devcats.processflow.model.AppActionUrlConstants.ACTION_TYPE_BUTTON_CLICK
 import kg.devcats.processflow.model.AppActionUrlConstants.APP_ACTION_URL_TYPE
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ACTION
+import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_DATA
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_PARAM
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
@@ -41,6 +42,7 @@ import kg.devcats.processflow.model.ScreenKey.VIDEO_CALL_PROMO
 import kg.devcats.processflow.model.ScreenKey.WEB_VIEW
 import kg.devcats.processflow.model.WebViewIds.WEB_VIEW_VIDEO_IDENT
 import kg.devcats.processflow.model.common.Content
+import kg.devcats.processflow.model.component.ButtonProperties
 import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.model.component.FlowRetryInfo
 import kg.devcats.processflow.model.component.FlowWebView
@@ -387,7 +389,14 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
                 params[it.substring(0, it.indexOf("="))] = it.substring(it.indexOf("=") + 1, it.length)
             }
             when(params[PARAM_NAME_ACTION]!!) {
-                ACTION_TYPE_BUTTON_CLICK -> commit(ProcessFlowCommit.OnButtonClick(FlowButton(buttonId = params[PARAM_NAME_ADDITIONAL_PARAM]!!)))
+                ACTION_TYPE_BUTTON_CLICK -> {
+                    val buttonId = params[PARAM_NAME_ADDITIONAL_PARAM]!!
+                    val buttonProperties = params[PARAM_NAME_ADDITIONAL_DATA]?.let {
+                        mapOf(ButtonProperties.DATA.propertyName to it)
+                    }
+                    val button = FlowButton(buttonId = buttonId, properties = buttonProperties)
+                    commit(ProcessFlowCommit.OnButtonClick(button))
+                }
             }
         } catch (_: Exception) {}
     }

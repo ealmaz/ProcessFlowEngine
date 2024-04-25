@@ -38,6 +38,7 @@ object AppActionUrlConstants {
 //    Params
     const val PARAM_NAME_ACTION = "action"
     const val PARAM_NAME_ADDITIONAL_PARAM = "param"
+    const val PARAM_NAME_ADDITIONAL_DATA = "data"
 
 //    Values
     const val ACTION_TYPE_BUTTON_CLICK = "BUTTON_CLICK"

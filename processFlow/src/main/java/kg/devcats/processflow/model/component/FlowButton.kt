@@ -11,7 +11,7 @@ data class FlowButton(
 ) : Serializable
 
 enum class ButtonProperties(val propertyName: String) {
-    ENABLED("enabled"), ENABLE_AT("enableAt")
+    ENABLED("enabled"), ENABLE_AT("enableAt"), DATA("data")
 }
 
 
