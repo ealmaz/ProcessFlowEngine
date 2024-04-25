@@ -12,6 +12,7 @@ import androidx.fragment.app.commit
 import com.design2.chili2.view.navigation_components.ChiliToolbar
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
+import kg.devcats.processflow.base.custom_handler.CustomBackPressHandler
 import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.base.process.ProcessFlowHolder
 import kg.devcats.processflow.base.process.ProcessFlowScreen
@@ -95,11 +96,20 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     override fun onBackPressed() {
-        val isBackPressHandled = (currentScreen as? BaseProcessScreenFragment<*>)?.handleBackPress() ?: BackPressHandleState.NOT_HANDLE
-        if (isBackPressHandled == BackPressHandleState.HANDLED) return
-        val isProcessTerminated = vm.isProcessTerminated()
-        if (isBackPressHandled == BackPressHandleState.CALL_SUPER || isProcessTerminated) super.onBackPressed()
-        else showExitDialog()
+        val backPressHandledState = when(currentScreen) {
+            is BaseProcessScreenFragment<*> -> (currentScreen as BaseProcessScreenFragment<*>).handleBackPress()
+            is CustomBackPressHandler -> (currentScreen as CustomBackPressHandler).handleBackPress()
+            else -> BackPressHandleState.NOT_HANDLE
+        }
+
+        when (backPressHandledState) {
+            BackPressHandleState.HANDLED -> return
+            BackPressHandleState.CALL_SUPER -> super.onBackPressed()
+            else -> {
+                if (vm.isProcessTerminated()) super.onBackPressed()
+                else showExitDialog()
+            }
+        }
     }
 
     open fun setupViews() {
