@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.getColor
+import com.design2.chili2.extensions.setOnSingleClickListener
 import kg.devcats.processflow.custom_view.drop_down_input_field.bottom_sheet.DropDownFieldBottomSheet
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemDropDownBinding
 import kg.devcats.processflow.extension.getThemeColor
@@ -33,9 +34,9 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
     fun setupViews(dropDownFieldInfo: DropDownFieldInfo, onSelectionChanged: (values: List<String>, Boolean) -> Unit) {
         this.onSelectionChanged = onSelectionChanged
         this.dropDownListInfo = dropDownFieldInfo
-        this.setOnClickListener {
+        this.setOnSingleClickListener {
             clearError()
-            if (options.isEmpty()) return@setOnClickListener
+            if (options.isEmpty()) return@setOnSingleClickListener
             val bs = DropDownFieldBottomSheet(context, options, dropDownFieldInfo.chooseType != ChooseType.MULTIPLE)
             bs.setOnDismissListener { onBottomSheetDismiss() }
             bs.show()
