@@ -129,6 +129,10 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
 
     open fun onHandleRetry(retry: FlowRetryInfo? = null) {}
 
+    open fun getAppLocale(): String = "ru"
+
+    fun isAppThemeLight(): String = "true"
+
     open fun onLinkClick(link: String) {
         getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(link))
     }
