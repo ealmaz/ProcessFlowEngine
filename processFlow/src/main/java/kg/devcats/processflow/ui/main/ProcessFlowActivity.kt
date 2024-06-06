@@ -112,6 +112,11 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
     }
 
+
+    open fun getAppLocale(): String = "ru"
+
+    open fun isAppThemeLight(): Boolean = true
+
     open fun observeLiveData() = with (vm) {
         event.observe(this@ProcessFlowActivity) { resolveNewEvent(it) }
         processFlowScreenDataLive.observe(this@ProcessFlowActivity) { resolveNewScreenState(it); resolveNewScreenKey(it) }
@@ -184,7 +189,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun resolveNewScreenKey(data: ProcessFlowScreenData) {
         when (data.screenKey) {
             STATUS_INFO -> openStatusScreen(data)
-            VIDEO_CALL -> openWebView(data)
+            VIDEO_CALL -> openWebView(data, )
             WEB_VIEW -> openWebView(data)
             VIDEO_CALL_PROMO -> {
                 navigateTo(VideoPromoStatusFragment::class.java)
@@ -290,7 +295,10 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun setScreenData(currentScreen: Fragment, data: ProcessFlowScreenData) {
-        (currentScreen as? BaseProcessScreenFragment<*>)?.setScreenData(data)
+        (currentScreen as? BaseProcessScreenFragment<*>)?.apply {
+            setScreenData(data)
+            setThemeAndLocale(isAppThemeLight(), getAppLocale())
+        }
     }
 
     open fun openInputForm(data: ProcessFlowScreenData) {
