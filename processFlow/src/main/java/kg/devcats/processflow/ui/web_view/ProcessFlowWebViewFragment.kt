@@ -113,10 +113,10 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     }
 
     @JavascriptInterface
-    override fun isThemeLight(): String = isAppThemeLight()
+    override fun isThemeLight(): String = isAppThemeLight
 
     @JavascriptInterface
-    override fun getLocale(): String = getAppLocale()
+    override fun getLocale(): String = appLocale
 
     override fun handleBackPress(): BackPressHandleState {
         setStringResultAndClose(MANUAL_CLOSE_WEB_VIEW_STATUS)

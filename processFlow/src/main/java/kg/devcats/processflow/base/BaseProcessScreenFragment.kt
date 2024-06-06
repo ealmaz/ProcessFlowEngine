@@ -33,6 +33,10 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
 
     protected var selectedButtonId: String? = null
 
+    protected var isAppThemeLight: String = "true"
+
+    protected var appLocale: String = "ru"
+
     abstract val unclickableMask: View?
 
     open val buttonsLinearLayout: LinearLayout? = null
@@ -60,6 +64,11 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
         parseAllowedAnswers(data?.allowedAnswer)
         renderScreenState(data?.state)
         renderMessages(data?.message)
+    }
+
+    open fun setThemeAndLocale(isLightTheme: Boolean, appLocale: String) {
+        this.isAppThemeLight = isLightTheme.toString()
+        this.appLocale = appLocale
     }
 
     private fun parseAllowedAnswers(allowedAnswers: List<Any?>?) {
@@ -128,10 +137,6 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     }
 
     open fun onHandleRetry(retry: FlowRetryInfo? = null) {}
-
-    open fun getAppLocale(): String = "ru"
-
-    fun isAppThemeLight(): String = "true"
 
     open fun onLinkClick(link: String) {
         getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(link))
