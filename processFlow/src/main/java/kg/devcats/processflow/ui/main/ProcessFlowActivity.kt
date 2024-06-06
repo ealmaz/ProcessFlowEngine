@@ -189,7 +189,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun resolveNewScreenKey(data: ProcessFlowScreenData) {
         when (data.screenKey) {
             STATUS_INFO -> openStatusScreen(data)
-            VIDEO_CALL -> openWebView(data, )
+            VIDEO_CALL -> openWebView(data)
             WEB_VIEW -> openWebView(data)
             VIDEO_CALL_PROMO -> {
                 navigateTo(VideoPromoStatusFragment::class.java)
