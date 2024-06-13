@@ -121,7 +121,8 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         onFail: (warningMessage: String, finishOnFail: Boolean) -> Unit
     ) {
         disposed {
-            _repository.uploadAttachment(requireProcessFlowId(), file)
+            compressIfTooLarge(file)
+                .flatMap { _repository.uploadAttachment(requireProcessFlowId(), file) }
                 .observeOn(Schedulers.io())
                 .flatMap {
                     val additionalData = mutableListOf<Content>()
@@ -150,9 +151,25 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         }
     }
 
+    private fun compressIfTooLarge(file: File): Single<File?> {
+        return if ((file.length() / 1024) <= MAX_AVAILABLE_FILE_SIZE) Single.just(file)
+        else compressFile(file, SECONDARY_COMPRESSION_QUALITY)
+    }
+
     protected fun compressFile(file: File): Single<File?> {
         return Single.create<File?> {
             val compressedFile = PictureUtil.compressImage(file, COMPRESSION_QUALITY)
+            if (compressedFile != null) {
+                it.onSuccess(compressedFile)
+            } else {
+                it.onError(NullPointerException())
+            }
+        }
+    }
+
+    protected fun compressFile(file: File, quality: Int = COMPRESSION_QUALITY): Single<File?> {
+        return Single.create<File?> {
+            val compressedFile = PictureUtil.compressImage(file, quality)
             if (compressedFile != null) {
                 it.onSuccess(compressedFile)
             } else {
@@ -225,5 +242,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
     companion object {
         const val COMPRESSION_QUALITY = 80
+        const val SECONDARY_COMPRESSION_QUALITY = 50
+        const val MAX_AVAILABLE_FILE_SIZE = 1024
     }
 }
