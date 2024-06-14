@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentResultListener
@@ -132,7 +131,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     }
 
-    private fun createLabelFormItem(labelFormItem: LabelFormItem): TextView {
+    private fun createLabelFormItem(labelFormItem: LabelFormItem): View {
         return  LabelFormItemCreator.create(requireContext(), labelFormItem)
     }
 
