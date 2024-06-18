@@ -8,7 +8,6 @@ import com.design2.chili2.extensions.color
 import com.design2.chili2.view.cells.BaseCellView
 import kg.devcats.processflow.R
 import kg.devcats.processflow.model.input_form.LabelFormItem
-import kg.devcats.processflow.model.input_form.LabelProperties
 
 object LabelFormItemCreator : ValidatableItem() {
 
