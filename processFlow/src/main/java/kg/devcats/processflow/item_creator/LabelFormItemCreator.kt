@@ -13,7 +13,7 @@ import kg.devcats.processflow.model.input_form.LabelProperties
 object LabelFormItemCreator : ValidatableItem() {
 
     fun create(context: Context, labelFormItem: LabelFormItem): View {
-        return if (labelFormItem.properties.isNullOrEmpty()) createTextView(
+        return if (labelFormItem.description.isNullOrEmpty()) createTextView(
             context,
             labelFormItem
         ) else createBaseCellView(context, labelFormItem)
@@ -52,13 +52,10 @@ object LabelFormItemCreator : ValidatableItem() {
             setBackgroundResource(R.drawable.ic_label_cell_rounded_bg)
             this.layoutParams = layoutParams
 
-            labelFormItem.properties?.get(LabelProperties.DESCRIPTION.propertyName)?.let {
+            labelFormItem.description?.let {
                 setSubtitle(it)
             }
-
-            labelFormItem.properties?.get(LabelProperties.HAS_ENABLED.propertyName)?.let {
-                if (it.toBooleanStrictOrNull() != true) setBackgroundColor(context.color(android.R.color.transparent))
-            } ?: setBackgroundColor(context.color(android.R.color.transparent))
+            if (labelFormItem.hasBackground != true) setBackgroundColor(context.color(android.R.color.transparent))
         }
     }
 }
