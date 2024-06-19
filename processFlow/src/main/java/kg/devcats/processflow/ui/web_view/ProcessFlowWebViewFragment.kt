@@ -60,9 +60,7 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
             }
 
             loadListener = object : AppWebView.PageLoadListener() {
-                override fun onReceivedTitle(title: String) {
-                    updateTitle(title)
-                }
+                override fun onReceivedTitle(title: String) {}
 
                 override fun onPageStarted() {}
 
@@ -119,8 +117,7 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     override fun getLocale(): String = appLocale
 
     override fun handleBackPress(): BackPressHandleState {
-        setStringResultAndClose(MANUAL_CLOSE_WEB_VIEW_STATUS)
-        return BackPressHandleState.HANDLED
+        return BackPressHandleState.NOT_HANDLE
     }
 
 
