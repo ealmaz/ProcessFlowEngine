@@ -62,7 +62,9 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
             loadListener = object : AppWebView.PageLoadListener() {
                 override fun onReceivedTitle(title: String) {}
 
-                override fun onPageStarted() {}
+                override fun onPageStarted() {
+                    updateBackIcon()
+                }
 
                 override fun onPageFinished() {}
 
@@ -79,6 +81,12 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
 
     open fun updateTitle(title: String) {
         getProcessFlowHolder().setToolbarTitle(title)
+    }
+
+    open fun updateBackIcon() {
+        val iconRes = if (getWebView().canGoBack()) com.design2.chili2.R.drawable.chili_ic_back_arrow
+        else com.design2.chili2.R.drawable.chili_ic_close
+        getProcessFlowHolder().setToolbarNavIcon(iconRes)
     }
 
     open fun getWebView(): AppWebView = vb.webView
@@ -117,7 +125,12 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     override fun getLocale(): String = appLocale
 
     override fun handleBackPress(): BackPressHandleState {
-        return BackPressHandleState.NOT_HANDLE
+        return getWebView().run {
+            if (canGoBack()) {
+                getWebView().goBack()
+                BackPressHandleState.HANDLED
+            } else BackPressHandleState.NOT_HANDLE
+        }
     }
 
 

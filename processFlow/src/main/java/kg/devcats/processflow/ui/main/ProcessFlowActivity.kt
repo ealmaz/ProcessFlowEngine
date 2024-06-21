@@ -344,7 +344,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         when {
             webView?.id == WEB_VIEW_VIDEO_IDENT -> navigateTo(VideoCallWebViewFragment::class.java, checkPrevFragment = false)
             fileType == WebViewFileTypes.PDF || fileType == WebViewFileTypes.BASE_64 -> navigateTo(ProcessFlowPdfWebViewFragment::class.java, checkPrevFragment = false)
-            else -> navigateTo(ProcessFlowWebViewFragment::class.java)
+            else -> navigateTo(ProcessFlowWebViewFragment::class.java, checkPrevFragment = false)
         }
         setScreenData(currentScreen as Fragment, data)
     }
