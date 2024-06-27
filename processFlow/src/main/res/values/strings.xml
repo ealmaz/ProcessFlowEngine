@@ -21,6 +21,9 @@
     <string name="process_flow_photo_confirmation_title">Данные отчетливо видны?</string>
     <string name="process_flow_photo_confirmation_yes_visible">Да, видны</string>
     <string name="process_flow_photo_recognizer_timeout_description">Убедитесь, что паспорт полностью в кадре.</string>
+    <string name="process_flow_photo_confirmation_passport">Проверьте паспорт.\nДанные отчетливо видны?</string>
+    <string name="process_flow_photo_confirmation_selfile_passport">Паспорт и лицо отчетливо видны?</string>
+
 
     <string name="process_flow_photo_confirmation_retake_photo">Снять еще раз</string>
     <string name="process_flow_photo_confirmation_send_photo">Отправить фото</string>

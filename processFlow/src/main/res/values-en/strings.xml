@@ -21,6 +21,8 @@
     <string name="process_flow_photo_confirmation_title">Is the data clearly visible?</string>
     <string name="process_flow_photo_confirmation_yes_visible">Yes, its visible</string>
     <string name="process_flow_photo_recognizer_timeout_description">Make sure the passport is completely within the frame.</string>
+    <string name="process_flow_photo_confirmation_passport">Check your passport.\nCan passport details be seen clearly?</string>
+    <string name="process_flow_photo_confirmation_selfile_passport">Can your passport and face be seen clearly?</string>
 
     <string name="process_flow_photo_confirmation_retake_photo">Make another photo</string>
     <string name="process_flow_photo_confirmation_send_photo">Send photo</string>

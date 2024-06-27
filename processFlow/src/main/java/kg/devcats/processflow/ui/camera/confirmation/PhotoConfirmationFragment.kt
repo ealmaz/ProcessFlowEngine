@@ -1,4 +1,4 @@
-package kg.devcats.processflow.ui.camera
+package kg.devcats.processflow.ui.camera.confirmation
 
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
@@ -12,24 +12,27 @@ import com.design2.chili2.util.GlideBitmapScaleTransformation
 import kg.devcats.processflow.base.BaseFragment
 import kg.devcats.processflow.databinding.ProcessFlowFragmentPassportCardConfirmationBinding
 import kg.devcats.processflow.extension.getProcessFlowHolder
+import kg.devcats.processflow.ui.camera.PhotoFlowFragment
 import java.io.File
 
 open class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportCardConfirmationBinding>() {
 
     private val filePath by lazy { arguments?.getString(ARG_FILE_PATH) ?: "" }
-    private val scaleType: ImageView.ScaleType by lazy { (arguments?.getSerializable(ARG_FILE_SCALE_TYPE) as? ImageView.ScaleType) ?: ImageView.ScaleType.CENTER_CROP }
+    private val scaleType: ImageView.ScaleType by lazy { (arguments?.getSerializable(
+        ARG_FILE_SCALE_TYPE
+    ) as? ImageView.ScaleType) ?: ImageView.ScaleType.CENTER_CROP }
 
     override fun inflateViewBinging() = ProcessFlowFragmentPassportCardConfirmationBinding.inflate(layoutInflater)
 
-    override fun setupViews() {
+    override fun setupViews() = with(vb) {
         super.setupViews()
-        vb.btnRecapture.setOnSingleClickListener {
+        btnRecapture.setOnSingleClickListener {
             (parentFragment as PhotoFlowFragment).startPhotoFlow(true)
         }
-        vb.btnConfirm.setOnSingleClickListener {
+        btnConfirm.setOnSingleClickListener {
             (parentFragment as PhotoFlowFragment).onPhotoConfirmed(filePath)
         }
-        vb.ivCapturedPhoto.scaleType = scaleType
+        ivCapturedPhoto.scaleType = scaleType
         loadImage(filePath)
     }
 
@@ -46,18 +49,6 @@ open class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportC
             .override(Target.SIZE_ORIGINAL)
             .into(vb.ivCapturedPhoto)
     }
-
-    override fun onResume() {
-        super.onResume()
-        getProcessFlowHolder().setIsToolbarVisible(false)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        getProcessFlowHolder().setIsToolbarVisible(true)
-    }
-
-
 
     companion object {
 

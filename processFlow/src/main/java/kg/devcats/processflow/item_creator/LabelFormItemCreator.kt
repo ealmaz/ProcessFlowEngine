@@ -48,6 +48,7 @@ object LabelFormItemCreator : ValidatableItem() {
             setIsChevronVisible(false)
             setDividerVisibility(false)
             setTitle(labelFormItem.label)
+            setTitleMaxLines(Int.MAX_VALUE)
             setBackgroundResource(R.drawable.ic_label_cell_rounded_bg)
             this.layoutParams = layoutParams
 

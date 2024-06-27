@@ -8,13 +8,6 @@
     android:clickable="true"
     android:background="?ChiliSurfaceBackground">
 
-    <com.design2.chili2.view.navigation_components.ChiliToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
     <ImageView
         android:id="@+id/iv_captured_photo"
         android:layout_width="match_parent"
@@ -47,7 +40,7 @@
             android:layout_marginHorizontal="@dimen/padding_16dp"
             android:gravity="center"
             android:textSize="@dimen/text_16sp"
-            android:text="@string/process_flow_photo_confirmation_title" />
+            tools:text="@string/process_flow_photo_confirmation_title" />
 
         <Button
             android:id="@+id/btn_recapture"
