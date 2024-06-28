@@ -22,7 +22,8 @@ import kg.devcats.processflow.extension.positiveButton
 import kg.devcats.processflow.extension.showDialog
 import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.ProcessFlowCommit
-import kg.devcats.processflow.ui.camera.confirmation.PassportPhotoConfirmation
+import kg.devcats.processflow.ui.camera.confirmation.BackPassportPhotoConfirmation
+import kg.devcats.processflow.ui.camera.confirmation.FrontPassportPhotoConfirmation
 import kg.devcats.processflow.ui.camera.confirmation.PhotoConfirmationFragment
 import kg.devcats.processflow.ui.camera.confirmation.SelfiePhotoConfirmation
 import kg.devcats.processflow.ui.camera.confirmation.SelfieWithPassportConfirmation
@@ -119,7 +120,8 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 
     fun onPhotoCaptured(filePath: String?) {
         val targetFragment = when(cameraType) {
-            CameraType.FRONT_PASSPORT, CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> PassportPhotoConfirmation.create(filePath, getScaleType())
+            CameraType.FRONT_PASSPORT -> FrontPassportPhotoConfirmation.create(filePath, getScaleType())
+            CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> BackPassportPhotoConfirmation.create(filePath, getScaleType())
             CameraType.SELFIE -> SelfieWithPassportConfirmation.create(filePath, getScaleType())
             CameraType.SIMPLE_SELFIE_PHOTO -> SelfiePhotoConfirmation.create(filePath, getScaleType())
             else -> PhotoConfirmationFragment.create(filePath, getScaleType())
