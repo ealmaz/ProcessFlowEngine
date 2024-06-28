@@ -32,6 +32,7 @@ class SelfiePhotoInstructionFragment : BaseFragment<ProcessFlowFragmentPhotoSelf
     private fun setupPhotoInstructionView() {
         with(vb) {
             tvTitle.text = getString(R.string.process_flow_photo_instruction_selfie)
+            tvSubtitle.setText(R.string.process_flow_photo_instruction_selfie_description)
             ivCorrect.loadImage(ProcessFlowConfigurator.selfieInstructionUrlResolver.invoke())
         }
     }

@@ -83,8 +83,8 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
             ProcessFlowConfigurator.recognizerTimeoutMills,
             getString(R.string.process_flow_photo_recognizer_timeout_description),
             false,
-            photoCaptureLabels = ScreenLabels(getString(R.string.process_flow_photo_capture_passport_back_title), description = getString(R.string.process_flow_photo_capture_passport_back_description)),
-            recognitionLabels = ScreenLabels(getString(R.string.process_flow_photo_capture_passport_back_title), description = getString(R.string.process_flow_photo_capture_passport_back_description)),
+            photoCaptureLabels = ScreenLabels(getString(R.string.process_flow_photo_capture_passport_back_title), description = getString(R.string.process_flow_photo_capture_passport_front_description)),
+            recognitionLabels = ScreenLabels(getString(R.string.process_flow_photo_capture_passport_back_title), description = getString(R.string.process_flow_photo_capture_passport_front_description)),
             overlayType = OverlayType.PASSPORT_OVERLAY,
             hasCustomPhotoConfirmation = true,
             needRecognition = recognizedMrz == null)
@@ -172,7 +172,8 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 
     private fun getCameraSettings(): CameraSettings {
         return when (cameraType) {
-            CameraType.SELFIE, CameraType.SIMPLE_SELFIE_PHOTO -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
+            CameraType.SIMPLE_SELFIE_PHOTO -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
+            CameraType.SELFIE -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME, description = getString(R.string.process_flow_photo_capture_selfie_passport_description))
             CameraType.SIMPLE_CAMERA -> CameraSettings(cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
             else -> CameraSettings(description = getString(R.string.process_flow_photo_capture_passport_front_description), headerText = getString(R.string.process_flow_photo_capture_passport_front_title))
         }

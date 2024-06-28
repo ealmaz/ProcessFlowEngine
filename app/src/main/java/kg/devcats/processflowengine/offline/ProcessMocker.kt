@@ -90,7 +90,7 @@ object ProcessMocker {
           {
              "responseType":"BUTTON",
              "responseItem":{
-                "buttonId":"PASSPORT_FRONT_PHOTO",
+                "buttonId":"PASSPORT_FRONT_PHOTO2",
                 "text":"далее",
                 "style":"ACCENT"
              }
@@ -124,7 +124,7 @@ object ProcessMocker {
         )
 
         put(
-            "PASSPORT_FRONT_PHOTO", """
+            "PASSPORT_BACK_PHOTO", """
     {
        "process_id":"werq-rqwew-rwer-fser",
        "process_status":"RUNNING",

@@ -60,7 +60,9 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
             }
 
             loadListener = object : AppWebView.PageLoadListener() {
-                override fun onReceivedTitle(title: String) {}
+                override fun onReceivedTitle(title: String) {
+                    updateBackIcon()
+                }
 
                 override fun onPageStarted() {
                     updateBackIcon()

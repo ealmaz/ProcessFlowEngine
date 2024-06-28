@@ -21,21 +21,24 @@
     <string name="process_flow_photo_confirmation_title">Маалыматтар так көрүнүп жатабы?</string>
     <string name="process_flow_photo_confirmation_yes_visible">Ооба, көрүндү</string>
     <string name="process_flow_photo_recognizer_timeout_description">Паспорт кадрда толук көрүнүп тураарына ынаныңыз.</string>
-    <string name="process_flow_photo_confirmation_passport">Паспортту текшериңиз.\nМаалыматтардын көрүнүшү даанабы?</string>
-    <string name="process_flow_photo_confirmation_selfile_passport">Паспорттун жана беттин көрүнүшү даанабы?</string>
+    <string name="process_flow_photo_confirmation_passport">Фотосүрөт жана маалыматтар даана көрүнүп турганына ынаныңыз</string>
+    <string name="process_flow_photo_confirmation_selfile_passport">Жүзүңүз жана паспорт даана көрүнүп турганына ынаныңыз</string>
 
     <string name="process_flow_photo_confirmation_retake_photo">Дагы бир жолу тартуу</string>
     <string name="process_flow_photo_confirmation_send_photo">Сүрөттү жөнөтүү</string>
 
     <!--    Flow Photo Capture-->
-    <string name="process_flow_photo_capture_passport_front_title">Паспорттун бет жагынын\nсүрөтү</string>
-    <string name="process_flow_photo_capture_passport_back_title">Паспорттун арткы бетинин\nсүрөтү</string>
-    <string name="process_flow_photo_capture_passport_front_description">Паспортту алкактын ичине келтирип,\n«Сүрөткө тартуу» баскычын басыңыз</string>
+    <string name="process_flow_photo_capture_passport_front_title">Паспорттун бет жагынын сүрөтү</string>
+    <string name="process_flow_photo_capture_passport_back_title">Паспорттун арткы бетинин сүрөтү</string>
+    <string name="process_flow_photo_capture_passport_front_description">Паспортту алкакка келтирип, сүрөткө тартыңыз</string>
     <string name="process_flow_photo_capture_passport_back_description">Сураныч, паспортту алкактын ичине келтирип, \nсүрөткө тартуу баскычы пайда болгонго \nчейин күтө туруңуз.</string>
+    <string name="process_flow_photo_capture_selfie_passport_description">Жүзүңүздү жана паспортту алкакка келтирип, \nсүрөткө тартыңыз</string>
     <!--    Flow Photo Instruction -->
     <string name="process_flow_photo_instruction_passport_front">Паспорттун алдыңкы бетин сүрөткө тартыңыз</string>
     <string name="process_flow_photo_instruction_passport_back">Паспорттун арткы бетин сүрөткө тартыңыз</string>
-    <string name="process_flow_photo_instruction_selfie">Паспортту алдыңызга кармап туруп селфи-сүрөт тартыңыз</string>
+    <string name="process_flow_photo_instructiin_passports_subtitle">Жарык жер жана башка түстөгү фон маалыматтарды текшерүүнү тездетет</string>
+    <string name="process_flow_photo_instruction_selfie">Паспорт менен сүрөткө түшүңүз</string>
+    <string name="process_flow_photo_instruction_selfie_description">Сүрөт так болууга тийиш, ал эми паспорт жана жүзүңүз толугу менен көрүнүшү керек</string>
     <string name="process_flow_photo_instruction_simple_selfie">Жарык жерден камерага түз карап, сүрөткө көз айнексиз түшүңүз</string>
 
     <string name="process_flow_exit_video_call">Чалууну бүтүрөрүңүз аныкпы?</string>

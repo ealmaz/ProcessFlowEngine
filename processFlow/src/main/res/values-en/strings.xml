@@ -21,21 +21,24 @@
     <string name="process_flow_photo_confirmation_title">Is the data clearly visible?</string>
     <string name="process_flow_photo_confirmation_yes_visible">Yes, its visible</string>
     <string name="process_flow_photo_recognizer_timeout_description">Make sure the passport is completely within the frame.</string>
-    <string name="process_flow_photo_confirmation_passport">Check your passport.\nCan passport details be seen clearly?</string>
-    <string name="process_flow_photo_confirmation_selfile_passport">Can your passport and face be seen clearly?</string>
+    <string name="process_flow_photo_confirmation_passport">Make sure the photo and details can be seen clearly</string>
+    <string name="process_flow_photo_confirmation_selfile_passport">Make sure your face and passport can be seen clearly</string>
 
     <string name="process_flow_photo_confirmation_retake_photo">Make another photo</string>
     <string name="process_flow_photo_confirmation_send_photo">Send photo</string>
 
     <!--    Flow Photo Capture-->
-    <string name="process_flow_photo_capture_passport_front_title">Take a picture of the passport\nfront</string>
+    <string name="process_flow_photo_capture_passport_front_title">Passport front picture</string>
     <string name="process_flow_photo_capture_passport_back_title">Passport back photo</string>
-    <string name="process_flow_photo_capture_passport_front_description">Put the passport into the frame\nand press the Photo button</string>
+    <string name="process_flow_photo_capture_passport_front_description">Place passport inside the frame and make a picture</string>
     <string name="process_flow_photo_capture_passport_back_description">Please, place your passport inside the frame \nand wait until the Photo button appears</string>
+    <string name="process_flow_photo_capture_selfie_passport_description">Keep your face and passport inside the frame \nand make a picture</string>
     <!--    Flow Photo Instruction -->
     <string name="process_flow_photo_instruction_passport_front">Take a photo of the front side of the passport</string>
     <string name="process_flow_photo_instruction_passport_back">Take a photo of the back of the passport</string>
-    <string name="process_flow_photo_instruction_selfie">Take a selfie with your passport in front of you</string>
+    <string name="process_flow_photo_instructiin_passports_subtitle">Good lighting and contrast background will fast-track detail verification</string>
+    <string name="process_flow_photo_instruction_selfie">Make a selfie with passport</string>
+    <string name="process_flow_photo_instruction_selfie_description">Picture must be clear, and passport and face seen in full</string>
     <string name="process_flow_photo_instruction_simple_selfie">Make a photo without glasses, with good lighting and looking straight to camera</string>
 
     <string name="process_flow_exit_video_call">Are you sure you want to end the call?</string>

@@ -17,20 +17,31 @@ object FlowButtonCreator {
         buttonInfo: FlowButton,
         onClick: (buttonInfo: FlowButton) -> Unit
     ): View {
-        val view = if (buttonInfo.style == FlowButtonStyle.ACCENT) LoaderButton(context)
-        else Button(context, null, 0, com.design2.chili2.R.style.Chili_ButtonStyle_Secondary)
-        return view.apply {
+        val view = if (buttonInfo.style == FlowButtonStyle.ACCENT) LoaderButton(context).apply {
             val margin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp)
-            tag = buttonInfo.buttonId
-            setOnSingleClickListener { onClick(buttonInfo) }
-            (this as? LoaderButton)?.let { setupButton(it, buttonInfo) }
-            (this as? Button)?.let { setupButton(it, buttonInfo) }
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                setMargins(margin, margin, margin, margin)
+                setMargins(margin, 0, margin, margin)
             }
+        }
+        else Button(context, null, 0, com.design2.chili2.R.style.Chili_ButtonStyle_Additional).apply {
+            val margin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp)
+            val bottomMargin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_12dp)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(margin, 0, margin, bottomMargin)
+            }
+        }
+        return view.apply {
+
+            tag = buttonInfo.buttonId
+            setOnSingleClickListener { onClick(buttonInfo) }
+            (this as? LoaderButton)?.let { setupButton(it, buttonInfo) }
+            (this as? Button)?.let { setupButton(it, buttonInfo) }
         }
     }
 

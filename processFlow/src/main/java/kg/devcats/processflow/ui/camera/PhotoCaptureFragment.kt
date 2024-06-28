@@ -97,7 +97,9 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
                 setDescription(cameraSetting.description)
                 passportOverlayView = this
             }
-            CameraOverlayType.RECTANGLE_FRAME -> RectangleOverlay(requireContext())
+            CameraOverlayType.RECTANGLE_FRAME -> RectangleOverlay(requireContext()).apply {
+                cameraSetting.description.takeIf { it.isNotBlank() }?.let { setDescription(it) }
+            }
         }
     }
 

@@ -23,11 +23,13 @@ abstract class BasePhotoInstructionFragment : BaseFragment<ProcessFlowFragmentPh
         ProcessFlowFragmentPhotoInstructionBinding.inflate(layoutInflater)
 
     abstract fun getInstructionTitleRes(): Int
+    abstract fun getInstructionSubtitleRes(): Int
     abstract fun getInstructionImageRes(): Int
 
     private fun setupPhotoInstructionView() {
         with(vb) {
             tvTitle.text = getString(getInstructionTitleRes())
+            tvSubtitle.text = getString(getInstructionSubtitleRes())
             ivCorrect.setImageResource(getInstructionImageRes())
         }
     }
