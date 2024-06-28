@@ -11,7 +11,6 @@ import com.design2.chili2.extensions.setOnSingleClickListener
 import com.design2.chili2.util.GlideBitmapScaleTransformation
 import kg.devcats.processflow.base.BaseFragment
 import kg.devcats.processflow.databinding.ProcessFlowFragmentPassportCardConfirmationBinding
-import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.ui.camera.PhotoFlowFragment
 import java.io.File
 
@@ -41,7 +40,7 @@ open class PhotoConfirmationFragment : BaseFragment<ProcessFlowFragmentPassportC
         vb.btnConfirm.setIsLoading(isLoading)
     }
 
-    private fun loadImage(filePath: String) {
+    protected open fun loadImage(filePath: String) {
         Glide.with(requireContext())
             .load(File(filePath))
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
