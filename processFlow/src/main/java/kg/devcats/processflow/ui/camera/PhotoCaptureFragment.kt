@@ -47,6 +47,7 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var contextExecutor: Executor
+    private var isPhotoCapturing = false
 
     private val cameraSetting: CameraSettings by lazy {
         (arguments?.getSerializable(ARG_CAMERA_SETTING) as? CameraSettings) ?: CameraSettings()
@@ -184,6 +185,8 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
     }
 
     private fun capturePhoto() {
+        if (isPhotoCapturing) return
+        isPhotoCapturing = true
         var photoFile = PictureUtil.createTemporaryFiles(context, "PHOTO_REGISTRAR", ".jpg")
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         imageCapture.takePicture(
@@ -195,6 +198,7 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
                     when (val croppedImage = cropImage(photoFile)) {
                         null -> {
                             hideLoading()
+                            isPhotoCapturing = false
                             context?.showWarningDialog(getString(R.string.process_flow_no_available_free_space))
                         }
                         else -> {
@@ -206,6 +210,7 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
 
                 override fun onError(exception: ImageCaptureException) {
                     hideLoading()
+                    isPhotoCapturing = false
                     val exceptionMessage = when (val cause = exception.cause?.cause) {
                         is ErrnoException -> {
                             if (cause.errno == OsConstants.ENOSPC)
@@ -242,6 +247,7 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
     override fun onDestroyView() {
         super.onDestroyView()
         if (::cameraExecutor.isInitialized) cameraExecutor.shutdown()
+        isPhotoCapturing = false
     }
 
     companion object {
