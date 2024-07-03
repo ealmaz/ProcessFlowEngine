@@ -31,7 +31,7 @@
     <!--    Flow Photo Capture-->
     <string name="process_flow_photo_capture_passport_front_title">Паспорттун бет жагынын сүрөтү</string>
     <string name="process_flow_photo_capture_passport_back_title">Паспорттун арткы бетинин сүрөтү</string>
-    <string name="process_flow_photo_capture_passport_front_description">Паспортту алкакка келтирип, сүрөткө тартыңыз</string>
+    <string name="process_flow_photo_capture_passport_front_description">Паспортту алкакка келтирип, \nсүрөткө тартыңыз</string>
     <string name="process_flow_photo_capture_passport_back_description">Сураныч, паспортту алкактын ичине келтирип, \nсүрөткө тартуу баскычы пайда болгонго \nчейин күтө туруңуз.</string>
     <string name="process_flow_photo_capture_selfie_passport_description">Жүзүңүздү жана паспортту алкакка келтирип, \nсүрөткө тартыңыз</string>
     <!--    Flow Photo Instruction -->

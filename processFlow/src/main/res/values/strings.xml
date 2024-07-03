@@ -32,7 +32,7 @@
     <!--    Flow Photo Capture-->
     <string name="process_flow_photo_capture_passport_front_title">Фото лицевой стороны паспорта</string>
     <string name="process_flow_photo_capture_passport_back_title">Фото оборотной стороны паспорта</string>
-    <string name="process_flow_photo_capture_passport_front_description">Поместите паспорт в рамку и сделайте фото</string>
+    <string name="process_flow_photo_capture_passport_front_description">Поместите паспорт в рамку \nи сделайте фото</string>
     <string name="process_flow_photo_capture_passport_back_description">Пожалуйста, поместите паспорт в рамку \nи подождите пока появится кнопка \nсфотографировать</string>
     <string name="process_flow_photo_capture_selfie_passport_description">Поместите лицо и паспорт в рамку \nи сделайте фото</string>
     <!--    Flow Photo Instruction -->
