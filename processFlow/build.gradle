@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'kg.devcats.processflow'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
-        minSdk 23
-        targetSdk 33
+        minSdk 24
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -39,8 +39,8 @@ android {
 
 dependencies {
 
-    implementation 'com.github.ealmaz:DesignChili2:0.0.0.306'
-    implementation 'com.github.ealmaz:text_recognizer:0.0.55'
+    implementation 'com.github.ealmaz:DesignChili2:0.0.0.309'
+    implementation 'com.github.ealmaz:text_recognizer:0.0.56'
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.google.code.gson:gson:2.8.9'
