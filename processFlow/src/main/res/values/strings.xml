@@ -2,6 +2,7 @@
 <resources>
     <string name="process_flow_unexpected_error">Непредвиденная ошибка</string>
     <string name="process_flow_next">Далее</string>
+    <string name="process_flow_continue">Продолжить</string>
     <string name="process_flow_invalid_input">Неверно введенные данные</string>
     <string name="process_flow_share_with">Поделиться с помощью</string>
     <string name="process_flow_error_pdf_loading">Не удалось загрузить PDF файл</string>
@@ -26,7 +27,7 @@
     <string name="process_flow_photo_confirmation_selfile_passport">Убедитесь, что лицо и паспорт видны отчётливо</string>
 
 
-    <string name="process_flow_photo_confirmation_retake_photo">Снять еще раз</string>
+    <string name="process_flow_photo_confirmation_retake_photo">Переснять</string>
     <string name="process_flow_photo_confirmation_send_photo">Отправить фото</string>
 
     <!--    Flow Photo Capture-->
