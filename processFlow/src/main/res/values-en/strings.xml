@@ -2,6 +2,7 @@
 <resources>
     <string name="process_flow_unexpected_error">Unexpected error</string>
     <string name="process_flow_next">Next</string>
+    <string name="process_flow_continue">Continue</string>
     <string name="process_flow_invalid_input">Invalid data</string>
     <string name="process_flow_share_with">Share by</string>
     <string name="process_flow_error_pdf_loading">Failed to load the PDF file</string>
@@ -25,7 +26,7 @@
     <string name="process_flow_photo_confirmation_passport_back">Make sure details can be seen clearly</string>
     <string name="process_flow_photo_confirmation_selfile_passport">Make sure your face and passport can be seen clearly</string>
 
-    <string name="process_flow_photo_confirmation_retake_photo">Make another photo</string>
+    <string name="process_flow_photo_confirmation_retake_photo">New photo</string>
     <string name="process_flow_photo_confirmation_send_photo">Send photo</string>
 
     <!--    Flow Photo Capture-->

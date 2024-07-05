@@ -2,6 +2,7 @@
 <resources>
     <string name="process_flow_unexpected_error">Күтүүсүз жаңылыштык</string>
     <string name="process_flow_next">Андан ары</string>
+    <string name="process_flow_continue">Улантуу</string>
     <string name="process_flow_invalid_input">Туура эмес киргизилген маалыматтар</string>
     <string name="process_flow_share_with">Жардамы менен бөлүшүү</string>
     <string name="process_flow_error_pdf_loading">PDF файлды жүктөө мүмкүн болгон жок</string>
@@ -25,7 +26,7 @@
     <string name="process_flow_photo_confirmation_passport_back">Маалыматтар даана көрүнүп турганына ынаныңыз</string>
     <string name="process_flow_photo_confirmation_selfile_passport">Жүзүңүз жана паспорт даана көрүнүп турганына ынаныңыз</string>
 
-    <string name="process_flow_photo_confirmation_retake_photo">Дагы бир жолу тартуу</string>
+    <string name="process_flow_photo_confirmation_retake_photo">Кайра тартуу</string>
     <string name="process_flow_photo_confirmation_send_photo">Сүрөттү жөнөтүү</string>
 
     <!--    Flow Photo Capture-->
