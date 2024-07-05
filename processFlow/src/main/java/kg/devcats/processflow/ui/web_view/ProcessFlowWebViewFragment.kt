@@ -37,6 +37,11 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateBackIcon()
+    }
+
     override fun setupViews() = with(vb) {
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
