@@ -47,6 +47,7 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
             swipeRefreshLayout.isRefreshing = false
             onSwipeRefresh()
         }
+        swipeRefreshLayout.isEnabled = false
         setupWebView()
     }
 
@@ -58,10 +59,6 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
         getWebView().apply {
             setupAdditionalSettings {
                 allowFileAccess = true
-            }
-
-            viewTreeObserver.addOnScrollChangedListener {
-                vb.swipeRefreshLayout?.isEnabled = vb.webView.scrollY == 0
             }
 
             loadListener = object : AppWebView.PageLoadListener() {
