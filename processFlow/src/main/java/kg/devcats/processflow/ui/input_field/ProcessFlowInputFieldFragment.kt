@@ -4,6 +4,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
@@ -111,7 +112,7 @@ class ProcessFlowInputFieldFragment :
         val retriever = client.startSmsRetriever()
         retriever.addOnSuccessListener {
             receiver?.setListener(this)
-            context?.registerReceiver(receiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
+            ContextCompat.registerReceiver(requireContext(), receiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION), ContextCompat.RECEIVER_EXPORTED)
         }
     }
 
