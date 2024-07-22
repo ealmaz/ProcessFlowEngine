@@ -404,6 +404,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun closeCurrentFlowActivity() {
+        hideLoading()
         finish()
     }
 }
