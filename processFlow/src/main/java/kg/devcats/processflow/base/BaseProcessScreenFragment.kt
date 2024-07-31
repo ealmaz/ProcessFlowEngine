@@ -38,8 +38,6 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
 
     protected var appLocale: String = "ru"
 
-    protected var smsRetrieverClient: SmsRetrieverClient? = null
-
     abstract val unclickableMask: View?
 
     open val buttonsLinearLayout: LinearLayout? = null
@@ -72,10 +70,6 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     open fun setThemeAndLocale(isLightTheme: Boolean, appLocale: String) {
         this.isAppThemeLight = isLightTheme.toString()
         this.appLocale = appLocale
-    }
-
-    open fun setAppSmsRetrieverClient(smsRetrieverClient: SmsRetrieverClient) {
-        this.smsRetrieverClient = smsRetrieverClient
     }
 
     private fun parseAllowedAnswers(allowedAnswers: List<Any?>?) {
