@@ -2,6 +2,7 @@ package kg.devcats.processflow.ui.input_field
 
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
@@ -177,7 +178,10 @@ class ProcessFlowInputFieldFragment :
 
     override fun onSmsReceived(code: String) {
         try {
-            vb.inputContainer.findViewWithTag<MaskedInputView>(resultData!!.first)!!.setText(code)
+            vb.inputContainer.run {
+                findViewWithTag<MaskedInputView>(resultData!!.first)?.setText(code)
+                findViewWithTag<OtpInputView>(resultData!!.first)?.setText(code)
+            }
         } catch (_: Throwable) {}
     }
 }
