@@ -5,16 +5,21 @@ import android.view.View
 import android.view.WindowManager
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.design2.chili2.extensions.setOnSingleClickListener
+import com.design2.chili2.extensions.setTopMargin
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kg.devcats.processflow.R
 import kg.devcats.processflow.databinding.ProcessFlowViewFormItemDropDownBottomSheetFragmentBinding
+import kg.devcats.processflow.extension.visible
 import kg.devcats.processflow.model.input_form.Option
 
 class DropDownFieldBottomSheet(
     mContext: Context,
     private val optionsList: List<Option>,
+    private val title: String,
     private val isSingleSelectionType: Boolean,
+    private val isSearchEnabled: Boolean
 ) : BottomSheetDialog(mContext, R.style.DropDownBottomSheetStyle), OnDropDownItemClick {
 
     private var vb: ProcessFlowViewFormItemDropDownBottomSheetFragmentBinding =
@@ -32,17 +37,26 @@ class DropDownFieldBottomSheet(
         setAdapterFilteredItems()
     }
 
-
-    private fun setupViews() {
-        vb.rvItems.apply {
+    private fun setupViews() = with (vb) {
+        setupTitle()
+        ivClose.setOnSingleClickListener { dismiss() }
+        rvItems.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = itemsAdapter
         }
-        setupSearchInputView()
+        if (isSearchEnabled) setupSearchInputView()
     }
 
-    private fun setupSearchInputView() {
-        vb.etSearch.run {
+    private fun setupTitle() = with(vb) {
+        when (title.isNotEmpty()) {
+            true -> tvTitle.run { visible(); text = title }
+            else -> llSearch.setTopMargin(context.resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_14dp))
+        }
+    }
+
+    private fun setupSearchInputView() = with(vb) {
+        llSearch.visible()
+        etSearch.run {
             doAfterTextChanged {
                 expandBottomSheet()
                 filterText = it?.toString() ?: ""
