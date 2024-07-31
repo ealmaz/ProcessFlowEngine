@@ -74,7 +74,7 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
         this.appLocale = appLocale
     }
 
-    open fun setSmsRetrieverClient(smsRetrieverClient: SmsRetrieverClient) {
+    open fun setAppSmsRetrieverClient(smsRetrieverClient: SmsRetrieverClient) {
         this.smsRetrieverClient = smsRetrieverClient
     }
 

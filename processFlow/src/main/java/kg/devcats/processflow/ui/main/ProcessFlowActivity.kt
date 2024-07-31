@@ -302,7 +302,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             setScreenData(data)
             setThemeAndLocale(isAppThemeLight(), getAppLocale())
             getSmsRetrieverClient()?.let {
-                setSmsRetrieverClient(it)
+                setAppSmsRetrieverClient(it)
             }
         }
     }
