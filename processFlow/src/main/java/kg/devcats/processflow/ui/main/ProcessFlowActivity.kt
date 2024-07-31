@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.design2.chili2.view.navigation_components.ChiliToolbar
-import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.base.process.BackPressHandleState
@@ -58,7 +57,6 @@ import kg.devcats.processflow.ui.web_view.ProcessFlowLinksWebView
 import kg.devcats.processflow.ui.web_view.ProcessFlowPdfWebViewFragment
 import kg.devcats.processflow.ui.web_view.ProcessFlowWebViewFragment
 import kg.devcats.processflow.ui.web_view.VideoCallWebViewFragment
-import kg.devcats.processflow.util.SmsReceiverListener
 import java.io.File
 import java.lang.Exception
 
@@ -68,8 +66,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     protected var retryRequestCounter = 0
     protected var isNeedToExecuteRetry = false
     protected var isRetryLoaderInProgress = false
-
-    protected var smsReceiverListener: SmsReceiverListener? = null
 
     protected val loader: AlertDialog by lazy {
         val alert = AlertDialog.Builder(this)
@@ -120,8 +116,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun getAppLocale(): String = "ru"
 
     open fun isAppThemeLight(): Boolean = true
-
-    open fun getSmsRetrieverClient(): SmsRetrieverClient? = null
 
     open fun observeLiveData() = with (vm) {
         event.observe(this@ProcessFlowActivity) { resolveNewEvent(it) }
@@ -386,7 +380,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun openInputField(data: ProcessFlowScreenData) {
         navigateTo(ProcessFlowInputFieldFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
-        smsReceiverListener = currentScreen as? ProcessFlowInputFieldFragment
     }
 
     //Example: "APP_ACTION?action=BUTTON_CLICK&param=OPEN_AGREEMENT_DOCUMETS\"
