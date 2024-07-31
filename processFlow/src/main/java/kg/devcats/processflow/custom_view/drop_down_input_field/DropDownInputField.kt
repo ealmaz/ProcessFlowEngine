@@ -37,7 +37,13 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
         this.setOnSingleClickListener {
             clearError()
             if (options.isEmpty()) return@setOnSingleClickListener
-            val bs = DropDownFieldBottomSheet(context, options, dropDownFieldInfo.chooseType != ChooseType.MULTIPLE)
+            val bs = DropDownFieldBottomSheet(
+                mContext = context,
+                optionsList = options,
+                title = dropDownFieldInfo.label ?: "",
+                isSingleSelectionType = dropDownFieldInfo.chooseType != ChooseType.MULTIPLE,
+                isSearchEnabled = dropDownFieldInfo.isSearchEnabled ?: false
+            )
             bs.setOnDismissListener { onBottomSheetDismiss() }
             bs.show()
         }

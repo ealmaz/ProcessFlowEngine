@@ -19,4 +19,11 @@ enum class ButtonType {
     CHECK_BOX, TOGGLE, RADIO_BUTTON
 }
 
-data class Option(val id: String, val label: String? = null, var isSelected: Boolean? = false, val isHtmlText: Boolean? = false): Serializable
+data class Option(
+    val id: String,
+    val img: String? = null,
+    val label: String? = null,
+    val subtitle: String? = null,
+    var isSelected: Boolean? = false,
+    val isHtmlText: Boolean? = false,
+) : Serializable
