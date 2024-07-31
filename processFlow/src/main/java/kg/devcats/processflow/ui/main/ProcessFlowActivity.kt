@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.design2.chili2.view.navigation_components.ChiliToolbar
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.base.process.BackPressHandleState
@@ -116,6 +117,8 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun getAppLocale(): String = "ru"
 
     open fun isAppThemeLight(): Boolean = true
+
+    open fun getSmsRetrieverClient(): SmsRetrieverClient? = null
 
     open fun observeLiveData() = with (vm) {
         event.observe(this@ProcessFlowActivity) { resolveNewEvent(it) }
@@ -298,6 +301,9 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         (currentScreen as? BaseProcessScreenFragment<*>)?.apply {
             setScreenData(data)
             setThemeAndLocale(isAppThemeLight(), getAppLocale())
+            getSmsRetrieverClient()?.let {
+                setSmsRetrieverClient(it)
+            }
         }
     }
 
