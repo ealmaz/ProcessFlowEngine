@@ -58,6 +58,7 @@ import kg.devcats.processflow.ui.web_view.ProcessFlowLinksWebView
 import kg.devcats.processflow.ui.web_view.ProcessFlowPdfWebViewFragment
 import kg.devcats.processflow.ui.web_view.ProcessFlowWebViewFragment
 import kg.devcats.processflow.ui.web_view.VideoCallWebViewFragment
+import kg.devcats.processflow.util.SmsReceiverListener
 import java.io.File
 import java.lang.Exception
 
@@ -67,6 +68,8 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     protected var retryRequestCounter = 0
     protected var isNeedToExecuteRetry = false
     protected var isRetryLoaderInProgress = false
+
+    protected var smsReceiverListener: SmsReceiverListener? = null
 
     protected val loader: AlertDialog by lazy {
         val alert = AlertDialog.Builder(this)
@@ -301,9 +304,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         (currentScreen as? BaseProcessScreenFragment<*>)?.apply {
             setScreenData(data)
             setThemeAndLocale(isAppThemeLight(), getAppLocale())
-            getSmsRetrieverClient()?.let {
-                setAppSmsRetrieverClient(it)
-            }
         }
     }
 
@@ -386,6 +386,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun openInputField(data: ProcessFlowScreenData) {
         navigateTo(ProcessFlowInputFieldFragment::class.java)
         setScreenData(currentScreen as Fragment, data)
+        smsReceiverListener = currentScreen as? ProcessFlowInputFieldFragment
     }
 
     //Example: "APP_ACTION?action=BUTTON_CLICK&param=OPEN_AGREEMENT_DOCUMETS\"

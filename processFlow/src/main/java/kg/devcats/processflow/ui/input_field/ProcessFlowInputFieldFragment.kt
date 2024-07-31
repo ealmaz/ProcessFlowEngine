@@ -30,9 +30,10 @@ import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.component.FlowRetryInfo
 import kg.devcats.processflow.util.SmsBroadcastReceiver
+import kg.devcats.processflow.util.SmsReceiverListener
 
 class ProcessFlowInputFieldFragment :
-    BaseProcessScreenFragment<ProcessFlowFragmentInputFieldBinding>(), SmsBroadcastReceiver.Listener {
+    BaseProcessScreenFragment<ProcessFlowFragmentInputFieldBinding>(), SmsReceiverListener {
 
     private var receiver: SmsBroadcastReceiver? = null
 
@@ -84,7 +85,6 @@ class ProcessFlowInputFieldFragment :
         inputFieldContainer: FrameLayout,
         inputFieldInfo: FlowInputField
     ): OtpInputView {
-        inputFieldInfo?.otpLength?.let { initSmsRetrieverApi(it) }
         resultData = inputFieldInfo.fieldId to mutableListOf()
         val inputView = super.renderOtpInputView(inputFieldContainer, inputFieldInfo.copy(label = null))
         inputFieldInfo.enableActionAfterMills?.let {
@@ -97,23 +97,12 @@ class ProcessFlowInputFieldFragment :
         inputFieldContainer: FrameLayout,
         inputFieldInfo: FlowInputField
     ): BaseInputView {
-        inputFieldInfo?.otpLength?.let { initSmsRetrieverApi(it) }
         resultData = inputFieldInfo.fieldId to mutableListOf()
         val inputView = super.renderInputField(inputFieldContainer, inputFieldInfo.copy(label = null))
         inputFieldInfo.enableActionAfterMills?.let {
             setTimer(it, inputView, inputFieldInfo.additionalActionResolutionCode ?: "")
         }
         return inputView
-    }
-
-    private fun initSmsRetrieverApi(otpLength: Int) {
-        receiver = SmsBroadcastReceiver(otpLength)
-        val client = smsRetrieverClient ?: SmsRetriever.getClient(requireContext())
-        val retriever = client.startSmsRetriever()
-        retriever.addOnSuccessListener {
-            receiver?.setListener(this)
-            ContextCompat.registerReceiver(requireContext(), receiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION), ContextCompat.RECEIVER_EXPORTED)
-        }
     }
 
     private fun setTimer(timeOut: Long, inputField: BaseInputView, actionId: String) {
