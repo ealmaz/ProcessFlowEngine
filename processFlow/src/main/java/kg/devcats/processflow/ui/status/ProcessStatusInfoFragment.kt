@@ -53,13 +53,13 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
         super.onDestroyView()
     }
 
-    private fun getOrCreateLottieAnimationHandler(): LottieAnimationHandler {
+    protected fun getOrCreateLottieAnimationHandler(): LottieAnimationHandler {
         return lottieAnimationHandler ?: LottieAnimationHandler(vb.lavStatus).also {
             lottieAnimationHandler = it
         }
     }
 
-    private fun setupStatusIcon(stateScreenStatus: StateScreenStatus?, statusImageUrl: String?) {
+    protected open fun setupStatusIcon(stateScreenStatus: StateScreenStatus?, statusImageUrl: String?) {
         vb.lavStatus.gone()
         vb.ivStatus.gone()
         when {
