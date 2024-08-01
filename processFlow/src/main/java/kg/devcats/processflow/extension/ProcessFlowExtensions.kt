@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.text.Selection
-import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -34,18 +32,16 @@ import com.bumptech.glide.request.RequestOptions
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import kg.devcats.processflow.R
-import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.base.process.ProcessFlowHolder
-import kg.devcats.processflow.ui.camera.PhotoFlowFragment
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-fun Context.getProcessFlowHolder(): ProcessFlowHolder {
+fun FragmentActivity.getProcessFlowHolder(): ProcessFlowHolder {
     return this as ProcessFlowHolder
 }
 
 fun Fragment.getProcessFlowHolder(): ProcessFlowHolder {
-    return  requireContext().getProcessFlowHolder()
+    return  requireActivity().getProcessFlowHolder()
 }
 
 fun Context.getThemeColor(colorAttr: Int): Int {
