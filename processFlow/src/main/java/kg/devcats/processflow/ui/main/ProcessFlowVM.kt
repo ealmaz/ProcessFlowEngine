@@ -50,8 +50,6 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     fun restoreActiveFlow(possibleProcessTypes: List<String>) = disposed {
         _repository
             .findActiveProcess(possibleProcessTypes)
-            .doOnSubscribe { showLoading() }
-            .doOnTerminate { hideLoading() }
             .map { updateProcessInfo(it) }
             .map {
                 if (it.processType in possibleProcessTypes) it
