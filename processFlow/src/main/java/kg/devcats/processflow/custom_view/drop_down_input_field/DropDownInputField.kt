@@ -42,7 +42,7 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
                 optionsList = options,
                 title = dropDownFieldInfo.label ?: "",
                 isSingleSelectionType = dropDownFieldInfo.chooseType != ChooseType.MULTIPLE,
-                isSearchEnabled = dropDownFieldInfo.isSearchEnabled ?: false
+                isSearchEnabled = dropDownFieldInfo.isSearchEnabled ?: true
             )
             bs.setOnDismissListener { onBottomSheetDismiss() }
             bs.show()
