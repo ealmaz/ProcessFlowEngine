@@ -47,7 +47,11 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         return processFlow
     }
 
-    fun restoreActiveFlow(possibleProcessTypes: List<String>) = disposed {
+    fun updateProcessFlowId(newId: String) {
+        processFlowId = newId
+    }
+
+    fun restoreActiveFlow(possibleProcessTypes: List<String>, newSubProcessType: String? = null) = disposed {
         _repository
             .findActiveProcess(possibleProcessTypes)
             .doOnSubscribe { showLoading() }
@@ -59,8 +63,8 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
             }
             .flatMap { dispatchValuesToLiveData(it) }
             .subscribe(
-                { Event.ProcessFlowIsExist(it != null) },
-                { triggerEvent(Event.ProcessFlowIsExist(false)) }
+                { Event.ProcessFlowIsExist(it != null, subProcessFlowType = newSubProcessType) },
+                { triggerEvent(Event.ProcessFlowIsExist(false, subProcessFlowType = newSubProcessType)) }
             )
     }
 

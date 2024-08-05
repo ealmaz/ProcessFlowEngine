@@ -217,7 +217,10 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.Notification -> showErrorDialog(event.message)
             is Event.NotificationResId -> showErrorDialog(getString(event.messageResId))
             is Event.ProcessFlowIsExist -> {
-                if (!event.isExist) handleStartProcessFlow()
+                when {
+                    !(event.subProcessFlowType.isNullOrBlank()) && !(event.isExist) -> handleStartSubProcessFlow(event.subProcessFlowType)
+                    !event.isExist ->  handleStartProcessFlow()
+                }
             }
             is Event.AdditionalOptionsFetched -> {
                 (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
@@ -243,12 +246,25 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         vm.restoreActiveFlow(possibleProcessTypesToRestore)
     }
 
+    open fun handleOpenSubProcess(subProcessFlowType: String) {
+        vm.restoreActiveFlow(listOf(subProcessFlowType), newSubProcessType = subProcessFlowType)
+    }
+
     open fun handleStartProcessFlow() {
         vm.startProcessFlow(getProcessFlowStartParams())
     }
 
+    open fun handleStartSubProcessFlow(subProcessFlowType: String) {
+        vm.startProcessFlow(getSubProcessFlowStartParams(subProcessFlowType))
+    }
+
     open fun getProcessFlowStartParams(): Map<String, Any> = mapOf(
         "process_type" to processType
+    )
+
+    open fun getSubProcessFlowStartParams(subProcessFlowType: String): Map<String, Any> = mapOf(
+        "process_type" to subProcessFlowType,
+        "parent_process_id" to vm.requireProcessFlowId()
     )
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
@@ -263,7 +279,19 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             vm.getState()
             return
         }
-        vm.commit(button.buttonId, additionalContent)
+        when(button.buttonId) {
+            "OPEN_SUB_PROCESS" -> with(vm) {
+                button.properties?.get(ButtonProperties.SUB_PROCESS_FLOW_TYPE.propertyName)?.let {
+                    handleOpenSubProcess(it)
+                } ?: getState()
+            }
+            "RETURN_TO_PARENT_PROCESS" -> with(vm) {
+                button.properties?.get(ButtonProperties.PARENT_PROCESS_ID.propertyName)?.let {
+                    updateProcessFlowId(it); commit(button.buttonId)
+                } ?: getState()
+            }
+            else -> vm.commit(button.buttonId, additionalContent)
+        }
     }
 
     open fun resolveNewScreenState(screenData: ProcessFlowScreenData) {
