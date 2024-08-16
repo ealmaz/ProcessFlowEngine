@@ -24,6 +24,9 @@ import kg.devcats.processflow.model.AppActionUrlConstants.APP_ACTION_URL_TYPE
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ACTION
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_DATA
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_PARAM
+import kg.devcats.processflow.model.ButtonIds.OPEN_SUB_PROCESS
+import kg.devcats.processflow.model.ButtonIds.RETURN_TO_PARENT_PROCESS
+import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
@@ -217,7 +220,10 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.Notification -> showErrorDialog(event.message)
             is Event.NotificationResId -> showErrorDialog(getString(event.messageResId))
             is Event.ProcessFlowIsExist -> {
-                if (!event.isExist) handleStartProcessFlow()
+                when {
+                    !(event.subProcessFlowType.isNullOrBlank()) && !(event.isExist) -> handleStartSubProcessFlow(event.subProcessFlowType)
+                    !event.isExist ->  handleStartProcessFlow()
+                }
             }
             is Event.AdditionalOptionsFetched -> {
                 (currentScreen as? InputFormFragment)?.setAdditionalFetchedOptions(event.formId, event.options)
@@ -243,12 +249,25 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         vm.restoreActiveFlow(possibleProcessTypesToRestore)
     }
 
+    open fun handleOpenSubProcess(subProcessFlowType: String) {
+        vm.restoreActiveFlow(listOf(subProcessFlowType), newSubProcessType = subProcessFlowType, parentProcessId = vm.getCurrentProcessFlowId())
+    }
+
     open fun handleStartProcessFlow() {
         vm.startProcessFlow(getProcessFlowStartParams())
     }
 
+    open fun handleStartSubProcessFlow(subProcessFlowType: String) {
+        vm.startProcessFlow(getSubProcessFlowStartParams(subProcessFlowType))
+    }
+
     open fun getProcessFlowStartParams(): Map<String, Any> = mapOf(
         "process_type" to processType
+    )
+
+    open fun getSubProcessFlowStartParams(subProcessFlowType: String): Map<String, Any> = mapOf(
+        "process_type" to subProcessFlowType,
+        "parent_instance_key" to vm.requireProcessFlowId()
     )
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
@@ -263,7 +282,23 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             vm.getState()
             return
         }
-        vm.commit(button.buttonId, additionalContent)
+        when(button.buttonId) {
+            OPEN_SUB_PROCESS -> with(vm) {
+                button.properties?.get(ButtonProperties.SUB_PROCESS_FLOW_TYPE.propertyName)?.let {
+                    handleOpenSubProcess(it)
+                } ?: getState()
+            }
+            RETURN_TO_PARENT_PROCESS -> with(vm) {
+                button.properties?.get(ButtonProperties.PARENT_PROCESS_ID.propertyName)?.let {
+                    val childProcessFlowId = vm.getCurrentProcessFlowId() ?: ""
+                    updateProcessFlowId(it)
+                    commit(button.buttonId, listOf(
+                        Content(childProcessFlowId, ContentTypes.CHILD_INSTANCE_KEY),
+                    ))
+                } ?: getState()
+            }
+            else -> vm.commit(button.buttonId, additionalContent)
+        }
     }
 
     open fun resolveNewScreenState(screenData: ProcessFlowScreenData) {

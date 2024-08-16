@@ -11,7 +11,8 @@ data class FlowButton(
 ) : Serializable
 
 enum class ButtonProperties(val propertyName: String) {
-    ENABLED("enabled"), ENABLE_AT("enableAt"), DATA("data")
+    ENABLED("enabled"), ENABLE_AT("enableAt"), DATA("data"),
+    SUB_PROCESS_FLOW_TYPE("subProcessFlowType"), PARENT_PROCESS_ID("parent_instance_key"),
 }
 
 

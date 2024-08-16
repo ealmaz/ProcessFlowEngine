@@ -9,7 +9,7 @@ open class Event {
     class NotificationResId(val messageResId: Int) : Event()
 
     //Flow
-    class ProcessFlowIsExist(val isExist: Boolean): Event()
+    class ProcessFlowIsExist(val isExist: Boolean, val subProcessFlowType: String? = null): Event()
     object FlowCancelledCloseActivity: Event()
 
 

@@ -18,9 +18,9 @@ abstract class ProcessFlowRepository (
     private val _api: ProcessFlowNetworkApi,
 ) {
 
-    fun findActiveProcess(possibleProcessTypes: List<String>): Single<FlowResponse?> =
+    fun findActiveProcess(possibleProcessTypes: List<String>, parentProcessId: String? = null): Single<FlowResponse?> =
         _api
-            .findActiveProcess(possibleProcessTypes.joinToString { it })
+            .findActiveProcess(possibleProcessTypes.joinToString { it }, parentProcessId = parentProcessId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

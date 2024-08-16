@@ -19,7 +19,8 @@ interface ProcessFlowNetworkApi {
 
     @GET("v3/process/info/find-running-primary")
     fun findActiveProcess(
-        @Query("flow_types") possibleProcessTypes: String
+        @Query("flow_types") possibleProcessTypes: String,
+        @Query("parent_instance_key") parentProcessId: String? = null,
     ): Single<FlowResponse?>
 
     @POST("v3/process/start")
