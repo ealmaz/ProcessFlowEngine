@@ -17,7 +17,7 @@ import retrofit2.http.Query
 
 interface ProcessFlowNetworkApi {
 
-    @GET("v3/process/info/find-running-primary")
+    @GET("v4/process/info/find-running-primary")
     fun findActiveProcess(
         @Query("flow_types") possibleProcessTypes: String,
         @Query("parent_instance_key") parentProcessId: String? = null,
@@ -40,7 +40,7 @@ interface ProcessFlowNetworkApi {
         @Part file: MultipartBody.Part? = null,
     ): Single<String>
 
-    @GET("v2/dictionaries/form-item/options/{form_item_id}/{parent_selected_option_id}")
+    @GET("v3/dictionaries/form-item/options/{form_item_id}/{parent_selected_option_id}")
     fun fetchAdditionalOptions(
         @Path("form_item_id") formId: String,
         @Path("parent_selected_option_id") parentSelectedOptionId: String,
