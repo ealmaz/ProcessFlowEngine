@@ -5,6 +5,7 @@ import android.view.View
 import android.webkit.JavascriptInterface
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
 import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.custom_view.AppWebView
@@ -15,6 +16,7 @@ import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
 import kg.devcats.processflow.model.component.FlowWebView
+import kg.devcats.processflow.model.component.WebViewProperties
 
 open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragmentProcessFlowWebViewBinding>(),
     JsBridgeInterface {
@@ -34,6 +36,7 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
         data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let {
             it.url?.let { getWebView().loadUrl(it) }
             webViewId = it.id
+            handleProperties(it.properties)
         }
     }
 
@@ -94,6 +97,14 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     }
 
     open fun getWebView(): AppWebView = vb.webView
+
+    open fun handleProperties(webViewProperties: WebViewProperties?) {
+        webViewProperties?.faqUrl?.let {
+            getProcessFlowHolder().setupToolbarEndIcon(R.drawable.process_flow_ic_faq) {
+                getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(it))
+            }
+        }
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         getWebView()?.saveState(outState)
