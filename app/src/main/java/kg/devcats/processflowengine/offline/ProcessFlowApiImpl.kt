@@ -8,6 +8,7 @@ import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 object ProcessFlowApiImpl : ProcessFlowNetworkApi {
@@ -22,7 +23,10 @@ object ProcessFlowApiImpl : ProcessFlowNetworkApi {
         ).delay(REQUESTS_DELAY, TimeUnit.MILLISECONDS)
     }
 
-    override fun findActiveProcess(possibleProcessTypes: String): Single<FlowResponse?> {
+    override fun findActiveProcess(
+        @Query(value = "flow_types") possibleProcessTypes: String,
+        @Query(value = "parent_instance_key") parentProcessId: String?
+    ): Single<FlowResponse?> {
         Log.d("SAMPLE_TESTER", "getFlowStatus: Response null")
         return Single.error(java.lang.NullPointerException())
     }

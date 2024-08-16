@@ -30,6 +30,7 @@ object ContentTypes {
     const val INPUT_FORM_DATA = "INPUT_FORM_DATA"
     const val INPUT_FIELD_CONTENT = "INPUT_FIELD_CONTENT"
     const val WEB_VIEW_RESULT = "WEB_VIEW_RESULT"
+    const val CHILD_INSTANCE_KEY = "CHILD_INSTANCE_KEY"
 }
 
 object AppActionUrlConstants {
@@ -42,4 +43,9 @@ object AppActionUrlConstants {
 
 //    Values
     const val ACTION_TYPE_BUTTON_CLICK = "BUTTON_CLICK"
+}
+
+object ButtonIds {
+    val OPEN_SUB_PROCESS = "OPEN_SUB_PROCESS"
+    val RETURN_TO_PARENT_PROCESS = "RETURN_TO_PARENT_PROCESS"
 }

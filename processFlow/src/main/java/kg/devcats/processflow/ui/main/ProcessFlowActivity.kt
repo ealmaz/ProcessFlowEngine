@@ -24,6 +24,9 @@ import kg.devcats.processflow.model.AppActionUrlConstants.APP_ACTION_URL_TYPE
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ACTION
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_DATA
 import kg.devcats.processflow.model.AppActionUrlConstants.PARAM_NAME_ADDITIONAL_PARAM
+import kg.devcats.processflow.model.ButtonIds.OPEN_SUB_PROCESS
+import kg.devcats.processflow.model.ButtonIds.RETURN_TO_PARENT_PROCESS
+import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.Event
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
@@ -247,7 +250,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun handleOpenSubProcess(subProcessFlowType: String) {
-        vm.restoreActiveFlow(listOf(subProcessFlowType), newSubProcessType = subProcessFlowType)
+        vm.restoreActiveFlow(listOf(subProcessFlowType), newSubProcessType = subProcessFlowType, parentProcessId = vm.getCurrentProcessFlowId())
     }
 
     open fun handleStartProcessFlow() {
@@ -264,7 +267,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     open fun getSubProcessFlowStartParams(subProcessFlowType: String): Map<String, Any> = mapOf(
         "process_type" to subProcessFlowType,
-        "parent_process_id" to vm.requireProcessFlowId()
+        "parent_instance_key" to vm.requireProcessFlowId()
     )
 
     protected fun uploadPhotos(commit: ProcessFlowCommit.OnFlowPhotoCaptured) {
@@ -280,14 +283,18 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             return
         }
         when(button.buttonId) {
-            "OPEN_SUB_PROCESS" -> with(vm) {
+            OPEN_SUB_PROCESS -> with(vm) {
                 button.properties?.get(ButtonProperties.SUB_PROCESS_FLOW_TYPE.propertyName)?.let {
                     handleOpenSubProcess(it)
                 } ?: getState()
             }
-            "RETURN_TO_PARENT_PROCESS" -> with(vm) {
+            RETURN_TO_PARENT_PROCESS -> with(vm) {
                 button.properties?.get(ButtonProperties.PARENT_PROCESS_ID.propertyName)?.let {
-                    updateProcessFlowId(it); commit(button.buttonId)
+                    val childProcessFlowId = vm.getCurrentProcessFlowId() ?: ""
+                    updateProcessFlowId(it)
+                    commit(button.buttonId, listOf(
+                        Content(childProcessFlowId, ContentTypes.CHILD_INSTANCE_KEY),
+                    ))
                 } ?: getState()
             }
             else -> vm.commit(button.buttonId, additionalContent)

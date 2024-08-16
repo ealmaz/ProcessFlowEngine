@@ -51,9 +51,11 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         processFlowId = newId
     }
 
-    fun restoreActiveFlow(possibleProcessTypes: List<String>, newSubProcessType: String? = null) = disposed {
+    fun getCurrentProcessFlowId() = processFlowId
+
+    fun restoreActiveFlow(possibleProcessTypes: List<String>, newSubProcessType: String? = null, parentProcessId: String? = null) = disposed {
         _repository
-            .findActiveProcess(possibleProcessTypes)
+            .findActiveProcess(possibleProcessTypes, parentProcessId)
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
             .map { updateProcessInfo(it) }
