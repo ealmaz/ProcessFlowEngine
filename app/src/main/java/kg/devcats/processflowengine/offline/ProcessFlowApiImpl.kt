@@ -59,11 +59,11 @@ object ProcessFlowApiImpl : ProcessFlowNetworkApi {
     ): io.reactivex.Single<List<Option>> {
         Log.d("SAMPLE_TESTER", "fetchAdditionalOptions")
         return Single.just(listOf(
-            Option("1", "Бишкек"),
-            Option("2", "Токмок"),
-            Option("3", "Ош"),
-            Option("4", "Талас"),
-            Option("5", "Нарын"),
+            Option("1", label = "Бишкек"),
+            Option("2", label = "Токмок"),
+            Option("3", label = "Ош"),
+            Option("4", label = "Талас"),
+            Option("5", label = "Нарын"),
         )).delay(REQUESTS_DELAY, TimeUnit.MILLISECONDS)
     }
 
