@@ -141,7 +141,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     override fun setIsActivityLoading(isLoading: Boolean) {
-        vm.loaderState.value = isLoading
+        vm.loaderState.postValue(isLoading)
     }
 
     override fun setToolbarTitle(title: String) { vb.chiliToolbar.setTitle(title) }
