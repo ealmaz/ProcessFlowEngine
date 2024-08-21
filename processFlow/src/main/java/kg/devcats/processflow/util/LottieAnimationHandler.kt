@@ -38,6 +38,7 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
         when {
             animData.animationRes != null -> setLottieAnimation(animData.animationRes, repeatCount)
             !animData.animationJson.isNullOrBlank() -> setLottieAnimation(animData.animationJson, repeatCount)
+            !animData.animationUrl.isNullOrBlank() -> setLottieAnimationUrl(animData.animationUrl, repeatCount)
         }
     }
 
@@ -60,10 +61,27 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
             playAnimation()
         }
     }
+
+    private fun setLottieAnimationUrl(jsonUrl: String, mRepeatCount: Int) {
+        animationView.apply {
+            LottieCompositionFactory.fromUrl(context, jsonUrl)
+                .addListener { composition ->
+                    setComposition(composition)
+                    repeatCount = mRepeatCount
+                    playAnimation()
+                }
+                .addFailureListener { error ->
+                    // Обработайте ошибку здесь
+                    error.printStackTrace()
+                }
+        }
+    }
+
 }
 
 data class AnimationData(
     val animationRes: Int? = null,
     val animationJson: String? = null,
+    val animationUrl: String? = null,
     val isInfiniteRepeat: Boolean = false
 )
