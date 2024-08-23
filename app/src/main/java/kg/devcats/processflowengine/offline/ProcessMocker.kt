@@ -100,6 +100,28 @@ object ProcessMocker {
 """.trimIndent()
         )
 
+        put(
+            "start_ident_foreign", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"FOREIGN_PASSPORT_PHOTO",
+       "screen_state":{},
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"SELFIE_PHOTO",
+                "text":"далее",
+                "style":"ACCENT"
+             }
+          }   
+       ]
+    }
+""".trimIndent()
+        )
+
 
 
         put(
@@ -159,7 +181,7 @@ object ProcessMocker {
              "responseType":"BUTTON",
              "responseItem":{
                 "buttonId":"SIMPLE_SELFIE_PHOTO",
-                "text":"Далее",
+                "text":"Далее 898-8809",
                 "style":"ACCENT"
              }
           }
