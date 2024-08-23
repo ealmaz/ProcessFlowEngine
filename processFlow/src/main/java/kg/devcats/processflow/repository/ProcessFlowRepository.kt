@@ -60,8 +60,8 @@ abstract class ProcessFlowRepository (
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchOptions(formId: String, parentSelectedId: String = ""): Single<List<Option>> {
-        return _api.fetchAdditionalOptions(formId, parentSelectedId)
+    fun fetchOptions(formId: String, parentSelectedId: String = "", processId: String? = ""): Single<List<Option>> {
+        return _api.fetchAdditionalOptions(formId, parentSelectedId, processId = processId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
