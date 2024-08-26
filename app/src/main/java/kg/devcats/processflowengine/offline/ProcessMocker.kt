@@ -577,6 +577,68 @@ object ProcessMocker {
                             "fieldId":"PASSPORT_date",
                             "label":"Дата"
                         }
+                    },
+                    {
+                        "formItemType":"LABEL",
+                        "formItem":{
+                            "fieldId":"pair_text_fields",
+                            "label":"Pair text fields"
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_1",
+                            "startText":"Экспресс кредит",
+                            "endText":"150 343,00 <u>c</u> "
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_2",
+                            "startText":"Visa Gold \n•••• 2345",
+                            "endText":"150 343,00 <u>c</u> "
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_3",
+                            "startText":"Депозит ",
+                            "endText":"ДепозитДепозитДепозит150 343,00 <u>c</u> "
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_4",
+                            "startText":"Депозит Депозит Депозит Депозит Депозит ",
+                            "endText":"Депозит_Депозит_Депозит 150 343,00 <u>c</u> "
+                        }
+                    },
+                     {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"CHECK_BOX",
+                            "options":[
+                                {
+                                    "id":"nda6",
+                                    "isHtmlText":"true",
+                                    "label":"<b><font color='#000000'>Список карт для переноса правильный</font></b> <br>Если у вас есть карты в Halyk Bank, уберите галочку. Оформим заявку на проверку и свяжемся c вами",
+                                    "isSelected":"true"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
