@@ -28,11 +28,13 @@ object PairFieldItemCreator {
             setAdditionalTextTextAppearance(Chilli_R.style.Chili_H7_Primary)
             setPadding(padding0, padding0, padding0, padding4)
             updateTitleMargin(padding16, padding16, padding16, padding0)
+            setTitleMaxLines(Int.MAX_VALUE)
 
             setTitle(pairFieldItem.startText)
 
             setTitleTextAppearance(Chilli_R.style.Chili_H7_Primary)
             updateAdditionalTextMargin(padding0, padding16, padding4, padding12)
+            setAdditionalTextMaxLines(Int.MAX_VALUE)
             pairFieldItem.endText?.let {
                 if (pairFieldItem.isHtml == true) setAdditionalText(it.parseAsHtml())
                 else setAdditionalText(it)
