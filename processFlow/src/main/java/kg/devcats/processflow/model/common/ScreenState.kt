@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class ScreenState(
     val status: StateScreenStatus? = null,
     val statusImageUrl: String? = null,
+    val animationUrl: String? = null,
     @SerializedName("app_bar_text")
     val appBarText: String? = null,
     val title: String? = null,

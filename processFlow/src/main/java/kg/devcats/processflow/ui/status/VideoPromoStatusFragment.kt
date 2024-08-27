@@ -7,7 +7,11 @@ import kg.devcats.processflow.util.AnimationData
 
 class VideoPromoStatusFragment : ProcessStatusInfoFragment() {
 
-    override fun setupStatusIcon(stateScreenStatus: StateScreenStatus?, statusImageUrl: String?) {
+    override fun setupStatusIcon(
+        stateScreenStatus: StateScreenStatus?,
+        statusImageUrl: String?,
+        animationUrl: String?
+    ) {
         getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(R.raw.process_flow_lottie_video))
         vb.lavStatus.visible()
     }

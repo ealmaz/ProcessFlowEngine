@@ -36,9 +36,9 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
         val repeatCount = if (animData.isInfiniteRepeat) INFINITE else 0
 
         when {
+            !animData.animationUrl.isNullOrBlank() -> setLottieAnimationUrl(animData.animationUrl, repeatCount)
             animData.animationRes != null -> setLottieAnimation(animData.animationRes, repeatCount)
             !animData.animationJson.isNullOrBlank() -> setLottieAnimation(animData.animationJson, repeatCount)
-            !animData.animationUrl.isNullOrBlank() -> setLottieAnimationUrl(animData.animationUrl, repeatCount)
         }
     }
 

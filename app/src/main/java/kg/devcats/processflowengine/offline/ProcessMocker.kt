@@ -16,7 +16,8 @@ object ProcessMocker {
           "status":"IN_PROCESS",
           "app_bar_text":"Идентификация",
           "title":"Проверяем ваши \nдокументы",
-          "description":""
+          "description":"",
+          "animationUrl":"https://assets7.lottiefiles.com/packages/lf20_x62chJ.json"
        },
        "messages":[],
        "allowed_answers":[
