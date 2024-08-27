@@ -103,7 +103,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
                 is DropDownFieldInfo -> createDropDownField(it.formItem)
                 is DatePickerFieldInfo -> createDatePickerField(it.formItem)
                 is LabelFormItem -> createLabelFormItem(it.formItem)
-                is PairFieldItem -> createTextFormItem(it.formItem)
+                is PairFieldItem -> createPairFieldItem(it.formItem)
                 else -> null
             }
             view?.let { container.addView(it) }
@@ -138,7 +138,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         return  LabelFormItemCreator.create(requireContext(), labelFormItem)
     }
 
-    private fun createTextFormItem(pairFieldItem: PairFieldItem): View {
+    private fun createPairFieldItem(pairFieldItem: PairFieldItem): View {
         return  PairFieldItemCreator.create(requireContext(), pairFieldItem)
     }
 

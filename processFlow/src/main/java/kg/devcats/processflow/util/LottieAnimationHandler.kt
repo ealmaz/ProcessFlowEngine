@@ -5,6 +5,7 @@ import androidx.annotation.RawRes
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable.INFINITE
+import kg.devcats.processflow.R
 import java.util.LinkedList
 
 class LottieAnimationHandler(private val animationView: LottieAnimationView) {
@@ -71,7 +72,7 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
                     playAnimation()
                 }
                 .addFailureListener { error ->
-                    // Обработайте ошибку здесь
+                    setLottieAnimation(R.raw.process_flow_lottie_anim_loop, INFINITE)
                     error.printStackTrace()
                 }
         }

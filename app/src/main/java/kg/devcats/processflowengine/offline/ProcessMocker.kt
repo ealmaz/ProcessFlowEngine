@@ -623,7 +623,8 @@ object ProcessMocker {
                         "formItem":{
                             "fieldId":"PAIR_FIELD_1",
                             "startText":"Экспресс кредит",
-                            "endText":"150 343,00 <u>c</u> "
+                            "endText":"150 343,00 <u>c</u> ",
+                            "isHtml":true
                         }
                     },
                     {
@@ -638,8 +639,9 @@ object ProcessMocker {
                         "formItemType":"PAIR_FIELD",
                         "formItem":{
                             "fieldId":"PAIR_FIELD_3",
-                            "startText":"Депозит ",
-                            "endText":"ДепозитДепозитДепозит150 343,00 <u>c</u> "
+                            "startText":"Депозит 343,00 <u>c</u> ",
+                            "endText":"Депозит Депозит Депозит150 343,00 <u>c</u> ",
+                            "isHtml":true
                         }
                     },
                     {
