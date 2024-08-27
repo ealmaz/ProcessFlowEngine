@@ -37,8 +37,8 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
 
         when {
             !animData.animationUrl.isNullOrBlank() -> setLottieAnimationUrl(animData.animationUrl, repeatCount)
-            animData.animationRes != null -> setLottieAnimation(animData.animationRes, repeatCount)
             !animData.animationJson.isNullOrBlank() -> setLottieAnimation(animData.animationJson, repeatCount)
+            animData.animationRes != null -> setLottieAnimation(animData.animationRes, repeatCount)
         }
     }
 
