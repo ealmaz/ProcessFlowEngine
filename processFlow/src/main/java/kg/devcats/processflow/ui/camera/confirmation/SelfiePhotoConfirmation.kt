@@ -14,7 +14,7 @@ class SelfiePhotoConfirmation : PhotoConfirmationFragment() {
 
     override fun setupViews() {
         super.setupViews()
-        vb.tvConfirmTitle.setText(R.string.process_flow_photo_confirmation_simple_selfile)
+        vb.tvConfirmTitle.setText(R.string.process_flow_photo_confirmation_simple_selfie)
     }
 
     override fun loadImage(filePath: String) {
