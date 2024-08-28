@@ -34,7 +34,7 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
         settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
-            userAgentString = getAppUserAgent(userAgentString)
+            setGeolocationEnabled(true)
             setSupportZoom(true)
         }
     }
@@ -53,6 +53,13 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
 
     private fun getWebViewChromeClientInstance(): WebChromeClient {
         return object : WebChromeClient() {
+
+            override fun onGeolocationPermissionsShowPrompt(
+                origin: String?,
+                callback: GeolocationPermissions.Callback?
+            ) {
+                loadListener?.onLocationPermissionRequest(origin, callback)
+            }
 
             override fun onPermissionRequest(request: PermissionRequest?) {
                 loadListener?.onPermissionRequest(request)
@@ -86,6 +93,7 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
 
     private fun getWebViewClientInstance(): WebViewClient {
         return object : WebViewClient() {
+
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 loadListener?.onPageStarted()
@@ -122,6 +130,7 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
             isNeedLoadBaseUrl(url) -> {
                 view?.loadUrl(baseHost ?: ""); true
             }
+
             isIntent(url) -> handleIntentUrl(url!!)
             isApplicationUri(url) -> openUriWithApplication(view, url)
             else -> false
@@ -165,10 +174,6 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    private fun getAppUserAgent(currentAgent: String?): String {
-        return "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"
-    }
-
     fun clearWebView() {
         clearHistory()
         clearCache(true)
@@ -194,6 +199,10 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
         ): WebResourceResponse? {
             return null
         }
+
         open fun onPermissionRequest(request: PermissionRequest?) {}
+        open fun onLocationPermissionRequest(
+            origin: String?,
+            callback: GeolocationPermissions.Callback?) {}
     }
 }
