@@ -1,9 +1,16 @@
 package kg.devcats.processflow.ui.web_view
 
+import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
+import android.webkit.PermissionRequest
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
@@ -18,18 +25,21 @@ import kg.devcats.processflow.model.common.Content
 import kg.devcats.processflow.model.component.FlowWebView
 import kg.devcats.processflow.model.component.WebViewProperties
 
-open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFragmentProcessFlowWebViewBinding>(),
-    JsBridgeInterface {
+open class ProcessFlowWebViewFragment :
+    BaseProcessScreenFragment<ProcessFlowFragmentProcessFlowWebViewBinding>(), JsBridgeInterface {
 
     private var webViewId: String = ""
+    override val buttonsLinearLayout: LinearLayout? get() = vb.llButtons
+    override val unclickableMask: View? get() = null
+    private var mGeoLocationRequestOrigin: String? = null
+    private var mGeoLocationCallback: GeolocationPermissions.Callback? = null
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            mGeoLocationCallback?.invoke(mGeoLocationRequestOrigin, it, false)
+        }
 
-    override val buttonsLinearLayout: LinearLayout?
-        get() = vb.llButtons
-
-    override val unclickableMask: View?
-        get() = null
-
-    override fun inflateViewBinging() = ProcessFlowFragmentProcessFlowWebViewBinding.inflate(layoutInflater)
+    override fun inflateViewBinging() =
+        ProcessFlowFragmentProcessFlowWebViewBinding.inflate(layoutInflater)
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
@@ -73,13 +83,19 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
                     updateBackIcon()
                 }
 
-                override fun onPageFinished() {}
-
                 override fun onProgressChanged(progress: Int) {
                     vb.progressBar.run {
                         setProgress(progress)
                         isVisible = progress < 100
                     }
+                }
+
+                override fun onLocationPermissionRequest(
+                    origin: String?, callback: GeolocationPermissions.Callback?
+                ) {
+                        mGeoLocationCallback = callback
+                        mGeoLocationRequestOrigin = origin
+                        requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                 }
             }
             addJavascriptInterface(this@ProcessFlowWebViewFragment, webViewJsInterfaceName)
@@ -91,8 +107,9 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     }
 
     open fun updateBackIcon() {
-        val iconRes = if (getWebView().canGoBack()) com.design2.chili2.R.drawable.chili_ic_back_arrow
-        else com.design2.chili2.R.drawable.chili_ic_close
+        val iconRes =
+            if (getWebView().canGoBack()) com.design2.chili2.R.drawable.chili_ic_back_arrow
+            else com.design2.chili2.R.drawable.chili_ic_close
         getProcessFlowHolder().setToolbarNavIcon(iconRes)
     }
 
@@ -127,8 +144,7 @@ open class ProcessFlowWebViewFragment : BaseProcessScreenFragment<ProcessFlowFra
     override fun setStringResultAndClose(result: String) {
         getProcessFlowHolder().commit(
             ProcessFlowCommit.CommitContentFormResponseId(
-                webViewId,
-                listOf(Content(result, ContentTypes.WEB_VIEW_RESULT))
+                webViewId, listOf(Content(result, ContentTypes.WEB_VIEW_RESULT))
             )
         )
     }
