@@ -5,6 +5,7 @@ import androidx.annotation.RawRes
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable.INFINITE
+import kg.devcats.processflow.R
 import java.util.LinkedList
 
 class LottieAnimationHandler(private val animationView: LottieAnimationView) {
@@ -36,8 +37,9 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
         val repeatCount = if (animData.isInfiniteRepeat) INFINITE else 0
 
         when {
-            animData.animationRes != null -> setLottieAnimation(animData.animationRes, repeatCount)
+            !animData.animationUrl.isNullOrBlank() -> setLottieAnimationUrl(animData.animationUrl, repeatCount)
             !animData.animationJson.isNullOrBlank() -> setLottieAnimation(animData.animationJson, repeatCount)
+            animData.animationRes != null -> setLottieAnimation(animData.animationRes, repeatCount)
         }
     }
 
@@ -60,10 +62,27 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
             playAnimation()
         }
     }
+
+    private fun setLottieAnimationUrl(jsonUrl: String, mRepeatCount: Int) {
+        animationView.apply {
+            LottieCompositionFactory.fromUrl(context, jsonUrl)
+                .addListener { composition ->
+                    setComposition(composition)
+                    repeatCount = mRepeatCount
+                    playAnimation()
+                }
+                .addFailureListener { error ->
+                    setLottieAnimation(R.raw.process_flow_lottie_anim_loop, INFINITE)
+                    error.printStackTrace()
+                }
+        }
+    }
+
 }
 
 data class AnimationData(
     val animationRes: Int? = null,
     val animationJson: String? = null,
+    val animationUrl: String? = null,
     val isInfiniteRepeat: Boolean = false
 )

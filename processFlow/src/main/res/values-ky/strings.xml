@@ -25,6 +25,7 @@
     <string name="process_flow_photo_confirmation_passport">Фотосүрөт жана маалыматтар даана көрүнүп турганына ынаныңыз</string>
     <string name="process_flow_photo_confirmation_passport_back">Маалыматтар даана көрүнүп турганына ынаныңыз</string>
     <string name="process_flow_photo_confirmation_selfile_passport">Жүзүңүз жана паспорт даана көрүнүп турганына ынаныңыз</string>
+    <string name="process_flow_photo_confirmation_simple_selfie">Жүзүңүз даана көрүнүп турабы?</string>
 
     <string name="process_flow_photo_confirmation_retake_photo">Кайра тартуу</string>
     <string name="process_flow_photo_confirmation_send_photo">Сүрөттү жөнөтүү</string>
@@ -35,13 +36,18 @@
     <string name="process_flow_photo_capture_passport_front_description">Паспортту алкакка келтирип, \nсүрөткө тартыңыз</string>
     <string name="process_flow_photo_capture_passport_back_description">Сураныч, паспортту алкактын ичине келтирип, \nсүрөткө тартуу баскычы пайда болгонго \nчейин күтө туруңуз.</string>
     <string name="process_flow_photo_capture_selfie_passport_description">Жүзүңүздү жана паспортту алкакка келтирип, \nсүрөткө тартыңыз</string>
+    <string name="process_flow_photo_capture_simple_selfie_description">Жүзүңүз даана көрүнүп турганына ынанып, \nселфи тартыңыз</string>
     <!--    Flow Photo Instruction -->
     <string name="process_flow_photo_instruction_passport_front">Паспорттун алдыңкы бетин сүрөткө тартыңыз</string>
+    <string name="process_flow_photo_instruction_passport_foreigner">Паспортту сүрөткө тартыңыз</string>
+    <string name="process_flow_photo_instruction_passport_foreigner_subtitle">Сүрөт так-даана болууга тийиш, ал эми паспорттук \nмаалыматтар жакшы көрүнүп турсун</string>
     <string name="process_flow_photo_instruction_passport_back">Паспорттун арткы бетин сүрөткө тартыңыз</string>
     <string name="process_flow_photo_instructiin_passports_subtitle">Жарык жер жана башка түстөгү фон маалыматтарды текшерүүнү тездетет</string>
     <string name="process_flow_photo_instruction_selfie">Паспорт менен сүрөткө түшүңүз</string>
     <string name="process_flow_photo_instruction_selfie_description">Сүрөт так болууга тийиш, ал эми паспорт жана жүзүңүз толугу менен көрүнүшү керек</string>
     <string name="process_flow_photo_instruction_simple_selfie">Жарык жерден камерага түз карап, сүрөткө көз айнексиз түшүңүз</string>
+    <string name="process_flow_photo_instruction_simple_selfie_title">Селфи тартыңыз</string>
+    <string name="process_flow_photo_instruction_simple_selfie_subtitle">Ашыкча аксессуарларды алып салыңыз, жүзүңүз \nжакшы көрүнүп турууга тийиш</string>
 
     <string name="process_flow_exit_video_call">Чалууну бүтүрөрүңүз аныкпы?</string>
 </resources>

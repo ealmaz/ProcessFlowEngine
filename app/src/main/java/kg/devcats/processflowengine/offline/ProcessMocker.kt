@@ -100,6 +100,61 @@ object ProcessMocker {
 """.trimIndent()
         )
 
+        put(
+            "start_lottie_url", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"STATUS_INFO",
+       "screen_state":{
+          "status":"IN_PROCESS",
+          "app_bar_text":"Идентификация",
+          "title":"Проверяем ваши \nдокументы",
+          "description":"",
+          "animationUrl":"https://assets7.lottiefiles.com/packages/lf20_x62chJ.json"
+       },
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"start_ident_foreign",
+                "text":"Начать идентификацию",
+                "style":"ACCENT",
+                "disabled":false,
+                "properties":{
+                   
+                }
+             }
+          }    
+       ]
+    }
+""".trimIndent()
+        )
+
+
+        put(
+            "start_ident_foreign", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"FOREIGN_PASSPORT_PHOTO",
+       "screen_state":{},
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"SELFIE_PHOTO",
+                "text":"далее",
+                "style":"ACCENT"
+             }
+          }   
+       ]
+    }
+""".trimIndent()
+        )
+
 
 
         put(
@@ -554,6 +609,70 @@ object ProcessMocker {
                         "formItem":{
                             "fieldId":"PASSPORT_date",
                             "label":"Дата"
+                        }
+                    },
+                    {
+                        "formItemType":"LABEL",
+                        "formItem":{
+                            "fieldId":"pair_text_fields",
+                            "label":"Pair text fields"
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_1",
+                            "startText":"Экспресс кредит",
+                            "endText":"150 343,00 <u>c</u> ",
+                            "isHtml":true
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_2",
+                            "startText":"Visa Gold \n•••• 2345",
+                            "endText":"150 343,00 <u>c</u> "
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_3",
+                            "startText":"Депозит 343,00 <u>c</u> ",
+                            "endText":"Депозит Депозит Депозит150 343,00 <u>c</u> ",
+                            "isHtml":true
+                        }
+                    },
+                    {
+                        "formItemType":"PAIR_FIELD",
+                        "formItem":{
+                            "fieldId":"PAIR_FIELD_4",
+                            "startText":"Депозит Депозит Депозит Депозит Депозит ",
+                            "endText":"Депозит_Депозит_Депозит 150 343,00 <u>c</u> "
+                        }
+                    },
+                     {
+                        "formItemType":"GROUP_BUTTON_FORM_ITEM",
+                        "formItem":{
+                            "fieldId":"agreement",
+                            "label":"",
+                            "validations":[
+                                {
+                                    "type":"REQUIRED",
+                                    "value":"true"
+                                }
+                            ],
+                            "chooseType":"MULTIPLE",
+                            "buttonType":"CHECK_BOX",
+                            "options":[
+                                {
+                                    "id":"nda6",
+                                    "isHtmlText":"true",
+                                    "label":"<b><font color='#000000'>Список карт для переноса правильный</font></b> <br>Если у вас есть карты в Halyk Bank, уберите галочку. Оформим заявку на проверку и свяжемся c вами",
+                                    "isSelected":"true"
+                                }
+                            ]
                         }
                     }
                 ]

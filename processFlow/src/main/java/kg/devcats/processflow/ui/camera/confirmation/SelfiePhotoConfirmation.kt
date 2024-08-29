@@ -7,13 +7,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target
 import com.design2.chili2.util.GlideBitmapMirrorTransformation
 import com.design2.chili2.util.GlideBitmapScaleTransformation
+import kg.devcats.processflow.R
 import java.io.File
 
 class SelfiePhotoConfirmation : PhotoConfirmationFragment() {
 
     override fun setupViews() {
         super.setupViews()
-        vb.tvConfirmTitle.text = ""
+        vb.tvConfirmTitle.setText(R.string.process_flow_photo_confirmation_simple_selfie)
     }
 
     override fun loadImage(filePath: String) {

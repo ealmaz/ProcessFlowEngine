@@ -22,6 +22,7 @@ import kg.devcats.processflow.item_creator.DropDownFieldCreator
 import kg.devcats.processflow.item_creator.GroupButtonsCreator
 import kg.devcats.processflow.item_creator.InputFieldCreator
 import kg.devcats.processflow.item_creator.LabelFormItemCreator
+import kg.devcats.processflow.item_creator.PairFieldItemCreator
 import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
@@ -35,6 +36,7 @@ import kg.devcats.processflow.model.input_form.GroupButtonFormItem
 import kg.devcats.processflow.model.input_form.InputForm
 import kg.devcats.processflow.model.input_form.LabelFormItem
 import kg.devcats.processflow.model.input_form.Option
+import kg.devcats.processflow.model.input_form.PairFieldItem
 import java.util.Calendar
 
 
@@ -101,6 +103,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
                 is DropDownFieldInfo -> createDropDownField(it.formItem)
                 is DatePickerFieldInfo -> createDatePickerField(it.formItem)
                 is LabelFormItem -> createLabelFormItem(it.formItem)
+                is PairFieldItem -> createPairFieldItem(it.formItem)
                 else -> null
             }
             view?.let { container.addView(it) }
@@ -133,6 +136,10 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private fun createLabelFormItem(labelFormItem: LabelFormItem): View {
         return  LabelFormItemCreator.create(requireContext(), labelFormItem)
+    }
+
+    private fun createPairFieldItem(pairFieldItem: PairFieldItem): View {
+        return  PairFieldItemCreator.create(requireContext(), pairFieldItem)
     }
 
     private fun createDropDownField(dropDownList: DropDownFieldInfo): View {

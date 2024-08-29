@@ -10,6 +10,7 @@ import kg.devcats.processflow.model.input_form.FormItemType
 import kg.devcats.processflow.model.input_form.GroupButtonFormItem
 import kg.devcats.processflow.model.input_form.InputForm
 import kg.devcats.processflow.model.input_form.LabelFormItem
+import kg.devcats.processflow.model.input_form.PairFieldItem
 
 open class InputFormMapper {
 
@@ -42,6 +43,11 @@ open class InputFormMapper {
                 kg.devcats.processflow.model.component.FormItemType.LABEL -> FormItem(
                     FormItemType.LABEL,
                     gson.fromJson(it.formItem, LabelFormItem::class.java)
+                )
+
+                kg.devcats.processflow.model.component.FormItemType.PAIR_FIELD -> FormItem(
+                    FormItemType.PAIR_FIELD,
+                    gson.fromJson(it.formItem, PairFieldItem::class.java)
                 )
                 else -> null
             }
