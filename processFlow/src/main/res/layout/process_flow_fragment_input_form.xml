@@ -11,9 +11,8 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="72dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ll_additional_buttons"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
@@ -37,6 +36,14 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_additional_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginVertical="@dimen/padding_16dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_done"/>
 
     <com.design2.chili2.view.buttons.LoaderButton
         android:id="@+id/btn_done"

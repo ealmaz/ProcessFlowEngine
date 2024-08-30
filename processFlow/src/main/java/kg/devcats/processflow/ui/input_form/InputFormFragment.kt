@@ -55,14 +55,15 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     override val unclickableMask: View
         get() = vb.unclickableMask
 
-    private val result = HashMap<String, List<String>?>()
+    override val buttonsLinearLayout: LinearLayout?
+        get() = vb.llAdditionalButtons
 
+    private val result = HashMap<String, List<String>?>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.setFragmentResultListener(DatePickerDialog.PICKER_DIALOG_RESULT, this, this)
     }
-
 
     override fun inflateViewBinging(): ProcessFlowFragmentInputFormBinding {
         return ProcessFlowFragmentInputFormBinding.inflate(layoutInflater)

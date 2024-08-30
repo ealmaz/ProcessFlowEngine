@@ -504,6 +504,26 @@ object ProcessMocker {
        "messages":[],
        "allowed_answers":[
           {
+            "responseType":"BUTTON",
+            "responseItem":{
+                "disabled":true,
+                "style":"SECONDARY",
+                "properties":null,
+                "buttonId":"start_ident",
+                "text":"Не продолжать идентификацию"
+            }
+          },
+          {
+            "responseType":"BUTTON",
+            "responseItem":{
+                "disabled":false,
+                "style":"SECONDARY",
+                "properties":null,
+                "buttonId":"start_ident",
+                "text":"Продолжить идентификацию"
+            }
+          },
+          {
             "responseType":"INPUT_FORM",
             "responseItem":{
                 "formId":"passport_form",
