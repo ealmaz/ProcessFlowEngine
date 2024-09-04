@@ -7,6 +7,10 @@ class ProcessFlowLinksWebView : ProcessFlowWebViewFragment() {
 
     override fun onResume() {
         super.onResume()
+        getProcessFlowHolder().setupToolbarEndIcon(null, null)
+    }
+
+    override fun updateBackIcon() {
         getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
     }
 
