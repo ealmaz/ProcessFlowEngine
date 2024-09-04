@@ -109,11 +109,18 @@ class ProcessFlowInputFieldFragment :
 
     private fun initSmsRetrieverApi(otpLength: Int) {
         receiver = SmsBroadcastReceiver(otpLength)
-        val client = SmsRetriever.getClient(requireContext())
-        val retriever = client.startSmsRetriever()
-        retriever.addOnSuccessListener {
-            receiver?.setListener(this)
-            ContextCompat.registerReceiver(requireContext(), receiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION), ContextCompat.RECEIVER_EXPORTED)
+        context?.let { context ->
+            val client = SmsRetriever.getClient(context)
+            val retriever = client.startSmsRetriever()
+            retriever.addOnSuccessListener {
+                receiver?.setListener(this)
+                ContextCompat.registerReceiver(
+                    context,
+                    receiver,
+                    IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION),
+                    ContextCompat.RECEIVER_EXPORTED
+                )
+            }
         }
     }
 
