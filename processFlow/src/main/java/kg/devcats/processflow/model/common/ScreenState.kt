@@ -14,4 +14,5 @@ data class ScreenState(
     val bottomDescriptionHtml: String? = null,
     val timer: Long? = null,
     val timerText: String? = null,
+    val isScreenCloseDisabled: Boolean? = false,
 )

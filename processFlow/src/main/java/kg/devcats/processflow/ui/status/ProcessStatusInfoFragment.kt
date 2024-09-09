@@ -7,7 +7,9 @@ import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
+import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.databinding.ProcessFlowFragmentStatusInfoBinding
+import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.gone
 import kg.devcats.processflow.extension.handleUrlClicks
 import kg.devcats.processflow.extension.loadImage
@@ -22,11 +24,23 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
 
     protected var lottieAnimationHandler: LottieAnimationHandler? = null
 
+    private var isScreenCloseDisabled: Boolean = false
+
     override val unclickableMask: View?
         get() = vb.unclickableMask
 
     override val buttonsLinearLayout: LinearLayout?
         get() = vb.llButtons
+
+    override fun onStart() {
+        super.onStart()
+        getProcessFlowHolder().setIsNavigationUpEnabled(!isScreenCloseDisabled)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        getProcessFlowHolder().setIsNavigationUpEnabled(true)
+    }
 
     override fun renderScreenState(state: ScreenState?) {
         super.renderScreenState(state)
@@ -43,6 +57,7 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
             vb.tvSubtitle.isVisible = description != null
             setupStatusIcon(status, statusImageUrl, animationUrl)
             setupTimer(state)
+            setupScreenClosureAvailability(state.isScreenCloseDisabled ?: false)
         }
     }
 
@@ -112,5 +127,15 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
                 { vb.tvTimer.gone() },
                 { vb.tvTimer.text = "$timerText ${it.toTimeFromMillis}" })
         }
+    }
+
+    private fun setupScreenClosureAvailability(isScreenCloseDisabled: Boolean) {
+        this.isScreenCloseDisabled = isScreenCloseDisabled
+        getProcessFlowHolder().setIsNavigationUpEnabled(!isScreenCloseDisabled)
+    }
+
+    override fun handleBackPress(): BackPressHandleState {
+        return if (isScreenCloseDisabled) BackPressHandleState.HANDLED
+        else super.handleBackPress()
     }
 }

@@ -9,6 +9,7 @@ interface ProcessFlowHolder {
     fun setToolbarTitle(title: String = "")
     fun setupToolbarEndIcon(iconRes: Int?, onClick: (() -> Unit)?)
     fun setIsToolbarVisible(isVisible: Boolean)
+    fun setIsNavigationUpEnabled(isEnabled: Boolean)
 
     fun commit(commit: ProcessFlowCommit)
 

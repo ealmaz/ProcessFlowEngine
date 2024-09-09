@@ -141,6 +141,10 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         vb.chiliToolbar.isVisible = isVisible
     }
 
+    override fun setIsNavigationUpEnabled(isEnabled: Boolean) {
+        vb.chiliToolbar.isUpHomeEnabled(hostActivity = this, isEnabled = isEnabled)
+    }
+
     override fun setIsActivityLoading(isLoading: Boolean) {
         vm.loaderState.postValue(isLoading)
     }
