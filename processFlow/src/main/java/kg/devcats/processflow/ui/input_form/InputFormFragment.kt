@@ -180,6 +180,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     override fun handleShowLoading(isLoading: Boolean): Boolean {
         vb.unclickableMask.isVisible = isLoading
+        vb.llAdditionalButtons.isVisible = !isLoading
         vb.btnDone.setIsLoading(isLoading)
         return true
     }
