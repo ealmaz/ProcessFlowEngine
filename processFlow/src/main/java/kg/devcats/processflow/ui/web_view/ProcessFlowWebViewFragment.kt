@@ -6,6 +6,7 @@ import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
@@ -42,6 +43,7 @@ open class ProcessFlowWebViewFragment :
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
         data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let {
+            Toast.makeText(requireContext(), "${it.properties}", Toast.LENGTH_SHORT).show()
             if (it.properties?.fileType == WebViewFileTypes.PDF) (requireActivity() as ProcessFlowActivity<*>).navigateTo(
                 ProcessFlowPdfWebViewFragment::class.java
             )
