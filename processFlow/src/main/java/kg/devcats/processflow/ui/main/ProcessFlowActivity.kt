@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -385,7 +384,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun openWebView(data: ProcessFlowScreenData) {
-        Toast.makeText(this, "$data", Toast.LENGTH_SHORT).show()
         val webView = data.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()
         val fileType = webView?.properties?.fileType
         when {
@@ -397,7 +395,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun openWebViewFromUrl(url: String) {
-        Toast.makeText(this, "$url", Toast.LENGTH_SHORT).show()
         when {
             url.startsWith(APP_ACTION_URL_TYPE) -> {
                 handleCustomUrlActionClick(url)
