@@ -2,15 +2,11 @@ package kg.devcats.processflow.ui.web_view
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
-import android.webkit.PermissionRequest
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment

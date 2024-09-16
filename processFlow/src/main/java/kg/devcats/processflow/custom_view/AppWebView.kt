@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
 import android.webkit.*
+import kg.devcats.processflow.ui.web_view.ProcessFlowPdfViewerActivity
 
 
 open class AppWebView(context: Context, attributeSet: AttributeSet) :
@@ -133,11 +134,16 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
 
             isIntent(url) -> handleIntentUrl(url!!)
             isApplicationUri(url) -> openUriWithApplication(view, url)
+            isLinkOnPdf(url) ->
+            {
+                ProcessFlowPdfViewerActivity.start(context, url ?: ""); true
+            }
+
             else -> false
         }
     }
 
-    private fun isLinkOnPdf(url: String?) =
+    fun isLinkOnPdf(url: String?) =
         url?.endsWith(".pdf") == true || url?.endsWith(".pdf/") == true
 
     private fun isNeedLoadBaseUrl(url: String?) =

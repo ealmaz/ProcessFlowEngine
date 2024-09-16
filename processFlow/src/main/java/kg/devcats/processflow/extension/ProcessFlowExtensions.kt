@@ -29,6 +29,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import kg.devcats.processflow.R
@@ -48,6 +49,13 @@ fun Context.getThemeColor(colorAttr: Int): Int {
     val typedValue = TypedValue()
     theme.resolveAttribute(colorAttr, typedValue, true)
     return typedValue.data
+}
+
+fun <R> Observable<R>.defaultSubscribe(
+    onSuccess: (R) -> Unit = {},
+    onError: (Throwable) -> Unit = {}
+): Disposable {
+    return this.subscribe(onSuccess, onError)
 }
 
 fun <R> Single<R>.defaultSubscribe(
