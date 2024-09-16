@@ -6,7 +6,6 @@ import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
@@ -20,9 +19,7 @@ import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
 import kg.devcats.processflow.model.component.FlowWebView
-import kg.devcats.processflow.model.component.WebViewFileTypes
 import kg.devcats.processflow.model.component.WebViewProperties
-import kg.devcats.processflow.ui.main.ProcessFlowActivity
 
 open class ProcessFlowWebViewFragment :
     BaseProcessScreenFragment<ProcessFlowFragmentProcessFlowWebViewBinding>(), JsBridgeInterface {
