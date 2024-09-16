@@ -79,7 +79,8 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
         statusImageUrl: String?,
         animationUrl: String?
     ): Unit = with(vb) {
-
+        vb.lavStatus.gone()
+        vb.ivStatus.gone()
         when {
             animationUrl != null -> {
                 getOrCreateLottieAnimationHandler().addToAnimationQueue(
@@ -89,12 +90,10 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
                     )
                 )
                 lavStatus.visible()
-                ivStatus.gone()
             }
             statusImageUrl != null -> ivStatus.apply {
                 loadImage(statusImageUrl)
                 visible()
-                lavStatus.gone()
             }
             stateScreenStatus == StateScreenStatus.IN_PROCESS -> {
                 getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(
