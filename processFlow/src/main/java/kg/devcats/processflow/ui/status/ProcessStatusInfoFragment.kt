@@ -78,11 +78,20 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
         stateScreenStatus: StateScreenStatus?,
         statusImageUrl: String?,
         animationUrl: String?
-    ) {
+    ): Unit = with(vb) {
         vb.lavStatus.gone()
         vb.ivStatus.gone()
         when {
-            statusImageUrl != null -> vb.ivStatus.apply {
+            animationUrl != null -> {
+                getOrCreateLottieAnimationHandler().addToAnimationQueue(
+                    AnimationData(
+                        animationUrl = animationUrl,
+                        isInfiniteRepeat = true
+                    )
+                )
+                lavStatus.visible()
+            }
+            statusImageUrl != null -> ivStatus.apply {
                 loadImage(statusImageUrl)
                 visible()
             }
@@ -92,28 +101,28 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
                     animationUrl = animationUrl,
                     isInfiniteRepeat = true
                 ))
-                vb.lavStatus.visible()
+                lavStatus.visible()
             }
             stateScreenStatus == StateScreenStatus.COMPLETE -> {
                 getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(
                     animationRes = R.raw.process_flow_lottie_anim_done,
                     animationUrl = animationUrl,
                 ))
-                vb.lavStatus.visible()
+                lavStatus.visible()
             }
             stateScreenStatus == StateScreenStatus.REJECTED -> {
                 getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(
                     animationRes = R.raw.process_flow_lottie_anim_reject,
                     animationUrl = animationUrl,
                 ))
-                vb.lavStatus.visible()
+                lavStatus.visible()
             }
             stateScreenStatus == StateScreenStatus.WARNING -> {
                 getOrCreateLottieAnimationHandler().addToAnimationQueue(AnimationData(
                     animationRes = R.raw.process_flow_lottie_anim_reject,
                     animationUrl = animationUrl,
                 ))
-                vb.lavStatus.visible()
+                lavStatus.visible()
             }
         }
     }

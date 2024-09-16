@@ -111,7 +111,7 @@ object ProcessMocker {
           "app_bar_text":"Идентификация",
           "title":"Проверяем ваши \nдокументы",
           "description":"",
-          "animationUrl":"https://assets7.lottiefiles.com/packages/lf20_x62chJ.json"
+          "animationUrl":"https://minio.o.kg/media-service/light/relogin_ux_ui.json"
        },
        "messages":[],
        "allowed_answers":[
