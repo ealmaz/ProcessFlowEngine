@@ -1,6 +1,5 @@
 package kg.devcats.processflow.ui.web_view
 
-import android.widget.Toast
 import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.extension.getProcessFlowHolder
 
@@ -8,7 +7,6 @@ class ProcessFlowLinksWebView : ProcessFlowWebViewFragment() {
 
     override fun onResume() {
         super.onResume()
-        Toast.makeText(requireContext(), "THATS IT", Toast.LENGTH_SHORT).show()
         getProcessFlowHolder().setupToolbarEndIcon(null, null)
     }
 

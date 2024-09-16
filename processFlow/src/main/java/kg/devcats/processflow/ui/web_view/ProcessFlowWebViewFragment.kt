@@ -42,13 +42,7 @@ open class ProcessFlowWebViewFragment :
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
-        Toast.makeText(requireContext(), "data: $data", Toast.LENGTH_SHORT).show()
         data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let {
-            Toast.makeText(requireContext(), "props: ${it.properties}", Toast.LENGTH_SHORT).show()
-            if (it.properties?.fileType == WebViewFileTypes.PDF) (requireActivity() as ProcessFlowActivity<*>).navigateTo(
-                ProcessFlowPdfWebViewFragment::class.java
-            )
-
             it.url?.let { getWebView().loadUrl(it) }
             webViewId = it.id
             handleProperties(it.properties)
@@ -69,17 +63,12 @@ open class ProcessFlowWebViewFragment :
         setupWebView()
     }
 
-    private fun openWebView(data: ProcessFlowScreenData?){
-
-    }
-
     open fun onSwipeRefresh() {
         vb.webView.reload()
     }
 
     private fun setupWebView() {
         getWebView().apply {
-            Toast.makeText(requireContext(), "setupWebView: $this", Toast.LENGTH_SHORT).show()
             setupAdditionalSettings {
                 allowFileAccess = true
             }
@@ -126,7 +115,6 @@ open class ProcessFlowWebViewFragment :
     open fun getWebView(): AppWebView = vb.webView
 
     open fun handleProperties(webViewProperties: WebViewProperties?) {
-        Toast.makeText(requireContext(), "handleProperties: $webViewProperties", Toast.LENGTH_SHORT).show()
         webViewProperties?.faqUrl?.let {
             getProcessFlowHolder().setupToolbarEndIcon(R.drawable.process_flow_ic_faq) {
                 getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(it))
