@@ -397,6 +397,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun openWebViewFromUrl(url: String) {
+        Toast.makeText(this, "$url", Toast.LENGTH_SHORT).show()
         when {
             url.startsWith(APP_ACTION_URL_TYPE) -> {
                 handleCustomUrlActionClick(url)
