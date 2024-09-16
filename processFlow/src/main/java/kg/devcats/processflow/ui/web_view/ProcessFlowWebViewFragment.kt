@@ -2,15 +2,11 @@ package kg.devcats.processflow.ui.web_view
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
-import android.webkit.PermissionRequest
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
 import kg.devcats.processflow.base.BaseProcessScreenFragment
@@ -23,7 +19,9 @@ import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
 import kg.devcats.processflow.model.component.FlowWebView
+import kg.devcats.processflow.model.component.WebViewFileTypes
 import kg.devcats.processflow.model.component.WebViewProperties
+import kg.devcats.processflow.ui.main.ProcessFlowActivity
 
 open class ProcessFlowWebViewFragment :
     BaseProcessScreenFragment<ProcessFlowFragmentProcessFlowWebViewBinding>(), JsBridgeInterface {
@@ -44,6 +42,10 @@ open class ProcessFlowWebViewFragment :
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
         data?.allowedAnswer?.filterIsInstance<FlowWebView>()?.first()?.let {
+            if (it.properties?.fileType == WebViewFileTypes.PDF) (requireActivity() as ProcessFlowActivity<*>).navigateTo(
+                ProcessFlowPdfWebViewFragment::class.java
+            )
+
             it.url?.let { getWebView().loadUrl(it) }
             webViewId = it.id
             handleProperties(it.properties)
@@ -62,6 +64,10 @@ open class ProcessFlowWebViewFragment :
         }
         swipeRefreshLayout.isEnabled = false
         setupWebView()
+    }
+
+    private fun openWebView(data: ProcessFlowScreenData?){
+
     }
 
     open fun onSwipeRefresh() {
