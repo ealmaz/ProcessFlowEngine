@@ -137,7 +137,7 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    private fun isLinkOnPdf(url: String?) =
+    fun isLinkOnPdf(url: String?) =
         url?.endsWith(".pdf") == true || url?.endsWith(".pdf/") == true
 
     private fun isNeedLoadBaseUrl(url: String?) =
