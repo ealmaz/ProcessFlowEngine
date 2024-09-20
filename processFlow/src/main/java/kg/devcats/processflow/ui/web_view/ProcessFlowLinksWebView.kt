@@ -5,6 +5,7 @@ import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.gone
 import kg.devcats.processflow.extension.visible
+import kg.devcats.processflow.model.common.ScreenState
 
 class ProcessFlowLinksWebView : ProcessFlowWebViewFragment() {
 
@@ -19,6 +20,8 @@ class ProcessFlowLinksWebView : ProcessFlowWebViewFragment() {
             visible()
         }
     }
+
+    override fun renderScreenState(state: ScreenState?) {}
 
     override fun updateToolbarTitleFromPage(title: String) {
         super.updateToolbarTitleFromPage(title)
