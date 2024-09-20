@@ -73,6 +73,7 @@ open class ProcessFlowWebViewFragment :
             loadListener = object : AppWebView.PageLoadListener() {
                 override fun onReceivedTitle(title: String) {
                     updateBackIcon()
+                    updateToolbarTitleFromPage(title)
                 }
 
                 override fun onPageStarted() {
@@ -108,6 +109,8 @@ open class ProcessFlowWebViewFragment :
             else com.design2.chili2.R.drawable.chili_ic_close
         getProcessFlowHolder().setToolbarNavIcon(iconRes)
     }
+
+    open fun updateToolbarTitleFromPage(title: String) {}
 
     open fun getWebView(): AppWebView = vb.webView
 

@@ -16,6 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            
+            <com.design2.chili2.view.navigation_components.ChiliToolbar
+                android:id="@+id/popup_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:navigationIcon="@drawable/chili_ic_back_arrow"
+                android:visibility="gone"/>
 
             <kg.devcats.processflow.custom_view.AppWebView
                 android:id="@+id/webView"
