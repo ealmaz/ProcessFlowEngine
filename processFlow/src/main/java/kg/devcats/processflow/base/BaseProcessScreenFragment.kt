@@ -1,5 +1,6 @@
 package kg.devcats.processflow.base
 
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.view.ViewGroup
@@ -43,9 +44,9 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
     open val buttonsLinearLayout: LinearLayout? = null
     open val inputFieldContainer: FrameLayout? = null
 
-    override fun onStart() {
-        super.onStart()
-        getProcessFlowHolder().setToolbarNavIcon(R.drawable.chili_ic_close)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        clearPrevToolbarState()
     }
 
     override fun handleShowLoading(isLoading: Boolean): Boolean {
@@ -89,6 +90,14 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
         selectedButtonId = null
         buttonsLinearLayout?.removeAllViews()
         inputFieldContainer?.removeAllViews()
+    }
+
+    protected open fun clearPrevToolbarState() {
+        getProcessFlowHolder().apply {
+            setToolbarTitle("")
+            setupToolbarEndIcon(null, null)
+            setToolbarNavIcon(R.drawable.chili_ic_close)
+        }
     }
 
     //InputField handler

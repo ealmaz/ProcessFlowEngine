@@ -40,4 +40,6 @@ class ProcessFlowLinksWebView : ProcessFlowWebViewFragment() {
     override fun handleBackPress(): BackPressHandleState {
         return BackPressHandleState.CALL_SUPER
     }
+
+    override fun clearPrevToolbarState() {}
 }
