@@ -74,6 +74,7 @@ class ProcessFlowInputFieldFragment :
                 text = it.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)?.trimEnd()
                 visible()
                 handleUrlClicks {
+                    requireContext().hideKeyboard()
                     vb.tvBottomDescription.invalidate()
                     onLinkClick(it)
                 }
