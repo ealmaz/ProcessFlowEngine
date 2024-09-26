@@ -11,7 +11,7 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
 
     private var isAnimating = false
     private val animationQueue = LinkedList<AnimationData>()
-    private var currentAnimation: AnimationData? = null
+    private var lastAddedAnimation: AnimationData? = null
 
     init {
         animationView.addAnimatorListener(object: Animator.AnimatorListener {
@@ -27,20 +27,19 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
     }
 
     fun addToAnimationQueue(animation: AnimationData) {
-        if (animation != currentAnimation) {
+        if (animation != lastAddedAnimation) {
             animationQueue.add(animation)
-            currentAnimation = animation
+            lastAddedAnimation = animation
             setAnimationSpeed()
         }
         if (!isAnimating) startNextAnimation()
     }
 
     private fun setAnimationSpeed(isRepeated: Boolean = false) {
-        val animationSpeed = when(val queueSize = animationQueue.size) {
-            0 -> if(isAnimating && !isRepeated) INCREASED_ANIMATION_SPEED else DEFAULT_ANIMATION_SPEED
-            1 -> 2 * INCREASED_ANIMATION_SPEED
-            else -> queueSize * INCREASED_ANIMATION_SPEED
+        val animationSpeed = if (animationQueue.isEmpty()) {
+            if(isAnimating && !isRepeated) INCREASED_ANIMATION_SPEED else DEFAULT_ANIMATION_SPEED
         }
+        else animationQueue.size * INCREASED_ANIMATION_SPEED
         animationView.speed = animationSpeed
     }
 
