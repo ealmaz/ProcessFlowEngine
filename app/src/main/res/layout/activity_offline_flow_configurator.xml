@@ -48,14 +48,6 @@
                 android:layout_margin="@dimen/padding_16dp"
                 android:text="Start MOCK process flow"/>
 
-            <Button
-                android:id="@+id/btn_start_foreign"
-                style="@style/Chili.ButtonStyle.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_16dp"
-                android:text="Start foreign MOCK process flow"/>
-
             <com.design2.chili2.view.container.ExpandableContainer
                 android:id="@+id/buttons"
                 android:layout_width="match_parent"

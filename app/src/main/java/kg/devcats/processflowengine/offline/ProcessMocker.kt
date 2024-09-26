@@ -33,6 +33,18 @@ object ProcessMocker {
              }
           },
           {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"start_ident_foreign",
+                "text":"К идентификации иностранного гражданина",
+                "style":"SECONDARY",
+                "disabled":true,
+                "properties":{
+                   
+                }
+             }
+          },    
+          {
              "responseType":"RETRY",
              "responseItem":{
                 "id":"RETRY_1",
@@ -72,6 +84,18 @@ object ProcessMocker {
                    "isEnabled":true
                 }
              }
+          },
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"start_ident_foreign",
+                "text":"К идентификации иностранного гражданина",
+                "style":"SECONDARY",
+                "disabled":false,
+                "properties":{
+                   
+                }
+             }
           }   
        ]
     }
@@ -99,39 +123,6 @@ object ProcessMocker {
     }
 """.trimIndent()
         )
-
-        put(
-            "start_lottie_url", """
-    {
-       "process_id":"werq-rqwew-rwer-fser",
-       "process_status":"RUNNING",
-       "screen_code":"STATUS_INFO",
-       "screen_state":{
-          "status":"IN_PROCESS",
-          "app_bar_text":"Идентификация",
-          "title":"Проверяем ваши \nдокументы",
-          "description":"",
-          "animationUrl":"https://minio.o.kg/media-service/light/relogin_ux_ui.json"
-       },
-       "messages":[],
-       "allowed_answers":[
-          {
-             "responseType":"BUTTON",
-             "responseItem":{
-                "buttonId":"start_ident_foreign",
-                "text":"Начать идентификацию",
-                "style":"ACCENT",
-                "disabled":false,
-                "properties":{
-                   
-                }
-             }
-          }    
-       ]
-    }
-""".trimIndent()
-        )
-
 
         put(
             "start_ident_foreign", """

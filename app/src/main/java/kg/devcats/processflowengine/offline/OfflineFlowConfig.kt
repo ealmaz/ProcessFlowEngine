@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.design2.chili2.view.navigation_components.ChiliToolbar
 import kg.devcats.processflowengine.databinding.ActivityOfflineFlowConfiguratorBinding
-import kg.devcats.processflowengine.online.OnlineFlowConfiguratorActivity
 
 class OfflineFlowConfig : AppCompatActivity() {
 
@@ -24,7 +23,6 @@ class OfflineFlowConfig : AppCompatActivity() {
             ProcessFlowApiImpl.REQUESTS_DELAY = vb.delay.getInputText().toLongOrNull() ?: 300L
             openFlow(vb.startCode.getInputText().takeIf { it.isNotBlank() } ?: ProcessFlowApiImpl.FIRST_STEP_KEY)
         }
-        vb.btnStartForeign.setOnClickListener { openFlow("start_lottie_url") }
         vb.btnStartForm.setOnClickListener { openFlow("OTP_INPUT") }
         vb.btnStartAgreemrnt.setOnClickListener { openFlow("passport_form") }
         vb.btnStartOferta.setOnClickListener { openFlow("WEB_VIEW_OFERTA") }
