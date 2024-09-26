@@ -64,6 +64,7 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
     override fun inflateViewBinging() = ProcessFlowFragmentStatusInfoBinding.inflate(layoutInflater)
 
     override fun onDestroyView() {
+        lottieAnimationHandler?.removeListeners()
         lottieAnimationHandler = null
         super.onDestroyView()
     }
@@ -86,7 +87,7 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
                 getOrCreateLottieAnimationHandler().addToAnimationQueue(
                     AnimationData(
                         animationUrl = animationUrl,
-                        isInfiniteRepeat = true
+                        isInfiniteRepeat = stateScreenStatus == StateScreenStatus.IN_PROCESS
                     )
                 )
                 lavStatus.visible()
