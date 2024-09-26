@@ -5,13 +5,13 @@ import androidx.annotation.RawRes
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable.INFINITE
-import kg.devcats.processflow.R
 import java.util.LinkedList
 
 class LottieAnimationHandler(private val animationView: LottieAnimationView) {
 
     private var isAnimating = false
     private val animationQueue = LinkedList<AnimationData>()
+    private var currentAnimation: AnimationData? = null
 
     init {
         animationView.addAnimatorListener(object: Animator.AnimatorListener {
@@ -22,17 +22,31 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
                 isAnimating = false
                 startNextAnimation()
             }
-            override fun onAnimationRepeat(animation: Animator) { startNextAnimation() }
+            override fun onAnimationRepeat(animation: Animator) { startNextAnimation(true) }
         })
     }
 
     fun addToAnimationQueue(animation: AnimationData) {
-        if (!animationQueue.contains(animation)) animationQueue.add(animation)
+        if (animation != currentAnimation) {
+            animationQueue.add(animation)
+            currentAnimation = animation
+            setAnimationSpeed()
+        }
         if (!isAnimating) startNextAnimation()
     }
 
-    private fun startNextAnimation() {
+    private fun setAnimationSpeed(isRepeated: Boolean = false) {
+        val animationSpeed = when(val queueSize = animationQueue.size) {
+            0 -> if(isAnimating && !isRepeated) INCREASED_ANIMATION_SPEED else DEFAULT_ANIMATION_SPEED
+            1 -> 2 * INCREASED_ANIMATION_SPEED
+            else -> queueSize * INCREASED_ANIMATION_SPEED
+        }
+        animationView.speed = animationSpeed
+    }
+
+    private fun startNextAnimation(isRepeated: Boolean = false) {
         val animData = animationQueue.pollFirst() ?: return
+        setAnimationSpeed(isRepeated)
         isAnimating = true
         val repeatCount = if (animData.isInfiniteRepeat) INFINITE else 0
 
@@ -47,9 +61,9 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
         animationView.apply {
             LottieCompositionFactory.fromRawResSync(animationView.context, lottieRes)?.let { result ->
                 result.value?.let { setComposition(it) }
+                repeatCount = mRepeatCount
+                playAnimation()
             }
-            repeatCount = mRepeatCount
-            playAnimation()
         }
     }
 
@@ -57,27 +71,33 @@ class LottieAnimationHandler(private val animationView: LottieAnimationView) {
         animationView.apply {
             LottieCompositionFactory.fromJsonStringSync(lottieString, null)?.let { result ->
                 result.value?.let { setComposition(it) }
+                repeatCount = mRepeatCount
+                playAnimation()
             }
-            repeatCount = mRepeatCount
-            playAnimation()
         }
     }
 
     private fun setLottieAnimationUrl(jsonUrl: String, mRepeatCount: Int) {
         animationView.apply {
-            LottieCompositionFactory.fromUrl(context, jsonUrl)
+            LottieCompositionFactory
+                .fromUrl(context, jsonUrl, null)
                 .addListener { composition ->
                     setComposition(composition)
                     repeatCount = mRepeatCount
                     playAnimation()
                 }
-                .addFailureListener { error ->
-                    setLottieAnimation(R.raw.process_flow_lottie_anim_loop, INFINITE)
-                    error.printStackTrace()
-                }
+                .addFailureListener { }
         }
     }
 
+    fun removeListeners() {
+        animationView.removeAllAnimatorListeners()
+    }
+
+    companion object {
+        const val DEFAULT_ANIMATION_SPEED = 1.0f
+        const val INCREASED_ANIMATION_SPEED = 6.0f
+    }
 }
 
 data class AnimationData(
