@@ -33,18 +33,6 @@ object ProcessMocker {
              }
           },
           {
-             "responseType":"BUTTON",
-             "responseItem":{
-                "buttonId":"start_ident_foreign",
-                "text":"К идентификации иностранного гражданина",
-                "style":"SECONDARY",
-                "disabled":true,
-                "properties":{
-                   
-                }
-             }
-          },    
-          {
              "responseType":"RETRY",
              "responseItem":{
                 "id":"RETRY_1",
@@ -84,18 +72,6 @@ object ProcessMocker {
                    "isEnabled":true
                 }
              }
-          },
-          {
-             "responseType":"BUTTON",
-             "responseItem":{
-                "buttonId":"start_ident_foreign",
-                "text":"К идентификации иностранного гражданина",
-                "style":"SECONDARY",
-                "disabled":false,
-                "properties":{
-                   
-                }
-             }
           }   
        ]
     }
@@ -123,30 +99,6 @@ object ProcessMocker {
     }
 """.trimIndent()
         )
-
-        put(
-            "start_ident_foreign", """
-    {
-       "process_id":"werq-rqwew-rwer-fser",
-       "process_status":"RUNNING",
-       "screen_code":"FOREIGN_PASSPORT_PHOTO",
-       "screen_state":{},
-       "messages":[],
-       "allowed_answers":[
-          {
-             "responseType":"BUTTON",
-             "responseItem":{
-                "buttonId":"SELFIE_PHOTO",
-                "text":"далее",
-                "style":"ACCENT"
-             }
-          }   
-       ]
-    }
-""".trimIndent()
-        )
-
-
 
         put(
             "PASSPORT_FRONT_PHOTO2", """
@@ -257,11 +209,33 @@ object ProcessMocker {
           {
              "responseType":"BUTTON",
              "responseItem":{
-                "buttonId":"SIMPLE_CAMERA",
+                "buttonId":"start_ident_foreign",
                 "text":"Далее",
                 "style":"ACCENT"
              }
           }
+       ]
+    }
+""".trimIndent()
+        )
+
+        put(
+            "start_ident_foreign", """
+    {
+       "process_id":"werq-rqwew-rwer-fser",
+       "process_status":"RUNNING",
+       "screen_code":"FOREIGN_PASSPORT_PHOTO",
+       "screen_state":{},
+       "messages":[],
+       "allowed_answers":[
+          {
+             "responseType":"BUTTON",
+             "responseItem":{
+                "buttonId":"SIMPLE_CAMERA",
+                "text":"далее",
+                "style":"ACCENT"
+             }
+          }   
        ]
     }
 """.trimIndent()
