@@ -31,7 +31,7 @@ object InputFieldCreator : ValidatableItem() {
             }
             setSimpleTextChangedListener {
                 val input = listOf(getInputText().trim())
-                val isValid = if (this is MaskedInputView) validateItem(fieldInfo.validations, input) && isInputMaskFilled()
+                val isValid = if (this is MaskedInputView && !(fieldInfo.mask.isNullOrBlank())) validateItem(fieldInfo.validations, input) && isInputMaskFilled()
                 else validateItem(fieldInfo.validations, input)
                 this.clearFieldError()
                 onFiledChanged(input, isValid)
