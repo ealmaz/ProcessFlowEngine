@@ -155,7 +155,8 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
         return !url.isNullOrEmpty()
                 && (url.startsWith("tg:")
                 || url.startsWith("tel:")
-                || url.startsWith("https://m.me/"))
+                || url.startsWith("https://m.me/")
+                || url.startsWith("whatsapp:"))
     }
 
     private fun handleIntentUrl(url: String): Boolean {
@@ -172,11 +173,33 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
 
     private fun openUriWithApplication(view: WebView?, url: String?): Boolean {
         return try {
-            view?.goBack()
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            view?.goBack()
             true
-        } catch (e: Exception) {
-            return false
+        } catch (e: Exception) { return openPlayStoreWithApp(url) }
+    }
+
+    private fun openPlayStoreWithApp(url: String?): Boolean {
+        val appPackage = getAppPackage(url) ?: return false
+        return try {
+            val playStoreIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=$appPackage")
+            )
+            context.startActivity(playStoreIntent)
+            true
+        } catch (ex: Exception) {
+            false
+        }
+    }
+
+    private fun getAppPackage(url: String?): String? {
+        return when {
+            url.isNullOrEmpty() -> null
+            url.startsWith("tg:") -> "org.telegram.messenger"
+            url.startsWith("https://m.me/") -> "com.facebook.orca"
+            url.startsWith("whatsapp:") -> "com.whatsapp"
+            else -> null
         }
     }
 
