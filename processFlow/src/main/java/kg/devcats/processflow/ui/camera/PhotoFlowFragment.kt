@@ -123,7 +123,7 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
     private fun openPhotoInstruction() {
         val fragment = when (cameraType) {
             CameraType.FRONT_PASSPORT -> PassportFrontInstructionFragment()
-            CameraType.FOREIGN_PASSWORD -> ForeignPassportInstructionFragment()
+            CameraType.FOREIGN_PASSPORT -> ForeignPassportInstructionFragment()
             CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> PassportBackInstructionFragment()
             CameraType.SELFIE -> SelfiePhotoInstructionFragment()
             CameraType.SIMPLE_SELFIE_PHOTO -> SimpleSelfiePhotoInstructionFragment()
@@ -137,7 +137,7 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
     fun onPhotoCaptured(filePath: String?) {
         val targetFragment = when(cameraType) {
             CameraType.FRONT_PASSPORT -> FrontPassportPhotoConfirmation.create(filePath, getScaleType())
-            CameraType.FOREIGN_PASSWORD -> BackPassportPhotoConfirmation.create(filePath, getScaleType())
+            CameraType.FOREIGN_PASSPORT -> BackPassportPhotoConfirmation.create(filePath, getScaleType())
             CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> BackPassportPhotoConfirmation.create(filePath, getScaleType())
             CameraType.SELFIE -> SelfieWithPassportConfirmation.create(filePath, getScaleType())
             CameraType.SIMPLE_SELFIE_PHOTO -> SelfiePhotoConfirmation.create(filePath, getScaleType())
@@ -169,7 +169,7 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 
     private fun getFileType(): String {
         return when (cameraType) {
-            CameraType.FOREIGN_PASSWORD -> ContentTypes.FOREIGN_PASSPORT_PHOTO
+            CameraType.FOREIGN_PASSPORT -> ContentTypes.FOREIGN_PASSPORT_PHOTO
             CameraType.FRONT_PASSPORT -> ContentTypes.PASSPORT_FRONT_PHOTO
             CameraType.BACK_PASSPORT_WITH_RECOGNIZER -> ContentTypes.PASSPORT_BACK_PHOTO
             CameraType.SELFIE -> ContentTypes.SELFIE_PHOTO
@@ -195,7 +195,7 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
             CameraType.SIMPLE_SELFIE_PHOTO -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME, description = getString(R.string.process_flow_photo_capture_simple_selfie_description))
             CameraType.SELFIE -> CameraSettings(lensFacing = LENS_FACING_FRONT, cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME, description = getString(R.string.process_flow_photo_capture_selfie_passport_description))
             CameraType.SIMPLE_CAMERA -> CameraSettings(cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
-            CameraType.FOREIGN_PASSWORD -> CameraSettings(description = getString(R.string.process_flow_photo_capture_passport_front_description), cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
+            CameraType.FOREIGN_PASSPORT -> CameraSettings(description = getString(R.string.process_flow_photo_capture_passport_front_description), cameraOverlayType = CameraOverlayType.RECTANGLE_FRAME)
             else -> CameraSettings(description = getString(R.string.process_flow_photo_capture_passport_front_description), headerText = getString(R.string.process_flow_photo_capture_passport_front_title))
         }
     }
@@ -242,5 +242,5 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 }
 
 enum class CameraType {
-    FRONT_PASSPORT, BACK_PASSPORT_WITH_RECOGNIZER, SELFIE, SIMPLE_CAMERA, SIMPLE_SELFIE_PHOTO, FOREIGN_PASSWORD
+    FRONT_PASSPORT, BACK_PASSPORT_WITH_RECOGNIZER, SELFIE, SIMPLE_CAMERA, SIMPLE_SELFIE_PHOTO, FOREIGN_PASSPORT
 }

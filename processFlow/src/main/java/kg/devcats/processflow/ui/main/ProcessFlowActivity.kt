@@ -209,7 +209,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             }
             INPUT_OTP -> openInputField(data)
             INPUT_FIELD -> openInputField(data)
-            FOREIGN_PASSPORT_PHOTO -> openCameraFlow(CameraType.FOREIGN_PASSWORD, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
+            FOREIGN_PASSPORT_PHOTO -> openCameraFlow(CameraType.FOREIGN_PASSPORT, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             PASSPORT_FRONT_PHOTO -> openCameraFlow(CameraType.FRONT_PASSPORT, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             PASSPORT_BACK_PHOTO -> openCameraFlow(CameraType.BACK_PASSPORT_WITH_RECOGNIZER, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
             SELFIE_PHOTO -> openCameraFlow(CameraType.SELFIE, data.allowedAnswer?.filterIsInstance<FlowButton>()?.first()?.buttonId ?: "")
