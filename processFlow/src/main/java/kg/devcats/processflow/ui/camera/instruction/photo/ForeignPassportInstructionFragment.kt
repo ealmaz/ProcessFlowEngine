@@ -9,5 +9,5 @@ class ForeignPassportInstructionFragment : BasePhotoInstructionFragment() {
     override fun getInstructionTitleRes() = R.string.process_flow_photo_instruction_passport_foreigner
     override fun getInstructionSubtitleRes(): Int = R.string.process_flow_photo_instruction_passport_foreigner_subtitle
     override fun getInstructionImageRes() = -1
-    override fun getInstructionImageUrl() = ProcessFlowConfigurator.foreignPasswordInstructionUrlResolver.invoke()
+    override fun getInstructionImageUrl() = ProcessFlowConfigurator.foreignPassportInstructionUrlResolver.invoke()
 }
