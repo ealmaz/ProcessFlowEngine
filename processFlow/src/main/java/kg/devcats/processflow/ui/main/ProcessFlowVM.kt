@@ -30,6 +30,8 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     protected var processFlowId: String? = null
     protected var processFlowStatus: FlowStatus? = null
 
+    protected var isProcessUncancellable = false
+
     protected fun showLoading(){ loaderState.postValue(true) }
     protected fun hideLoading(){ loaderState.postValue(false) }
 
@@ -105,7 +107,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
 
 
     fun cancelProcessFlow() {
-        if (processFlowId == null) {
+        if (processFlowId == null || isProcessUncancellable) {
             triggerEvent(Event.FlowCancelledCloseActivity)
             return
         }
@@ -217,6 +219,8 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
             _flowResponseParser.parseRetry(response.allowedAnswer)?.let { allowedAnswers.add(it) }
             _flowResponseParser.parseWebView(response.allowedAnswer)?.let { allowedAnswers.addAll(it) }
             _flowResponseParser.parseInputForms(response.allowedAnswer)?.let { allowedAnswers.addAll(it) }
+
+            this.isProcessUncancellable = response.screenState?.isUncancellable ?: false
 
             val screenData = ProcessFlowScreenData(
                 screenKey = response.screenKey,

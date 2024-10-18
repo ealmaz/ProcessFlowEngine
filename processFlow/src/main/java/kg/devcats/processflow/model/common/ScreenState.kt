@@ -15,4 +15,5 @@ data class ScreenState(
     val timer: Long? = null,
     val timerText: String? = null,
     val isScreenCloseDisabled: Boolean? = false,
+    val isUncancellable: Boolean? = null,
 )
