@@ -1,11 +1,18 @@
 package kg.devcats.processflow.ui.web_view
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.JavascriptInterface
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import kg.devcats.processflow.R
@@ -34,6 +41,25 @@ open class ProcessFlowWebViewFragment :
             mGeoLocationCallback?.invoke(mGeoLocationRequestOrigin, it, false)
         }
 
+    private var fileChooserWebViewCallback: ValueCallback<Array<Uri>>? = null
+    private val fileChooserContract = object : ActivityResultContract<Intent, Array<Uri>?>() {
+        override fun createIntent(context: Context, intent: Intent) = intent
+
+        override fun parseResult(resultCode: Int, input: Intent?): Array<Uri>? {
+            val result = WebChromeClient.FileChooserParams.parseResult(resultCode, input)
+            return if (result == null) {
+                val uri = mutableListOf<Uri>()
+                val clipItemCount = input?.clipData?.itemCount ?: 0
+                for (i in 0 until clipItemCount) {
+                    input?.clipData?.getItemAt(i)?.uri?.let { uri.add(it) }
+                }
+                uri.toTypedArray()
+            }
+            else result
+        }
+    }
+    private var fileChooserLauncher: ActivityResultLauncher<Intent>? = null
+
     override fun inflateViewBinging() =
         ProcessFlowFragmentProcessFlowWebViewBinding.inflate(layoutInflater)
 
@@ -43,6 +69,13 @@ open class ProcessFlowWebViewFragment :
             it.url?.let { getWebView().loadUrl(it) }
             webViewId = it.id
             handleProperties(it.properties)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fileChooserLauncher = registerForActivityResult(fileChooserContract) {
+            fileChooserWebViewCallback?.onReceiveValue(it)
         }
     }
 
@@ -96,6 +129,7 @@ open class ProcessFlowWebViewFragment :
                 }
             }
             addJavascriptInterface(this@ProcessFlowWebViewFragment, webViewJsInterfaceName)
+            fileChooserListener = ::onFileChooseRequest
         }
     }
 
@@ -120,6 +154,13 @@ open class ProcessFlowWebViewFragment :
                 getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(it))
             }
         }
+    }
+
+    private fun onFileChooseRequest(intent: Intent?, callback: ValueCallback<Array<Uri>>?): Boolean {
+        if (intent == null || fileChooserLauncher == null) return false
+        fileChooserWebViewCallback = callback
+        fileChooserLauncher?.launch(intent)
+        return true
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

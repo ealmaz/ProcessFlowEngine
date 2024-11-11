@@ -6,15 +6,23 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
-import android.webkit.*
+import android.webkit.CookieManager
+import android.webkit.GeolocationPermissions
+import android.webkit.PermissionRequest
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import kg.devcats.processflow.ui.web_view.ProcessFlowPdfViewerActivity
 
 
 open class AppWebView(context: Context, attributeSet: AttributeSet) :
     WebView(context, attributeSet) {
 
-    var fileChooserListener: ((uploadMessage: ValueCallback<Array<Uri>>?, intent: Intent) -> Boolean)? =
-        null
+    var fileChooserListener: ((intent: Intent?, callback: ValueCallback<Array<Uri>>?) -> Boolean)? = null
 
     var loadListener: PageLoadListener? = null
     var isNeedLockOnHost: Boolean = false
@@ -83,11 +91,10 @@ open class AppWebView(context: Context, attributeSet: AttributeSet) :
             ): Boolean {
                 val intent = fileChooserParams?.createIntent()
                 intent?.type = "image/*"
-                return if (fileChooserListener != null && intent != null) {
-                    fileChooserListener!!.invoke(filePathCallback, intent)
-                } else {
-                    super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
-                }
+                return fileChooserListener
+                    ?.invoke(intent, filePathCallback)
+                    ?.takeIf { it }
+                    ?: super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
             }
         }
     }

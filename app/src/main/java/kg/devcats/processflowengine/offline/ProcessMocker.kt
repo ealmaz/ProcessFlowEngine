@@ -750,7 +750,7 @@ object ProcessMocker {
                                 {
                                     "id":"nda632",
                                     "isHtmlText":"true",
-                                    "label":"By pressing \"Select number\" you confirm your consent: <a href=\"https://lk.o.kg/uploads/dogovor_ru.pdf\"> to terms and conditions of communication services",
+                                    "label":"Open upload form: <a href=\"https://tmp-form.o.kg/\"> to terms and conditions of communication services",
                                     "isSelected":"true"
                                 }
                             ]
