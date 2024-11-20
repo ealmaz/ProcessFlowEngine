@@ -42,7 +42,7 @@ import java.util.Calendar
 
 class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputFormBinding>(), FragmentResultListener {
 
-    private val optionsRelations = HashMap<String, MutableList<String>>()
+    private val optionsRelations = HashSet<OptionFieldParentRelation>()
 
     private var currentFormId: String = ""
 
@@ -59,6 +59,8 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         get() = vb.llAdditionalButtons
 
     private val result = HashMap<String, List<String>?>()
+
+    private var isContinueClicked = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,8 +79,8 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     fun setAdditionalFetchedOptions(formId: String, options: List<Option>) {
-        setOptionsForDropDownField(formId, options)
-        vb.progressBar.isVisible = false
+        val showBS = options.isEmpty() || options.size > 1
+        setOptionsForDropDownField(fieldId = formId, newOptions = options, showBS = showBS)
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
@@ -146,12 +148,12 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     private fun createDropDownField(dropDownList: DropDownFieldInfo): View {
         result[dropDownList.fieldId] = null
         if (dropDownList.isNeedToFetchOptions == true) {
-            needToFetchOptionsFor(dropDownList.fieldId, dropDownList.parentFieldId)
+            optionsRelations.add(OptionFieldParentRelation(currentFieldId = dropDownList.fieldId, parentId = dropDownList.parentFieldId))
         }
-        return DropDownFieldCreator.create(requireContext(), dropDownList) { values, isValid ->
+        return DropDownFieldCreator.create(requireContext(), dropDownList, { values, isValid ->
             result[dropDownList.fieldId] = if (isValid) values else null
-            onDropDownListItemSelectionChanged(dropDownList.fieldId, values)
-        }
+            onDropDownListItemSelectionChanged(dropDownList.fieldId)
+        }, ::onRequestOptionsForField)
     }
 
     private fun createDatePickerField(datePickerFieldInfo: DatePickerFieldInfo): View {
@@ -174,11 +176,14 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private fun setFragmentResultAndClose() {
         if (!validateInput()) return
+        isContinueClicked = true
         requireContext().hideKeyboard()
         getProcessFlowHolder().commit(ProcessFlowCommit.CommitContentFormResponseId(currentFormId, collectResult()))
     }
 
     override fun handleShowLoading(isLoading: Boolean): Boolean {
+        if (!isContinueClicked) return false
+        isContinueClicked = isLoading
         vb.unclickableMask.isVisible = isLoading
         vb.llAdditionalButtons.isVisible = !isLoading
         vb.btnDone.setIsLoading(isLoading)
@@ -216,36 +221,36 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         requireContext().hideKeyboard()
     }
 
-    private fun onDropDownListItemSelectionChanged(dropDownId: String, selectedItemId: List<String>) {
-        optionsRelations[dropDownId]?.forEach {
-            if (selectedItemId.isEmpty()) {
-                setOptionsForDropDownField(it, listOf())
-            } else {
-                fetchOptions(it, selectedItemId.first())
-            }
-        }
-
+    private fun onDropDownListItemSelectionChanged(fieldId: String) {
+        clearChildFieldsOptions(parentFieldId = fieldId)
     }
 
-    private fun needToFetchOptionsFor(formId: String, parentId: String?) {
-        if (parentId == null) {
-            fetchOptions(formId)
-        } else {
-            if (optionsRelations[parentId] == null) {
-                optionsRelations[parentId] = mutableListOf(formId)
-            } else {
-                optionsRelations[parentId]?.add(formId)
+    private fun clearChildFieldsOptions(parentFieldId: String) {
+        optionsRelations.forEach {
+            if (it.parentId == parentFieldId) {
+                setOptionsForDropDownField(it.currentFieldId, listOf(), false)
             }
+        }
+    }
+
+    private fun onRequestOptionsForField(fieldId: String) {
+        val parentId = optionsRelations.find { it.currentFieldId == fieldId }?.parentId
+        val parentSelectedId = parentId?.let { result[it]?.firstOrNull() }
+        when {
+            parentId == null -> fetchOptions(fieldId)
+            parentSelectedId != null -> fetchOptions(fieldId, parentSelectedId)
         }
     }
 
     private fun fetchOptions(formId: String, parentSelectedOptionId: String = "") {
-        vb.progressBar.isVisible = true
         getProcessFlowHolder().commit(ProcessFlowCommit.FetchAdditionalOptionsForDropDown(formId, parentSelectedOptionId))
     }
 
-    private fun setOptionsForDropDownField(fieldId: String, newOptions: List<Option>) {
-        vb.root.findViewWithTag<DropDownInputField>(fieldId)?.options = newOptions
+    private fun setOptionsForDropDownField(fieldId: String, newOptions: List<Option>, showBS: Boolean) {
+        vb.root.findViewWithTag<DropDownInputField>(fieldId)?.apply {
+            options = newOptions
+            if (showBS) showOptionsBS()
+        }
     }
 
     override fun onFragmentResult(requestKey: String, result: Bundle) {
@@ -259,3 +264,5 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         }
     }
 }
+
+data class OptionFieldParentRelation(val currentFieldId: String, val parentId: String?)

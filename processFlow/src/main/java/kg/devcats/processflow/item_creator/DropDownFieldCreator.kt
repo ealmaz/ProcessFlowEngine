@@ -7,7 +7,7 @@ import kg.devcats.processflow.model.input_form.DropDownFieldInfo
 
 object DropDownFieldCreator : ValidatableItem() {
 
-    fun create(context: Context, dropDownFieldInfo: DropDownFieldInfo, onSelectionChanged: (selected: List<String>, isValid: Boolean) -> Unit): DropDownInputField {
+    fun create(context: Context, dropDownFieldInfo: DropDownFieldInfo, onSelectionChanged: (selected: List<String>, isValid: Boolean) -> Unit, onRequestOptions: (String) -> Unit): DropDownInputField {
         return DropDownInputField(context).apply {
             tag = dropDownFieldInfo.fieldId
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
@@ -19,7 +19,7 @@ object DropDownFieldCreator : ValidatableItem() {
                 )
             }
             setHint(dropDownFieldInfo.label ?: "")
-            setupViews(dropDownFieldInfo, onSelectionChanged)
+            setupViews(dropDownFieldInfo, onSelectionChanged, onRequestOptions = onRequestOptions)
             dropDownFieldInfo.options?.let { options = it }
         }
     }

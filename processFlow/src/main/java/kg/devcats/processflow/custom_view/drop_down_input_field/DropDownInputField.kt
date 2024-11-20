@@ -31,23 +31,27 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
 
     private var dropDownListInfo: DropDownFieldInfo? = null
 
-    fun setupViews(dropDownFieldInfo: DropDownFieldInfo, onSelectionChanged: (values: List<String>, Boolean) -> Unit) {
+    fun setupViews(dropDownFieldInfo: DropDownFieldInfo, onSelectionChanged: (values: List<String>, Boolean) -> Unit, onRequestOptions: (String) -> Unit) {
         this.onSelectionChanged = onSelectionChanged
         this.dropDownListInfo = dropDownFieldInfo
         this.setOnSingleClickListener {
             clearError()
-            if (options.isEmpty()) return@setOnSingleClickListener
-            val bs = DropDownFieldBottomSheet(
-                mContext = context,
-                optionsList = options,
-                title = dropDownFieldInfo.label ?: "",
-                isSingleSelectionType = dropDownFieldInfo.chooseType != ChooseType.MULTIPLE,
-                isSearchEnabled = dropDownFieldInfo.isSearchEnabled ?: true
-            )
-            bs.setOnDismissListener { onBottomSheetDismiss() }
-            bs.show()
+            if (options.isEmpty()) onRequestOptions(dropDownFieldInfo.fieldId)
+            else showOptionsBS()
         }
         onBottomSheetDismiss()
+    }
+
+    fun showOptionsBS() {
+        val bs = DropDownFieldBottomSheet(
+            mContext = context,
+            optionsList = options,
+            title = dropDownListInfo?.label ?: "",
+            isSingleSelectionType = dropDownListInfo?.chooseType != ChooseType.MULTIPLE,
+            isSearchEnabled = dropDownListInfo?.isSearchEnabled ?: true
+        )
+        bs.setOnDismissListener { onBottomSheetDismiss() }
+        bs.show()
     }
 
     fun setHint(hint: String) {
