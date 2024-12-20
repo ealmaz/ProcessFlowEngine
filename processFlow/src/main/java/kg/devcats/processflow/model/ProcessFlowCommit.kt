@@ -17,4 +17,6 @@ open class ProcessFlowCommit {
     class FetchAdditionalOptionsForDropDown(val formId: String, val parentSelectedOptionId: String = ""): ProcessFlowCommit()
 
     class OnLinkClicked(val link: String): ProcessFlowCommit()
+
+    class HandleEvent(val event: Event) : ProcessFlowCommit()
 }

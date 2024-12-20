@@ -247,6 +247,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)
             is ProcessFlowCommit.FetchAdditionalOptionsForDropDown -> vm.fetchOptions(commit.formId, commit.parentSelectedOptionId)
             is ProcessFlowCommit.OnLinkClicked -> openWebViewFromUrl(commit.link)
+            is ProcessFlowCommit.HandleEvent -> resolveNewEvent(commit.event)
             else -> {}
         }
     }
