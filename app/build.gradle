@@ -40,7 +40,7 @@ dependencies {
 
     implementation project(':processFlow')
 
-    implementation 'com.github.ealmaz:DesignChili2:1.0.85'
+    implementation 'com.github.ealmaz:DesignChili2:1.0.195'
 
     implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
