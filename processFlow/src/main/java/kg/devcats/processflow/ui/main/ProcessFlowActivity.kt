@@ -196,6 +196,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun showConfirmationDialog(message: String, onConfirm: () -> Unit) {
         showDialog {
             setMessage(message)
+            setCancelable(true)
             positiveButton(R.string.process_flow_yes, handleClick = onConfirm)
             negativeButton(R.string.process_flow_no)
         }
