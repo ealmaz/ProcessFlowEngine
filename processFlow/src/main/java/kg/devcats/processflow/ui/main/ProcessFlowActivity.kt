@@ -193,6 +193,14 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         }
     }
 
+    open fun showConfirmationDialog(message: String, onConfirm: () -> Unit) {
+        showDialog {
+            setMessage(message)
+            positiveButton(R.string.process_flow_yes, handleClick = onConfirm)
+            negativeButton(R.string.process_flow_no)
+        }
+    }
+
     open fun cancelChatAndClose() {
         showLoading()
         vm.cancelProcessFlow()
@@ -242,7 +250,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun resolveNewCommit(commit: ProcessFlowCommit) {
         when (commit) {
             is ProcessFlowCommit.Initial -> handleInitCommit()
-            is ProcessFlowCommit.OnButtonClick -> resolveButtonClickCommit(commit.buttonsInfo, commit.additionalContent)
+            is ProcessFlowCommit.OnButtonClick -> resolveButtonClickConfirmation(commit)
             is ProcessFlowCommit.OnFlowPhotoCaptured -> uploadPhotos(commit)
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)
             is ProcessFlowCommit.FetchAdditionalOptionsForDropDown -> vm.fetchOptions(commit.formId, commit.parentSelectedOptionId)
@@ -282,6 +290,12 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         vm.upload(commit.responseId, file, commit.fileType, commit.mrz, {}, {_, _ ->
             showErrorDialog(getString(R.string.process_flow_unexpected_error))
         })
+    }
+
+    protected open fun resolveButtonClickConfirmation(commit: ProcessFlowCommit.OnButtonClick) {
+        val confirmationText = commit.buttonsInfo.properties?.get(ButtonProperties.COMMIT_CONFIRMATION.propertyName)
+        if (confirmationText == null) resolveButtonClickCommit(commit.buttonsInfo, commit.additionalContent)
+        else showConfirmationDialog(message = confirmationText) { resolveButtonClickCommit(commit.buttonsInfo, commit.additionalContent) }
     }
 
     open fun resolveButtonClickCommit(button: FlowButton?, additionalContent: List<Content>?) {
