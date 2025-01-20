@@ -8,6 +8,7 @@ import kg.devcats.processflow.model.request.FlowAnswer
 import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
+import kg.devcats.processflow.model.request.FlowUploadedAttachment
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
 import kg.devcats.processflow.util.PictureUtil
 import okhttp3.MultipartBody
@@ -60,6 +61,22 @@ abstract class ProcessFlowRepository (
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun uploadFileAttachments(processId: String, attachments: List<Pair<String, File>>): Single<List<FlowUploadedAttachment>> {
+        val partBodies = attachments.map { createMultiPartBody(it.first, it.second) }.toTypedArray()
+        val processIdBody = MultipartBody.Part.createFormData("process_id", processId)
+
+        return _api.uploadFileAttachments(*partBodies, processIdBody).flatMap { result ->
+            deleteFiles(attachments.map { it.second }).map { result }
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    private fun createMultiPartBody(name: String, file: File): MultipartBody.Part {
+        val requestBody = file.asRequestBody(MultipartBody.FORM)
+        return MultipartBody.Part.createFormData(name, file.absolutePath, requestBody)
+    }
+
     fun fetchOptions(formId: String, parentSelectedId: String = "", processId: String? = ""): Single<List<Option>> {
         return _api.fetchAdditionalOptions(formId, parentSelectedId, processId = processId)
             .subscribeOn(Schedulers.io())
@@ -70,6 +87,15 @@ abstract class ProcessFlowRepository (
         return Single.create {
             PictureUtil.deleteFile(file)
             it.onSuccess(resultString)
+        }
+    }
+
+    private fun deleteFiles(files: List<File>): Single<Unit> {
+        return Single.create {
+            files.forEach {
+                PictureUtil.deleteFile(it)
+            }
+            it.onSuccess(Unit)
         }
     }
 }

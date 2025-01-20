@@ -5,7 +5,7 @@ import kg.devcats.processflow.model.input_form.Option
 import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
-import kg.devcats.processflow.model.request.FlowStatusResponse
+import kg.devcats.processflow.model.request.FlowUploadedAttachment
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -39,6 +39,12 @@ interface ProcessFlowNetworkApi {
         @Part process_id: MultipartBody.Part? = null,
         @Part file: MultipartBody.Part? = null,
     ): Single<String>
+
+    @Multipart
+    @POST("v2/attachments/upload_files")
+    fun uploadFileAttachments(
+        @Part vararg attachments: MultipartBody.Part?,
+    ): Single<List<FlowUploadedAttachment>>
 
     @GET("v3/dictionaries/form-item/options/{form_item_id}/{parent_selected_option_id}")
     fun fetchAdditionalOptions(

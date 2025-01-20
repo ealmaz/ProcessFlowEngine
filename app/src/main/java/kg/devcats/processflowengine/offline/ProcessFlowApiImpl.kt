@@ -7,7 +7,9 @@ import kg.devcats.processflow.model.input_form.Option
 import kg.devcats.processflow.model.request.FlowCancelRequest
 import kg.devcats.processflow.model.request.FlowCommitRequest
 import kg.devcats.processflow.model.request.FlowResponse
+import kg.devcats.processflow.model.request.FlowUploadedAttachment
 import kg.devcats.processflow.network.ProcessFlowNetworkApi
+import okhttp3.MultipartBody
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -51,6 +53,11 @@ object ProcessFlowApiImpl : ProcessFlowNetworkApi {
     ): io.reactivex.Single<String> {
         Log.d("SAMPLE_TESTER", "upload")
         return Single.just("attachment").delay(REQUESTS_DELAY, TimeUnit.MILLISECONDS)
+    }
+
+    override fun uploadFileAttachments(vararg attachments: MultipartBody.Part?): Single<List<FlowUploadedAttachment>> {
+        Log.d("SAMPLE_TESTER", "upload attachments")
+        return Single.just(listOf(FlowUploadedAttachment("attachment_id", "attachment_type")))
     }
 
     override fun fetchAdditionalOptions(

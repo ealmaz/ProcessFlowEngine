@@ -69,7 +69,8 @@ object ProcessMocker {
                 "text":"К идентификации",
                 "style":"ACCENT",
                 "properties":{
-                   "isEnabled":true
+                   "isEnabled":true,
+                   "commitConfirmation":"Вы уверены, что хотите продолжить?"
                 }
              }
           }   

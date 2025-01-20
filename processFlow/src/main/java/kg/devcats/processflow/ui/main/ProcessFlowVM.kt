@@ -159,6 +159,37 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         }
     }
 
+    fun uploadFiles(
+        responseId: String,
+        compressedFiles: List<Pair<String, File>>,
+    ) {
+        disposed {
+            _repository.uploadFileAttachments(responseId, compressedFiles)
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    val additionalData = mutableListOf<Content>()
+                    it.forEach {
+                        additionalData.add(Content(content = it.id, additionalContentType = it.type))
+                    }
+                    _repository.commit(
+                        requireProcessFlowId(),
+                        FlowAnswer(
+                            responseId,
+                            additionalData
+                        )
+                    )
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { updateProcessInfo(it) }
+                .flatMap { dispatchValuesToLiveData(it) }
+                .doOnSubscribe { showLoading() }
+                .doOnTerminate { hideLoading() }
+                .defaultSubscribe(onError = {
+                    handleError(it)
+                })
+        }
+    }
+
     private fun compressIfTooLarge(file: File): Single<File?> {
         return if ((file.length() / 1024) <= MAX_AVAILABLE_FILE_SIZE) Single.just(file)
         else compressFile(file, SECONDARY_COMPRESSION_QUALITY)
