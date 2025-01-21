@@ -41,7 +41,7 @@ interface ProcessFlowNetworkApi {
     ): Single<String>
 
     @Multipart
-    @POST("v2/attachments/upload_files")
+    @POST("v1/native/attachments/upload")
     fun uploadFileAttachments(
         @Part vararg attachments: MultipartBody.Part?,
     ): Single<List<FlowUploadedAttachment>>
