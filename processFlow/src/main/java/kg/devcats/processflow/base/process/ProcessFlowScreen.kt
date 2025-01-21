@@ -8,7 +8,7 @@ interface ProcessFlowScreen {
 
     fun handleBackPress(): BackPressHandleState = BackPressHandleState.NOT_HANDLE
     fun handleShowLoading(isLoading: Boolean): Boolean = false
-    fun handleMultipleFileLoaderContentType(loadedType: String): String?
+    fun handleMultipleFileLoaderContentType(loadedType: String): String? = null
 }
 
 enum class BackPressHandleState {
