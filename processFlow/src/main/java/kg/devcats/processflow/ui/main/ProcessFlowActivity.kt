@@ -299,7 +299,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     protected open fun getContentTypeForMultipleFileLoading(uploadedType: String): String {
-        return uploadedType
+        return currentScreen?.handleMultipleFileLoaderContentType(uploadedType) ?: uploadedType
     }
 
     protected open fun resolveButtonClickConfirmation(commit: ProcessFlowCommit.OnButtonClick) {

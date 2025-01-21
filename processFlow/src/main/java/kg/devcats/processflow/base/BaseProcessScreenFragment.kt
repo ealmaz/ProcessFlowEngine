@@ -12,7 +12,6 @@ import com.design2.chili2.R
 import com.design2.chili2.view.buttons.LoaderButton
 import com.design2.chili2.view.input.BaseInputView
 import com.design2.chili2.view.input.otp.OtpInputView
-import com.google.android.gms.auth.api.phone.SmsRetrieverClient
 import kg.devcats.processflow.base.process.ProcessFlowScreen
 import kg.devcats.processflow.extension.getProcessFlowHolder
 import kg.devcats.processflow.extension.setMargins
@@ -150,6 +149,10 @@ abstract class BaseProcessScreenFragment<VB: ViewBinding> : BaseFragment<VB>(), 
 
     open fun onLinkClick(link: String) {
         getProcessFlowHolder().commit(ProcessFlowCommit.OnLinkClicked(link))
+    }
+
+    override fun handleMultipleFileLoaderContentType(loadedType: String): String? {
+        return null
     }
 
 
