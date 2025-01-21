@@ -253,6 +253,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is ProcessFlowCommit.Initial -> handleInitCommit()
             is ProcessFlowCommit.OnButtonClick -> resolveButtonClickConfirmation(commit)
             is ProcessFlowCommit.OnFlowPhotoCaptured -> uploadPhotos(commit)
+            is ProcessFlowCommit.CommitUploadMultipleFiles -> uploadMultipleFiles(commit)
             is ProcessFlowCommit.CommitContentFormResponseId -> vm.commit(commit.responseId, commit.content)
             is ProcessFlowCommit.FetchAdditionalOptionsForDropDown -> vm.fetchOptions(commit.formId, commit.parentSelectedOptionId)
             is ProcessFlowCommit.OnLinkClicked -> openWebViewFromUrl(commit.link)
@@ -291,6 +292,14 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         vm.upload(commit.responseId, file, commit.fileType, commit.mrz, {}, {_, _ ->
             showErrorDialog(getString(R.string.process_flow_unexpected_error))
         })
+    }
+
+    protected fun uploadMultipleFiles(commit: ProcessFlowCommit.CommitUploadMultipleFiles) {
+        vm.uploadFiles(commit.responseId, commit.files, ::getContentTypeForMultipleFileLoading)
+    }
+
+    protected open fun getContentTypeForMultipleFileLoading(uploadedType: String): String {
+        return uploadedType
     }
 
     protected open fun resolveButtonClickConfirmation(commit: ProcessFlowCommit.OnButtonClick) {

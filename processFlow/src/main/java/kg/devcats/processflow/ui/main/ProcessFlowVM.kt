@@ -162,6 +162,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
     fun uploadFiles(
         responseId: String,
         compressedFiles: List<Pair<String, File>>,
+        getContentType: (String) -> String,
     ) {
         disposed {
             _repository.uploadFileAttachments(requireProcessFlowId(), compressedFiles)
@@ -169,7 +170,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
                 .flatMap {
                     val additionalData = mutableListOf<Content>()
                     it.forEach {
-                        additionalData.add(Content(content = it.id, additionalContentType = it.type))
+                        additionalData.add(Content(content = it.id, additionalContentType = getContentType(it.type)))
                     }
                     _repository.commit(
                         requireProcessFlowId(),
