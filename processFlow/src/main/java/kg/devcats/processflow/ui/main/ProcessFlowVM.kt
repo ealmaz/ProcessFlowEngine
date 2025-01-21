@@ -164,7 +164,7 @@ abstract class ProcessFlowVM<T: ProcessFlowRepository>(protected val _repository
         compressedFiles: List<Pair<String, File>>,
     ) {
         disposed {
-            _repository.uploadFileAttachments(responseId, compressedFiles)
+            _repository.uploadFileAttachments(requireProcessFlowId(), compressedFiles)
                 .observeOn(Schedulers.io())
                 .flatMap {
                     val additionalData = mutableListOf<Content>()
