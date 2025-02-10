@@ -70,10 +70,7 @@ class PhotoFlowFragment : BaseProcessScreenFragment<ProcessFlowFragmentPhotoFlow
 
     private fun getRequiredPermissionsByVersion() =
         when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.CAMERA)
-            }
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU -> {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
                 arrayOf(Manifest.permission.CAMERA)
             }
             else -> {
