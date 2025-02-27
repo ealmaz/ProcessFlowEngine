@@ -150,6 +150,11 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     override fun setToolbarTitle(title: String) { vb.chiliToolbar.setTitle(title) }
+
+    override fun setToolbarTitleCentered(isCentered: Boolean) {
+        vb.chiliToolbar.setIsTitleCentered(isCentered)
+    }
+
     override fun setupToolbarEndIcon(iconRes: Int?, onClick: (() -> Unit)?): Unit = with(vb.chiliToolbar) {
         if (iconRes != null) {
             setEndIcon(iconRes)

@@ -133,10 +133,6 @@ open class ProcessFlowWebViewFragment :
         }
     }
 
-    open fun updateTitle(title: String) {
-        getProcessFlowHolder().setToolbarTitle(title)
-    }
-
     open fun updateBackIcon() {
         val iconRes =
             if (getWebView().canGoBack()) com.design2.chili2.R.drawable.chili_ic_back_arrow

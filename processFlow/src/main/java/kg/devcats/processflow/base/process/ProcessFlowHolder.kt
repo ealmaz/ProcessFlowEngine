@@ -14,5 +14,6 @@ interface ProcessFlowHolder {
     fun commit(commit: ProcessFlowCommit)
 
     fun setIsActivityLoading(isLoading: Boolean)
+    fun setToolbarTitleCentered(isCentered: Boolean)
 
 }
