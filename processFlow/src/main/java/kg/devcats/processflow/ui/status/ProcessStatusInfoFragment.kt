@@ -129,13 +129,17 @@ open class ProcessStatusInfoFragment : BaseProcessScreenFragment<ProcessFlowFrag
     }
 
     private fun setupTimer(state: ScreenState?) {
-        state?.timer?.let {
-            val timerText = state?.timerText ?: ""
+        val timer = state?.timer
+
+        if (timer != null) {
+            val timerText = state.timerText ?: ""
             vb.tvTimer.visible()
             setupTimerFor(
-                it,
+                timer,
                 { vb.tvTimer.gone() },
                 { vb.tvTimer.text = "$timerText ${it.toTimeFromMillis}" })
+        } else {
+            vb.tvTimer.gone()
         }
     }
 
