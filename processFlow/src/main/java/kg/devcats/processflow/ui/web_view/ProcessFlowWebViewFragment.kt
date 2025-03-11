@@ -135,7 +135,7 @@ open class ProcessFlowWebViewFragment :
 
     open fun updateBackIcon() {
         val iconRes =
-            if (getWebView().canGoBack()) com.design2.chili2.R.drawable.chili_ic_back_arrow
+            if (getWebView().canGoBack()) com.design2.chili2.R.drawable.chili_ic_back
             else com.design2.chili2.R.drawable.chili_ic_close
         getProcessFlowHolder().setToolbarNavIcon(iconRes)
     }

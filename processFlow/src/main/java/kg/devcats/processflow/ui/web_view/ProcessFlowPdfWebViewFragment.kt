@@ -53,7 +53,7 @@ class ProcessFlowPdfWebViewFragment :
 
     override fun onResume() {
         super.onResume()
-        if (canBackPress) getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back_arrow)
+        if (canBackPress) getProcessFlowHolder().setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_back)
     }
 
     override fun onPause() {
