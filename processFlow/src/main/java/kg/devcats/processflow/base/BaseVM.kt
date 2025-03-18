@@ -18,6 +18,10 @@ open class BaseVM : ViewModel() {
         this.event.value = event
     }
 
+    fun resetEvent() {
+        event.postValue(null)
+    }
+
     fun disposed(d: () -> Disposable) {
         disposable.add(d.invoke())
     }
