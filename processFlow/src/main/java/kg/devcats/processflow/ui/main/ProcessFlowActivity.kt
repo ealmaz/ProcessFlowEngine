@@ -97,7 +97,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         setContentView(vb.root)
         setupViews()
         observeLiveData()
-        commit(ProcessFlowCommit.Initial)
+        if (savedInstanceState != null) commit(ProcessFlowCommit.Initial)
     }
 
     override fun onBackPressed() {
