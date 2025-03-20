@@ -97,7 +97,9 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
         setContentView(vb.root)
         setupViews()
         observeLiveData()
-        commit(ProcessFlowCommit.Initial)
+        if (savedInstanceState == null || vm.processFlowScreenDataLive.value == null) {
+            commit(ProcessFlowCommit.Initial)
+        }
     }
 
     override fun onBackPressed() {
@@ -122,7 +124,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     open fun isAppThemeLight(): Boolean = true
 
     open fun observeLiveData() = with (vm) {
-        event.observe(this@ProcessFlowActivity) { resolveNewEvent(it) }
+        event.observe(this@ProcessFlowActivity) { if (it != null) resolveNewEvent(it) }
         processFlowScreenDataLive.observe(this@ProcessFlowActivity) { resolveNewScreenState(it); resolveNewScreenKey(it) }
         loaderState.observe(this@ProcessFlowActivity) { if (it) showLoading() else hideLoading() }
     }
@@ -251,6 +253,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             is Event.FlowCancelledCloseActivity -> closeCurrentFlowActivity()
             else -> {}
         }
+        vm.resetEvent()
     }
 
     open fun resolveNewCommit(commit: ProcessFlowCommit) {

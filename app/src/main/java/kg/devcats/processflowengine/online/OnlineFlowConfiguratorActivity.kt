@@ -50,7 +50,7 @@ class OnlineFlowConfiguratorActivity : AppCompatActivity() {
                 prefs.process_type = it
                 i.putExtra(EXTRA_PROCESS_TYPE, it)
             }
-            vb.etPossibleProcessFlowId.getInputText().let {
+            vb.etPossibleProcessFlowId.getInputText().takeIf { it.isNotBlank() }?.let {
                 prefs.possibleProcessIds = it
                 i.putExtra(EXTRA_POSSIBLE_PROCESS_FLOWS, it)
             }
