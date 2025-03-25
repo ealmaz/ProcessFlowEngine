@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.design2.chili2.extensions.setOnSingleClickListener
 import com.design2.chili2.view.buttons.LoaderButton
+import kg.devcats.processflow.R
 import kg.devcats.processflow.model.component.ButtonProperties
 import kg.devcats.processflow.model.component.FlowButton
 import kg.devcats.processflow.model.component.FlowButtonStyle
@@ -23,10 +24,11 @@ object FlowButtonCreator {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
+                setTextAppearance(R.style.ProcessFlowPrimaryButtonTextAppearance)
                 setMargins(margin, 0, margin, margin)
             }
         }
-        else Button(context, null, 0, com.design2.chili2.R.style.Chili_ButtonStyle_Additional).apply {
+        else Button(context, null, 0, R.style.ProcessFlowAdditionalButtonStyle).apply {
             val margin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp)
             val bottomMargin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_12dp)
             layoutParams = LinearLayout.LayoutParams(

@@ -24,4 +24,13 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="ProcessFlowAdditionalButtonStyle" parent="Chili.ButtonStyle.Additional">
+        <item name="android:textSize">@dimen/view_14dp</item>
+    </style>
+
+    <style name="ProcessFlowPrimaryButtonTextAppearance" parent="Chili.H14.Primary.Bold">
+        <item name="android:textSize">@dimen/view_14dp</item>
+        <item name="android:textColor">@color/chili_state_color_button_text_primary</item>
+    </style>
+
 </resources>
