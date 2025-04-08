@@ -24,12 +24,12 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_close"
-            android:layout_width="@dimen/view_24dp"
-            android:layout_height="@dimen/view_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_12dp"
             android:layout_marginEnd="@dimen/padding_12dp"
             android:layout_gravity="end"
-            android:src="@drawable/chili_ic_close_rounded"/>
+            android:src="@drawable/chili_new_ic_close"/>
 
     </FrameLayout>
 
