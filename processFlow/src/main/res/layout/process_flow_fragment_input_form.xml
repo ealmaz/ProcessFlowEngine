@@ -45,7 +45,7 @@
         android:layout_marginVertical="@dimen/padding_16dp"
         app:layout_constraintBottom_toTopOf="@id/btn_done"/>
 
-    <com.design2.chili2.view.buttons.LoaderButton
+    <com.design2.chili2.view.buttons.ChiliButton
         android:id="@+id/btn_done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
