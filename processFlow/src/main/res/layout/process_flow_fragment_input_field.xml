@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@id/sv_container"
         app:layout_constraintVertical_bias="1" />
 
-    <com.design2.chili2.view.buttons.LoaderButton
+    <com.design2.chili2.view.buttons.ChiliButton
         android:id="@+id/btn_confirm"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

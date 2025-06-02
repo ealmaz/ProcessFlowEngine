@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import com.design2.chili2.extensions.setOnSingleClickListener
-import com.design2.chili2.view.buttons.LoaderButton
+import com.design2.chili2.view.buttons.ChiliButton
 import kg.devcats.processflow.R
 import kg.devcats.processflow.model.component.ButtonProperties
 import kg.devcats.processflow.model.component.FlowButton
@@ -18,7 +18,7 @@ object FlowButtonCreator {
         buttonInfo: FlowButton,
         onClick: (buttonInfo: FlowButton) -> Unit
     ): View {
-        val view = if (buttonInfo.style == FlowButtonStyle.ACCENT) LoaderButton(context).apply {
+        val view = if (buttonInfo.style == FlowButtonStyle.ACCENT) ChiliButton(context).apply {
             val margin = resources.getDimensionPixelSize(com.design2.chili2.R.dimen.padding_16dp)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -42,12 +42,12 @@ object FlowButtonCreator {
 
             tag = buttonInfo.buttonId
             setOnSingleClickListener { onClick(buttonInfo) }
-            (this as? LoaderButton)?.let { setupButton(it, buttonInfo) }
+            (this as? ChiliButton)?.let { setupButton(it, buttonInfo) }
             (this as? Button)?.let { setupButton(it, buttonInfo) }
         }
     }
 
-    fun setupButton(button: LoaderButton, buttonInfo: FlowButton) {
+    fun setupButton(button: ChiliButton, buttonInfo: FlowButton) {
         buttonInfo.apply {
             text?.let { button.setText(it) }
             disabled.let { button.isEnabled = !it  }
