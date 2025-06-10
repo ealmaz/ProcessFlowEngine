@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -16,6 +17,7 @@ import kg.devcats.processflow.base.process.BackPressHandleState
 import kg.devcats.processflow.base.process.ProcessFlowHolder
 import kg.devcats.processflow.base.process.ProcessFlowScreen
 import kg.devcats.processflow.databinding.ProcessFlowActivityProcessFlowBinding
+import kg.devcats.processflow.extension.applyEdgeToEdgePadding
 import kg.devcats.processflow.extension.negativeButton
 import kg.devcats.processflow.extension.positiveButton
 import kg.devcats.processflow.extension.showDialog
@@ -93,6 +95,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         vb = ProcessFlowActivityProcessFlowBinding.inflate(layoutInflater)
         setContentView(vb.root)
         setupViews()
@@ -115,6 +118,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun setupViews() {
+        vb.root.applyEdgeToEdgePadding(applyTop = true, applyBottom = true)
         setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
     }
 
