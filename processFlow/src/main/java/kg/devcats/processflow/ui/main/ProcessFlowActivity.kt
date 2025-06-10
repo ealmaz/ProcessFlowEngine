@@ -95,7 +95,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         vb = ProcessFlowActivityProcessFlowBinding.inflate(layoutInflater)
         setContentView(vb.root)
         setupViews()
@@ -118,7 +117,6 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
     }
 
     open fun setupViews() {
-        vb.root.applyEdgeToEdgePadding(applyTop = true, applyBottom = true)
         setToolbarNavIcon(com.design2.chili2.R.drawable.chili_ic_close)
     }
 
