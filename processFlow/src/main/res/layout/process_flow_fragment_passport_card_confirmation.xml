@@ -52,7 +52,7 @@
             android:layout_marginBottom="@dimen/padding_8dp"
             android:text="@string/process_flow_photo_confirmation_retake_photo" />
 
-        <com.design2.chili2.view.buttons.LoaderButton
+        <com.design2.chili2.view.buttons.ChiliButton
             android:id="@+id/btn_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
