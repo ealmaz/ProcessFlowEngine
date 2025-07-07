@@ -69,6 +69,8 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
 
     override fun onStop() {
         super.onStop()
+        if (::cameraExecutor.isInitialized) cameraExecutor.shutdown()
+        isPhotoCapturing = false
         getProcessFlowHolder().setIsToolbarVisible(true)
     }
 
@@ -244,11 +246,7 @@ class PhotoCaptureFragment : BaseFragment<ProcessFlowFragmentPhotoCaptureBinding
     private fun showLoading() {}
     private fun hideLoading() {}
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (::cameraExecutor.isInitialized) cameraExecutor.shutdown()
-        isPhotoCapturing = false
-    }
+
 
     companion object {
 
