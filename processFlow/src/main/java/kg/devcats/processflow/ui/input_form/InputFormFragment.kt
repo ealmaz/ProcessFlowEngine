@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentResultListener
 import com.design2.chili2.view.input.BaseInputView
@@ -16,7 +18,9 @@ import kg.devcats.processflow.custom_view.drop_down_input_field.DropDownInputFie
 import kg.devcats.processflow.custom_view.InputFormGroupButtons
 import kg.devcats.processflow.databinding.ProcessFlowFragmentInputFormBinding
 import kg.devcats.processflow.extension.getProcessFlowHolder
+import kg.devcats.processflow.extension.handleUrlClicks
 import kg.devcats.processflow.extension.hideKeyboard
+import kg.devcats.processflow.extension.visible
 import kg.devcats.processflow.item_creator.DatePickerFieldCreator
 import kg.devcats.processflow.item_creator.DropDownFieldCreator
 import kg.devcats.processflow.item_creator.GroupButtonsCreator
@@ -27,6 +31,7 @@ import kg.devcats.processflow.model.ContentTypes
 import kg.devcats.processflow.model.ProcessFlowCommit
 import kg.devcats.processflow.model.ProcessFlowScreenData
 import kg.devcats.processflow.model.common.Content
+import kg.devcats.processflow.model.common.ScreenState
 import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.input_form.DatePickerFieldInfo
 import kg.devcats.processflow.model.input_form.DropDownFieldInfo
@@ -92,6 +97,23 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         }
     }
 
+    override fun renderScreenState(state: ScreenState?) {
+        super.renderScreenState(state)
+        state?.run {
+            bottomDescriptionHtml?.let {
+                vb.tvBottomDescription.apply {
+                    text = it.parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT).trimEnd()
+                    visible()
+                    handleUrlClicks {
+                        requireContext().hideKeyboard()
+                        vb.tvBottomDescription.invalidate()
+                        onLinkClick(it)
+                    }
+                }
+            }
+        }
+    }
+
     private fun setupInputForm(inputForm: InputForm) {
         val container = LinearLayout(context).apply {
             layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
@@ -102,6 +124,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
                 is FlowInputField -> createInputField(it.formItem).apply {
                     changeInputPositionToStart()
                 }
+
                 is GroupButtonFormItem -> createButtonGroup(it.formItem)
                 is DropDownFieldInfo -> createDropDownField(it.formItem)
                 is DatePickerFieldInfo -> createDatePickerField(it.formItem)
@@ -138,11 +161,11 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     private fun createLabelFormItem(labelFormItem: LabelFormItem): View {
-        return  LabelFormItemCreator.create(requireContext(), labelFormItem)
+        return LabelFormItemCreator.create(requireContext(), labelFormItem)
     }
 
     private fun createPairFieldItem(pairFieldItem: PairFieldItem): View {
-        return  PairFieldItemCreator.create(requireContext(), pairFieldItem)
+        return PairFieldItemCreator.create(requireContext(), pairFieldItem)
     }
 
     private fun createDropDownField(dropDownList: DropDownFieldInfo): View {

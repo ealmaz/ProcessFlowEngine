@@ -465,7 +465,8 @@ object ProcessMocker {
        "process_status":"RUNNING",
        "screen_code":"INPUT_FORM",
        "screen_state":{
-            "app_bar_text":"Passport data"
+            "app_bar_text":"Passport data",
+            "bottomDescriptionHtml":"Нажимая «Далее», вы подписываете вложенные документы простой электронной подписью"
        },
        "messages":[],
        "allowed_answers":[
