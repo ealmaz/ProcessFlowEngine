@@ -51,7 +51,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private var currentFormId: String = ""
 
-    private val buttonTextRes = R.string.process_flow_next
+    private val buttonTextRes = R.string.process_flow_continue
 
     private val scrollOffset16px: Int by lazy { resources.getDimensionPixelSize(R.dimen.padding_75dp) }
 
