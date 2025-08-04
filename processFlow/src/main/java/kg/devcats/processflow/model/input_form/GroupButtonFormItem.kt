@@ -26,4 +26,5 @@ data class Option(
     val subtitle: String? = null,
     var isSelected: Boolean? = false,
     val isHtmlText: Boolean? = false,
+    var isEdited: Boolean? = false,
 ) : Serializable

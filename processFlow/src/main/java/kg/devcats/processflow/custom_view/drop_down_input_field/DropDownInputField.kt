@@ -23,7 +23,10 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
     var options: List<Option> = listOf()
         set(value) {
             field = value
-            if (field.size == 1) field.first().isSelected = true
+            when {
+                field.isEmpty() -> setHint(dropDownListInfo?.label ?: "")
+                field.size == 1 -> field.first().isSelected = true
+            }
             onBottomSheetDismiss()
         }
 
@@ -31,15 +34,22 @@ class DropDownInputField @JvmOverloads constructor(context: Context, attributeSe
 
     private var dropDownListInfo: DropDownFieldInfo? = null
 
+    fun setSelectedIds(ids: List<String>) {
+        if (options.isNotEmpty()){
+            options = options.map { opt -> opt.copy(isSelected = ids.contains(opt.id)) }
+            onBottomSheetDismiss()
+        }
+    }
+
     fun setupViews(dropDownFieldInfo: DropDownFieldInfo, onSelectionChanged: (values: List<String>, Boolean) -> Unit, onRequestOptions: (String) -> Unit) {
         this.onSelectionChanged = onSelectionChanged
         this.dropDownListInfo = dropDownFieldInfo
+        dropDownFieldInfo.options?.let { options = it }
         this.setOnSingleClickListener {
             clearError()
             if (options.isEmpty()) onRequestOptions(dropDownFieldInfo.fieldId)
             else showOptionsBS()
         }
-        onBottomSheetDismiss()
     }
 
     fun showOptionsBS() {
