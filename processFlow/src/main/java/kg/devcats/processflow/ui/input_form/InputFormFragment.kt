@@ -194,27 +194,23 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         return PairFieldItemCreator.create(requireContext(), pairFieldItem)
     }
 
-    private fun createDropDownField(dropDownList: DropDownFieldInfo): View {
-        result[dropDownList.fieldId] = null
-        if (dropDownList.isNeedToFetchOptions == true) {
-            optionsRelations.add(OptionFieldParentRelation(currentFieldId = dropDownList.fieldId, parentId = dropDownList.parentFieldId))
+    private fun createDropDownField(dropDownInfo: DropDownFieldInfo): View {
+        result[dropDownInfo.fieldId] = null
+        if (dropDownInfo.isNeedToFetchOptions == true) {
+            optionsRelations.add(OptionFieldParentRelation(currentFieldId = dropDownInfo.fieldId, parentId = dropDownInfo.parentFieldId))
         }
-        return DropDownFieldCreator.create(requireContext(), dropDownList, { values, isValid ->
-            val cachedOptions = dropdownOptionsCache[dropDownList.fieldId]
-            cachedOptions
-            result[dropDownList.fieldId] = if (isValid) values else null
-            onDropDownListItemSelectionChanged(dropDownList.fieldId)
+        return DropDownFieldCreator.create(requireContext(), dropDownInfo, { values, isValid ->
+            result[dropDownInfo.fieldId] = if (isValid) values else null
+            onDropDownListItemSelectionChanged(dropDownInfo.fieldId)
         }, ::onRequestOptionsForField).apply {
-            tag = dropDownList.fieldId
-            cacheOptionsForField(dropDownList, this) }
+            cacheOptionsForField(dropDownInfo, this) }
     }
 
     private fun cacheOptionsForField( dropDownInfo: DropDownFieldInfo, view: DropDownInputField) {
-        val infoFieldId = dropDownInfo.fieldId
+        val cached = dropdownOptionsCache[dropDownInfo.fieldId]
 
-        val cached = dropdownOptionsCache[infoFieldId]
         val currentParent = optionsRelations
-            .find { it.currentFieldId == infoFieldId }?.parentId
+            .find { it.currentFieldId == dropDownInfo.fieldId }?.parentId
             ?.let { result[it]?.firstOrNull() }
 
         cached?.takeIf { it.first == currentParent && it.second.isNotEmpty() }
@@ -290,16 +286,16 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     private fun onDropDownListItemSelectionChanged(fieldId: String) {
+        if (isValueChanged(fieldId)) { clearChildFieldsOptions(fieldId) }
+    }
+
+    private fun isValueChanged(fieldId: String): Boolean {
         val newId = result[fieldId]?.firstOrNull()
         val oldId = lastSelectionValue[fieldId]
         lastSelectionValue[fieldId] = newId
-        if (oldId != null && newId != null) {
-            if (oldId != newId) {
-                clearChildFieldsOptions(fieldId)
-            }
-        }
-
+        return oldId != null && newId != null && oldId != newId
     }
+
 
     private fun clearChildFieldsOptions(parentFieldId: String) {
         optionsRelations.forEach {

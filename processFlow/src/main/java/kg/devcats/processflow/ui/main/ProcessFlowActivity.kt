@@ -325,8 +325,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
             OPEN_SUB_PROCESS -> with(vm) {
                 button.properties?.get(ButtonProperties.SUB_PROCESS_FLOW_TYPE.propertyName)?.let {
                     handleOpenSubProcess(it)
-                } ?:
-                getState()
+                } ?: getState()
             }
             RETURN_TO_PARENT_PROCESS -> with(vm) {
                 button.properties?.get(ButtonProperties.PARENT_PROCESS_ID.propertyName)?.let {
@@ -335,8 +334,7 @@ abstract class ProcessFlowActivity<VM: ProcessFlowVM<*>> : AppCompatActivity(), 
                     commit(button.buttonId, listOf(
                         Content(childProcessFlowId, ContentTypes.CHILD_INSTANCE_KEY),
                     ))
-                } ?:
-                getState()
+                } ?: getState()
             }
             else -> vm.commit(button.buttonId, additionalContent)
         }
