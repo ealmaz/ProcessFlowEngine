@@ -30,7 +30,8 @@ object InputFieldCreator : ValidatableItem() {
                 )
             }
             setSimpleTextChangedListener {
-                val input = listOf(getInputText().trim())
+                val trimmedInput = getInputText().trim()
+                val input = if (trimmedInput.isEmpty()) listOf() else listOf(trimmedInput)
                 val isValid = if (this is MaskedInputView && !(fieldInfo.mask.isNullOrBlank())) validateItem(fieldInfo.validations, input) && isInputMaskFilled()
                 else validateItem(fieldInfo.validations, input)
                 this.clearFieldError()

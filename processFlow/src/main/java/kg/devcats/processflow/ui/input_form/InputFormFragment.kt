@@ -35,6 +35,7 @@ import kg.devcats.processflow.model.common.ScreenState
 import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.input_form.DatePickerFieldInfo
 import kg.devcats.processflow.model.input_form.DropDownFieldInfo
+import kg.devcats.processflow.model.input_form.DropDownOptionsCache
 import kg.devcats.processflow.model.input_form.EnteredValue
 import kg.devcats.processflow.model.input_form.FormResponse
 import kg.devcats.processflow.model.input_form.GroupButtonFormItem
@@ -67,7 +68,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private var isContinueClicked = false
 
-    private val dropdownOptionsCache = mutableMapOf<String, Pair<String?, List<Option>>?>()
+    private val dropdownOptionsCache = mutableMapOf<String, DropDownOptionsCache?>()
     private val lastSelectionValue  = mutableMapOf<String, String?>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,32 +88,26 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     fun setAdditionalFetchedOptions(formId: String, options: List<Option>) {
-        val parentSelectedId = optionsRelations
-            .find { it.currentFieldId == formId }?.parentId
-            ?.let { result[it]?.firstOrNull() }     // "" если корневой
-
-        dropdownOptionsCache[formId] = parentSelectedId to options
-
+        dropdownOptionsCache[formId] = DropDownOptionsCache(getCurrentParent(formId), options)
         val showBS = options.isEmpty() || options.size > 1
-        val view = vb.root.findViewWithTag<DropDownInputField>(formId)
 
-        view?.let { view ->
+        vb.root.findViewWithTag<DropDownInputField>(formId)?.let { view ->
             view.options = options
-            val lastSelected = lastSelectionValue[formId]
-            val match = lastSelected?.let { id -> options.any { it.id == id } } == true
-
-            if (match) {
-                view.setSelectedIds(listOf(lastSelected!!))
-                result[formId] = listOf(lastSelected)
-            } else {
-                lastSelectionValue[formId] = null
-                result[formId] = null
-                view.setSelectedIds(emptyList())
-            }
+            restoreSelectionDropDown(formId, options, view)
             if (showBS) view.showOptionsBS()
         }
     }
 
+    private fun restoreSelectionDropDown(formId: String, options: List<Option>, view: DropDownInputField) {
+        lastSelectionValue[formId]?.takeIf { id -> options.any { it.id == id } }?.let { validId ->
+            view.setSelectedIds(listOf(validId))
+            result[formId] = listOf(validId)
+        } ?: run {
+            lastSelectionValue[formId] = null
+            result[formId] = null
+            view.setSelectedIds(emptyList())
+        }
+    }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
         super.setScreenData(data)
@@ -207,17 +202,20 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     private fun cacheOptionsForField( dropDownInfo: DropDownFieldInfo, view: DropDownInputField) {
-        val cached = dropdownOptionsCache[dropDownInfo.fieldId]
+        val cache = dropdownOptionsCache[dropDownInfo.fieldId]
+        val currentParent = getCurrentParent(dropDownInfo.fieldId)
 
-        val currentParent = optionsRelations
-            .find { it.currentFieldId == dropDownInfo.fieldId }?.parentId
-            ?.let { result[it]?.firstOrNull() }
-
-        cached?.takeIf { it.first == currentParent && it.second.isNotEmpty() }
-            ?.let { view.options = it.second }
+        cache?.takeIf { it.parentSelectedId == currentParent && it.options.isNotEmpty() }
+            ?.let { view.options = it.options }
 
         dropDownInfo.options?.takeIf { it.isNotEmpty() }?.let { view.options = it }
         dropDownInfo.value?.let { savedId -> view.setSelectedIds(listOf(savedId)) }
+    }
+
+    private fun getCurrentParent(fieldId: String?): String? {
+        return optionsRelations
+            .find { it.currentFieldId == fieldId }?.parentId
+            ?.let { result[it]?.firstOrNull() }
     }
 
     private fun createDatePickerField(datePickerFieldInfo: DatePickerFieldInfo): View {
@@ -253,6 +251,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         vb.btnDone.setIsLoading(isLoading)
         return true
     }
+
 
     private fun collectResult(): List<Content> {
         val resultValues = mutableListOf<EnteredValue>()
