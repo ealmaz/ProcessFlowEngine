@@ -43,7 +43,7 @@
         android:layout_marginTop="@dimen/padding_8dp"
         android:paddingEnd="@dimen/padding_8dp"
         android:visibility="gone"
-        android:textAppearance="@style/Chili.H16.Error"
+        android:textAppearance="@style/Chili.H8.Error"
         tools:text="Message text"/>
 
 
