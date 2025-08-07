@@ -12,4 +12,5 @@ data class DropDownFieldInfo(
     val options: List<Option>? = null,
     val isSearchEnabled: Boolean? = null,
     val value: String? = null,
+    val errorMessage: String? = null
 ): Serializable
