@@ -88,17 +88,13 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     fun setAdditionalFetchedOptions(formId: String, options: List<Option>) {
-        dropdownOptionsCache[formId] = DropDownOptionsCache(getCurrentParent(formId), options)
         val showBS = options.isEmpty() || options.size > 1
-
-        vb.root.findViewWithTag<DropDownInputField>(formId)?.let { view ->
-            view.options = options
-            restoreSelectionDropDown(formId, options, view)
-            if (showBS) view.showOptionsBS()
-        }
+        setOptionsForDropDownField(fieldId = formId, newOptions = options, showBS = showBS)
     }
 
     private fun restoreSelectionDropDown(formId: String, options: List<Option>, view: DropDownInputField) {
+        dropdownOptionsCache[formId] = DropDownOptionsCache(getCurrentParent(formId), options)
+
         lastSelectionValue[formId]?.takeIf { id -> options.any { it.id == id } }?.let { validId ->
             view.setSelectedIds(listOf(validId))
             result[formId] = listOf(validId)
@@ -321,6 +317,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     private fun setOptionsForDropDownField(fieldId: String, newOptions: List<Option>, showBS: Boolean) {
         vb.root.findViewWithTag<DropDownInputField>(fieldId)?.apply {
             options = newOptions
+            restoreSelectionDropDown(fieldId, options, this)
             if (showBS) showOptionsBS()
         }
     }
