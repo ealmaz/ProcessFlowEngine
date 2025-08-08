@@ -35,6 +35,7 @@ import kg.devcats.processflow.model.common.ScreenState
 import kg.devcats.processflow.model.component.FlowInputField
 import kg.devcats.processflow.model.input_form.DatePickerFieldInfo
 import kg.devcats.processflow.model.input_form.DropDownFieldInfo
+import kg.devcats.processflow.model.input_form.DropDownOptionsCache
 import kg.devcats.processflow.model.input_form.EnteredValue
 import kg.devcats.processflow.model.input_form.FormResponse
 import kg.devcats.processflow.model.input_form.GroupButtonFormItem
@@ -67,6 +68,9 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
 
     private var isContinueClicked = false
 
+    private val dropdownOptionsCache = mutableMapOf<String, DropDownOptionsCache?>()
+    private val lastSelectionValue  = mutableMapOf<String, String?>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.setFragmentResultListener(DatePickerDialog.PICKER_DIALOG_RESULT, this, this)
@@ -86,6 +90,19 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     fun setAdditionalFetchedOptions(formId: String, options: List<Option>) {
         val showBS = options.isEmpty() || options.size > 1
         setOptionsForDropDownField(fieldId = formId, newOptions = options, showBS = showBS)
+    }
+
+    private fun restoreSelectionDropDown(formId: String, options: List<Option>, view: DropDownInputField) {
+        dropdownOptionsCache[formId] = DropDownOptionsCache(getCurrentParent(formId), options)
+
+        lastSelectionValue[formId]?.takeIf { id -> options.any { it.id == id } }?.let { validId ->
+            view.setSelectedIds(listOf(validId))
+            result[formId] = listOf(validId)
+        } ?: run {
+            lastSelectionValue[formId] = null
+            result[formId] = null
+            view.setSelectedIds(emptyList())
+        }
     }
 
     override fun setScreenData(data: ProcessFlowScreenData?) {
@@ -168,15 +185,33 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         return PairFieldItemCreator.create(requireContext(), pairFieldItem)
     }
 
-    private fun createDropDownField(dropDownList: DropDownFieldInfo): View {
-        result[dropDownList.fieldId] = null
-        if (dropDownList.isNeedToFetchOptions == true) {
-            optionsRelations.add(OptionFieldParentRelation(currentFieldId = dropDownList.fieldId, parentId = dropDownList.parentFieldId))
+    private fun createDropDownField(dropDownInfo: DropDownFieldInfo): View {
+        result[dropDownInfo.fieldId] = null
+        if (dropDownInfo.isNeedToFetchOptions == true) {
+            optionsRelations.add(OptionFieldParentRelation(currentFieldId = dropDownInfo.fieldId, parentId = dropDownInfo.parentFieldId))
         }
-        return DropDownFieldCreator.create(requireContext(), dropDownList, { values, isValid ->
-            result[dropDownList.fieldId] = if (isValid) values else null
-            onDropDownListItemSelectionChanged(dropDownList.fieldId)
-        }, ::onRequestOptionsForField)
+        return DropDownFieldCreator.create(requireContext(), dropDownInfo, { values, isValid ->
+            result[dropDownInfo.fieldId] = if (isValid) values else null
+            onDropDownListItemSelectionChanged(dropDownInfo.fieldId)
+        }, ::onRequestOptionsForField).apply {
+            cacheOptionsForField(dropDownInfo, this) }
+    }
+
+    private fun cacheOptionsForField( dropDownInfo: DropDownFieldInfo, view: DropDownInputField) {
+        val cache = dropdownOptionsCache[dropDownInfo.fieldId]
+        val currentParent = getCurrentParent(dropDownInfo.fieldId)
+
+        cache?.takeIf { it.parentSelectedId == currentParent && it.options.isNotEmpty() }
+            ?.let { view.options = it.options }
+
+        dropDownInfo.options?.takeIf { it.isNotEmpty() }?.let { view.options = it }
+        dropDownInfo.value?.let { savedId -> view.setSelectedIds(listOf(savedId)) }
+    }
+
+    private fun getCurrentParent(fieldId: String?): String? {
+        return optionsRelations
+            .find { it.currentFieldId == fieldId }?.parentId
+            ?.let { result[it]?.firstOrNull() }
     }
 
     private fun createDatePickerField(datePickerFieldInfo: DatePickerFieldInfo): View {
@@ -213,6 +248,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
         return true
     }
 
+
     private fun collectResult(): List<Content> {
         val resultValues = mutableListOf<EnteredValue>()
         result.forEach {
@@ -245,13 +281,22 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     }
 
     private fun onDropDownListItemSelectionChanged(fieldId: String) {
-        clearChildFieldsOptions(parentFieldId = fieldId)
+        if (isValueChanged(fieldId)) { clearChildFieldsOptions(fieldId) }
     }
+
+    private fun isValueChanged(fieldId: String): Boolean {
+        val newId = result[fieldId]?.firstOrNull()
+        val oldId = lastSelectionValue[fieldId]
+        lastSelectionValue[fieldId] = newId
+        return oldId != null && newId != null && oldId != newId
+    }
+
 
     private fun clearChildFieldsOptions(parentFieldId: String) {
         optionsRelations.forEach {
             if (it.parentId == parentFieldId) {
                 setOptionsForDropDownField(it.currentFieldId, listOf(), false)
+                dropdownOptionsCache[it.currentFieldId] = null
             }
         }
     }
@@ -272,6 +317,7 @@ class InputFormFragment : BaseProcessScreenFragment<ProcessFlowFragmentInputForm
     private fun setOptionsForDropDownField(fieldId: String, newOptions: List<Option>, showBS: Boolean) {
         vb.root.findViewWithTag<DropDownInputField>(fieldId)?.apply {
             options = newOptions
+            restoreSelectionDropDown(fieldId, options, this)
             if (showBS) showOptionsBS()
         }
     }

@@ -2,12 +2,18 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:paddingStart="@dimen/padding_16dp"
-    android:paddingEnd="@dimen/padding_8dp"
-    android:paddingVertical="@dimen/padding_10dp"
-    android:background="@drawable/chili_bg_input_view_rounded"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/ll_cell"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/padding_16dp"
+        android:paddingEnd="@dimen/padding_8dp"
+        android:paddingVertical="@dimen/padding_10dp"
+        android:background="@drawable/chili_bg_input_view_rounded">
 
     <TextView
         android:id="@+id/tv_label"
@@ -26,5 +32,19 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/padding_8dp"
         android:src="@drawable/chili_ic_chevron_rounded"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_16dp"
+        android:layout_marginTop="@dimen/padding_8dp"
+        android:paddingEnd="@dimen/padding_8dp"
+        android:visibility="gone"
+        android:textAppearance="@style/Chili.H8.Error"
+        tools:text="Message text"/>
+
 
 </LinearLayout>
